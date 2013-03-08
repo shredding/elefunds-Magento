@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!--
+   system.xml
+   
+   Copyright 2013 Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+-->
+<config>
+    <tabs>
+        <elefunds translate="label" module="elefunds">
+            <label>Elefunds</label>
+            <sort_order>2888000</sort_order>
+        </elefunds>
+    </tabs>
+    <sections>
+        <elefunds translate="label" module="elefunds">
+            <label>Elefunds</label>
+            <tab>elefunds</tab>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <config translate="label">
+                    <label>Config</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                            <comment>activate / deactivate Elefunds module</comment>
+                        </active>
+                        <product translate="label">
+                            <label>Product</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                            <comment>Insert the SKU of your donation product</comment>
+                        </product>
+                        <client_id translate="label comment">
+                            <label>Client Id</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>30</sort_order>
+                            <comment>Id is a number</comment>
+                        </client_id>
+                        <api_key translate="label">
+                            <label>Api Key</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>40</sort_order>
+                        </api_key>
+                        <banner_width translate="label comment">
+                            <label>Banner width</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>50</sort_order>
+                            <comment>Number, in px</comment>
+                        </banner_width>
+                        <donation_receipt translate="label comment">
+                            <label>Donation receipt enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>55</sort_order>
+                            <comment>activate / deactivate donation receipt</comment>
+                        </donation_receipt>
+                        <authorized_payment_methods translate="label comment">
+                            <label>Authorized payment methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>elefunds/system_config_source_group</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>60</sort_order>
+                            <comment>Only for the selected payment methods the posibility of donations will be shown</comment>
+                        </authorized_payment_methods>
+                    </fields>
+                </config>
+            </groups>
+        </elefunds>
+    </sections>
+</config>

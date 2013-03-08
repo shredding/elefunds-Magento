@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<config>
+	<modules>
+		<Knm_Elefunds>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<!-- add <Package_Module />  ex <Mage_Payment /> -->
+			</depends>
+		</Knm_Elefunds>
+	</modules>
+</config>

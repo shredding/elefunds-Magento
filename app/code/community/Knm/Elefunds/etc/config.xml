@@ -1,0 +1,230 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Knm_Elefunds>
+            <version>0.3.0</version>
+        </Knm_Elefunds>
+    </modules>
+
+    <global>
+        <models>
+            <elefunds>
+                <class>Knm_Elefunds_Model</class>
+                <resourceModel>elefunds_mysql4</resourceModel>
+            </elefunds>
+            <elefunds_mysql4>
+                <class>Knm_Elefunds_Model_Mysql4</class>
+                <entities>
+                    <logs>
+                        <table>elefunds_logs</table>
+                    </logs>
+                    <donation>
+                        <table>elefunds_donation</table>
+                    </donation>
+                    <receivers>
+                        <table>elefunds_receivers</table>
+                    </receivers>
+                </entities>
+            </elefunds_mysql4>
+        </models>
+        
+        <blocks>
+            <elefunds>
+                <class>Knm_Elefunds_Block</class>
+            </elefunds>
+        </blocks>
+
+        <helpers>
+            <elefunds>
+                <class>Knm_Elefunds_Helper</class>
+            </elefunds>
+        </helpers>
+
+        <resources>
+            <elefunds_setup>
+                <setup>
+                    <module>Knm_Elefunds</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+                <use>default_setup</use>
+            </elefunds_setup>
+
+            <elefunds_write>
+                <use>default_write</use>
+            </elefunds_write>
+            <elefunds_read>
+                <use>default_read</use>
+            </elefunds_read>
+        </resources>
+        
+        <events>
+            <order_cancel_after>
+                <observers>
+                    <captureCancelDonation>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>captureCancelDonation</method>
+                    </captureCancelDonation>
+                </observers>
+            </order_cancel_after>
+        </events>
+    </global>
+
+    <admin></admin>
+
+    <adminhtml>
+        <menu></menu>
+        <translate>
+            <modules>
+                <Knm_Elefunds>
+                    <files>
+                        <default>Elefunds.csv</default>
+                    </files>
+                </Knm_Elefunds>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <elefunds>
+                    <file>knm_elefunds.xml</file>
+                </elefunds>
+            </updates>
+        </layout>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <elefunds>
+                                            <title>Elefunds</title>
+                                        </elefunds>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+	<frontend>
+		<routers>
+			<elefunds>
+				<use>standard</use>
+				<args>
+					<module>Knm_Elefunds</module>
+					<frontName>elefunds</frontName>
+				</args>
+			</elefunds>
+		</routers>
+		<events>
+            <elefunds_checkout_review_before_enable>
+                <observers>
+                    <limitPayments>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>limitPayments</method>
+                    </limitPayments>
+                </observers>
+            </elefunds_checkout_review_before_enable>
+            <controller_action_predispatch_checkout_onepage_saveOrder>
+                <observers>
+                    <addDonation>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>addDonation</method>
+                    </addDonation>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_saveOrder>
+            <controller_action_postdispatch_checkout_onepage_saveOrder>
+                <observers>
+                    <cleanDonation>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>cleanDonation</method>
+                    </cleanDonation>
+                </observers>
+            </controller_action_postdispatch_checkout_onepage_saveOrder>
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <captureDonation>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>captureDonation</method>
+                    </captureDonation>
+                </observers>
+            </checkout_type_onepage_save_order_after>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <sendDonation>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>sendDonation</method>
+                    </sendDonation>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <!-- 
+                Implemented basic functionality, in case of payment methods not using
+                the standard methods of magento, this observer should hook to a more general 
+                event 
+            -->
+            <order_cancel_after>
+                <observers>
+                    <captureCancelDonation>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>captureCancelDonation</method>
+                    </captureCancelDonation>
+                </observers>
+            </order_cancel_after>
+            <sales_quote_item_set_product>
+                <observers>
+                    <noRules>
+                        <type>model</type>
+                        <class>elefunds/observer</class>
+                        <method>noDonationRules</method>
+                    </noRules>
+                </observers>
+            </sales_quote_item_set_product>
+<!--
+            <sales_order_save_commit_after>
+            
+            
+            </sales_order_save_commit_after>
+-->
+        </events>
+		<translate></translate>
+		<layout>
+			<updates>
+				<elefunds>
+					<file>knm_elefunds.xml</file>
+				</elefunds>
+			</updates>
+		</layout>
+	</frontend>
+	
+	<default>
+        <elefunds>
+            <config>
+                <active>0</active>
+                <product>donation</product>
+            </config>
+        </elefunds>
+    </default>
+
+    <crontab>
+        <jobs>
+            <!--
+            <jobname>
+                <schedule><cron_expr>0 2 * * *</cron_expr></schedule>
+                <run><model>elefunds/modelname::tocallfunction</model></run>
+            </jobname>
+            -->
+        </jobs>
+    </crontab>
+
+</config>
