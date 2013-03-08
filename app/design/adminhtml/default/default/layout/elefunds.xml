@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <elefunds_adminhtml_logs_index>
+        <reference name="content">
+            <block type="elefunds/adminhtml_logs" name="elefunds" />
+        </reference>
+    </elefunds_adminhtml_logs_index>
+</layout>

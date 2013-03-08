@@ -1,0 +1,15 @@
+<div id="elefunds-sucess-div" style="display:none">
+    <?php 
+        if ($this->existDonation()) {
+            echo $this->renderSocialMedia();
+        }
+    ?>
+</div>
+
+<script type="text/javascript">
+    var subtitle = $$(".sub-title");
+    var elefunddiv = $('elefunds-sucess-div');
+
+    subtitle[0].insert({'after': elefunddiv});
+    elefunddiv.show();
+</script>
