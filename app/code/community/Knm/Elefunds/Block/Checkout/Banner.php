@@ -3,7 +3,7 @@
 /**
  * Banner
  *
- * Resposible for preparing Data for showing the Donation Banner
+ * Responsible for preparing Data for showing the Donation Banner
  *
  * @package    elefunds Magento Module
  * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
@@ -14,7 +14,7 @@
 class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template {
 
     /**
-     * Control if banner should be shown
+     * Controls if banner should be shown
      *
      * @var bool
      */

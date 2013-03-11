@@ -1,8 +1,8 @@
 <?
 /**
- * SocialMmdia
+ * SocialMedia
  *
- * Resposible for preparing Data for showing the Social-Media Area
+ * Responsible for preparing Data for showing the Social-Media Area
  *
  * @package    elefunds Magento Module
  * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
@@ -10,8 +10,8 @@
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
  */
-
 class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template {
+
     protected $_order;
 
     protected function _prepareLayout() {
@@ -41,8 +41,7 @@ class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template {
             return false;
         }
     }
-    
-    
+
     public function getOrder() {
         if (!$this->_order) {
             $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();

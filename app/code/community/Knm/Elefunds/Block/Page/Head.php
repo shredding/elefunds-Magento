@@ -1,12 +1,20 @@
 <?php
-/*
- * Head.php
- * 
- * Copyright 2013 Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+/**
+ * Head
+ *
+ * Responsible for preparing Data for the page head
+ *
+ * @package    elefunds Magento Module
+ * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+ * @copyright  2012 elefunds GmbH <hello@elefunds.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.elefunds.de
  */
- 
-
 class  Knm_Elefunds_Block_Page_Head extends Mage_Core_Block_Template {
+
+    /**
+     * Gets CSS- and Javascript-files from the Elefunds Facade and adds them to the head block
+     */
     protected function _prepareLayout() {
         $helper = Mage::helper('elefunds');
         $headBlock = $this->getLayout()->getBlock('head');
@@ -24,16 +32,13 @@ class  Knm_Elefunds_Block_Page_Head extends Mage_Core_Block_Template {
         }
         
         array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
+
         foreach ($scriptFiles as $jsFile) {
-            //$headBlock->addJs('knm_elefunds'.DS.basename($jsFile));
             $headBlock->addItem('skin_js', 'js'.DS.'knm_elefunds'.DS.basename($jsFile));
         }
         foreach ($cssFiles as $cssFile) {
             $headBlock->addCss('css'.DS.'knm_elefunds'.DS.basename($cssFile));
         }
-
-        Mage::log($scriptFiles, null, '2016.log'); 
-        Mage::log($cssFiles, null, '2016.log'); 
         
         parent::_prepareLayout();        
     }

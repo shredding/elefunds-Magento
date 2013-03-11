@@ -23,8 +23,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
         $facadePath = Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Facade.php';
         require_once $facadePath;
 
-        //Change by only asking the type? 
-        $configPath=Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Template';
+        $configPath = Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Template';
         $configPath.=DS.'Shop'.DS.$configurationType.'Configuration.php';
         $className = 'Library_Elefunds_Template_Shop_'.$configurationType.'Configuration';
 
@@ -71,8 +70,8 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
     
     public function setupConfigCheckout($configuration) {
         //TODO: Validation of all the values comming from backend
-        $basePath='elefunds/config';
-        $clientId=Mage::getStoreConfig($basePath.'/client_id');
+        $basePath = 'elefunds/config';
+        $clientId = Mage::getStoreConfig($basePath.'/client_id');
         $apiKey=Mage::getStoreConfig($basePath.'/api_key');
         $countryCode = Mage::app()->getLocale()->getLocaleCode();
         $countryCode = substr($countryCode, 0, 2);
@@ -102,7 +101,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
                     $receivers = array ($receivers);
                 }
                 foreach ($receivers as $receiver) {
-                    $receiverItem=Mage::getModel('elefunds/receivers')->load($receiver->getId(), 'receiver_id');
+                    $receiverItem = Mage::getModel('elefunds/receivers')->load($receiver->getId(), 'receiver_id');
                     $receiverItem->setReceiverId($receiver->getId())
                                 ->setName($receiver->getName())
                                 ->setCountry($facade->getConfiguration()->getCountrycode())
@@ -166,6 +165,5 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
         return $sku;
     }
 }
-
 
 ?>
