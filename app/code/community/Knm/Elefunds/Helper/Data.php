@@ -80,19 +80,13 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
         $basePath='elefunds/config';
         $clientId=Mage::getStoreConfig($basePath.'/client_id');
         $apiKey=Mage::getStoreConfig($basePath.'/api_key');
-        //$countryCode = Mage::getStoreConfig('general/country/default');
         $countryCode = Mage::app()->getLocale()->getLocaleCode();
         $countryCode = substr($countryCode, 0, 2);
 
         if ($apiKey && $clientId) {
             $configuration->setClientId($clientId)
                             ->setApiKey($apiKey)
-                    /*
-                     * 2013-01-29  Raul Armando Salamanca Gonzalez  <raul.salamanca@gmx.de>
-                     * vorübergehend ab heute ist nur Deutsch unterstützt. 
-                     */
-                            //->setCountrycode($countryCode);
-                            ->setCountrycode('de');
+                            ->setCountrycode($countryCode);
         }
     }
     
