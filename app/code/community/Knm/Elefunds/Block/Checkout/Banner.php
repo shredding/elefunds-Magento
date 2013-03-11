@@ -30,8 +30,10 @@ class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template
                 $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
                 
                 $receivers=$helper->getReceivers();
+
                 if (!$receivers) {
-                    return; //TODO: Log?, Throw Exception?
+                    Mage::log('Elefunds error - Can not get receivers', null, '2016.log');
+                    return '';
                 }
 
                 $facade->getConfiguration()
