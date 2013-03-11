@@ -32,8 +32,7 @@ class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template
                 $receivers=$helper->getReceivers();
 
                 if (!$receivers) {
-                    throw new Exception("Elefunds error - Can not get receivers TEST");
-                    return '';
+                    throw new Exception("Elefunds error - Can not get receivers");
                 }
 
                 $facade->getConfiguration()
