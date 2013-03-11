@@ -1,4 +1,6 @@
 <?xml version="1.0" ?>
+
+<!-- Tells Magento what Code we want to run (routing, structure, events) -->
 <config>
     <modules>
         <Knm_Elefunds>
@@ -112,6 +114,8 @@
     </adminhtml>
 
 	<frontend>
+        <!-- any url with the frontName elefunds should use the controller Knm_Elefunds
+             ( ../controllers/IndexController.php ) -->
 		<routers>
 			<elefunds>
 				<use>standard</use>
@@ -190,14 +194,11 @@
                     </noRules>
                 </observers>
             </sales_quote_item_set_product>
-<!--
-            <sales_order_save_commit_after>
-            
-            
-            </sales_order_save_commit_after>
--->
         </events>
-		<translate></translate>
+		<!--
+		    Include our layout-xml-file
+		    (design/frontend/default/layout/knm_elefunds.xml)
+		-->
 		<layout>
 			<updates>
 				<elefunds>

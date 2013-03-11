@@ -1,42 +1,49 @@
 <?
-/*
- * Socialmedia.php
- * 
- * Copyright 2013 Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+/**
+ * SocialMmdia
+ *
+ * Resposible for preparing Data for showing the Social-Media Area
+ *
+ * @package    elefunds Magento Module
+ * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+ * @copyright  2012 elefunds GmbH <hello@elefunds.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.elefunds.de
  */
 
-class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template 
-{
+class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template {
     protected $_order;
-    
-    
-    protected function _prepareLayout()
-    {
+
+    protected function _prepareLayout() {
         $headBlock = $this->getLayout()->createBlock('elefunds/page_head', 'elefunds.head');
         $this->getLayout()->getBlock('head')->setChild('elefunds.head', $headBlock);
 
         parent::_prepareLayout();
     }
     
-    public function existDonation()
-    {
-        $helper = Mage::helper('elefunds');  //TODO: Refactor this into class variable to avoid multiple loading.
-        $virtualProduct = $helper->getVirtualProduct();
-        if (!$virtualProduct) {
-            //throw exception??
+    public function existDonation() {
+        try {
+            $helper = Mage::helper('elefunds');  //TODO: Refactor this into class variable to avoid multiple loading.
+            $virtualProduct = $helper->getVirtualProduct();
+
+            if (!$virtualProduct) {
+                throw new Exception("Elefunds error - Can not get virtual product");
+            }
+
+            $order = $this->getOrder();
+
+            if ($order && $order->getItemsCollection()->getItemByColumnValue('product_id', $virtualProduct->getId())) {
+                return true;
+            }
+            return false;
+        } catch (Exception $e) {
+            Mage::log($e->getMessage(), null, '2016.log');
             return false;
         }
-        
-        $order = $this->getOrder();
-        if($order && $order->getItemsCollection()->getItemByColumnValue('product_id', $virtualProduct->getId())) {
-                return true;
-        }
-        return false;
     }
     
     
-    public function getOrder()
-    {
+    public function getOrder() {
         if (!$this->_order) {
             $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
             if ($orderId) {
@@ -49,8 +56,7 @@ class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
         return $this->_order;
     }
     
-    public function renderSocialMedia()
-    {
+    public function renderSocialMedia() {
         $helper = Mage::helper('elefunds');
         $order = $this->getOrder();
         
@@ -78,7 +84,7 @@ class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
             $html = $facade->renderTemplate('CheckoutSuccess');
             
         } catch (Exception $e) {
-            Mage::log('Elefunds: Success template couldnt be rendered.!!', null, '2016.log'); 
+            Mage::log('Elefunds: Success template could not be rendered.!!', null, '2016.log');
             return '';
         }
         return $html;

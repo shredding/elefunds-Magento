@@ -1,11 +1,8 @@
 <?xml version="1.0"?>
 <!--
-   knm_elefunds.xml
-   
-   Copyright 2013 Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
--->
+    Defines when to call specific Blocks (from Block/..)
+ -->
 <layout version="0.1.0">
-    
     <checkout_onepage_index>
         <reference name="head">
             <!--TODO: Delaying load of libraries till end moment? In case of Payment Method dependance? -->
@@ -15,7 +12,7 @@
     </checkout_onepage_index>
     
     <checkout_onepage_review>
-        <reference  name="checkout.onepage.review.info.items.after">
+        <reference name="checkout.onepage.review.info.items.after">
             <block type="elefunds/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" template="knm/elefunds/checkout/onepage/review/donation_banner.phtml" />
         </reference>
     </checkout_onepage_review>
@@ -27,7 +24,7 @@
         </reference>
     </checkout_onepage_success> 
     
-<!-- Elefunds billing changes -->
+    <!-- Elefunds billing changes -->
     <sales_email_order_items>
         <reference name="additional.product.info">
             <block type="elefunds/sales_order_email" name="donation.description" template="knm/elefunds/mail/description.phtml"/>
@@ -51,5 +48,4 @@
             <block type="core/template" name="donation.description" template="knm/elefunds/mail/description.phtml"/>
         </reference>    
     </sales_email_order_creditmemo_items>
-    
 </layout>

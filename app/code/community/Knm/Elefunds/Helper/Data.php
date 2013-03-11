@@ -7,22 +7,19 @@
  */
 
  
-class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
-{
+class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $_virtualProduct;
 
     /* Gets the configurated Elefunds Facade Object to use on other positions
      * of Magento. 
      * 
-     * name: getElefundsFacade
-     * @param   
+     * @param
      * @trows       Library_Elefunds_Exception_ElefundsCommunicationException
      * @return      Library_Elefunds_Facade
      * @author Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
      * 
      */
-    public function getElefundsFacade($configurationType = 'Checkout', $withReceivers = true)
-    {
+    public function getElefundsFacade($configurationType = 'Checkout', $withReceivers = true) {
         $facadePath = Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Facade.php';
         require_once $facadePath;
 
@@ -30,13 +27,11 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
         $configPath=Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Template';
         $configPath.=DS.'Shop'.DS.$configurationType.'Configuration.php';
         $className = 'Library_Elefunds_Template_Shop_'.$configurationType.'Configuration';
-        
-        
+
         switch ($configurationType) {
             case 'Checkout':
             case 'CheckoutSuccess':
-                    if (!file_exists($configPath))
-                    {
+                    if (!file_exists($configPath)) {
                         return null; //TODO: throw exception? no valid Configuration File.
                     }
                     include_once $configPath;
@@ -74,8 +69,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
         return $facade;
     }
     
-    public function setupConfigCheckout($configuration)
-    {
+    public function setupConfigCheckout($configuration) {
         //TODO: Validation of all the values comming from backend
         $basePath='elefunds/config';
         $clientId=Mage::getStoreConfig($basePath.'/client_id');
@@ -90,14 +84,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
     
-    public function setupConfigCheckoutSuccess($configuration)
-    {
-        
-    }
-    
-    
-    public function getReceivers() 
-    {
+    public function getReceivers() {
         $time = new DateTime(); //date("Y-m-d H:i:s");
         
         $receiversLocal = Mage::getModel('elefunds/receivers')->getCollection();
@@ -151,8 +138,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
         return $receivers;
     }
     
-    public function getVirtualProduct()
-    {
+    public function getVirtualProduct() {
         $sku = $this->getVirtualProductSku();
         
         //Load product should be done this way, so stock info is loaded
@@ -170,7 +156,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->_virtualProduct;
     }
     
-    public function getVirtualProductSku(){
+    public function getVirtualProductSku() {
         $key = 'elefunds/config/product';
         
         if (!($sku = Mage::getStoreConfig($key))) {

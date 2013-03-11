@@ -1,9 +1,7 @@
 <?php
 
-class Knm_Elefunds_Block_Adminhtml_Logs_Grid extends Mage_Adminhtml_Block_Widget_Grid
-{
-    public function __construct()
-    {
+class Knm_Elefunds_Block_Adminhtml_Logs_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+    public function __construct() {
         parent::__construct();
         $this->setId('ElefundsLogsGrid');
         $this->setDefaultSort('position');
@@ -11,15 +9,13 @@ class Knm_Elefunds_Block_Adminhtml_Logs_Grid extends Mage_Adminhtml_Block_Widget
         $this->setSaveParametersInSession(true);
     }
 
-    protected function _prepareCollection()
-    {
+    protected function _prepareCollection() {
         $collection = Mage::getModel('elefunds/elefunds')->getCollection();
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
 
-    protected function _prepareColumns()
-    {
+    protected function _prepareColumns() {
         $this->addColumn('id', array(
             'header'    => Mage::helper('elefunds')->__('ID'),
             'align'     => 'center',

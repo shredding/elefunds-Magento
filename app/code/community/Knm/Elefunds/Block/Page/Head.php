@@ -6,10 +6,8 @@
  */
  
 
-class  Knm_Elefunds_Block_Page_Head extends Mage_Core_Block_Template
-{
-    protected function _prepareLayout()
-    {
+class  Knm_Elefunds_Block_Page_Head extends Mage_Core_Block_Template {
+    protected function _prepareLayout() {
         $helper = Mage::helper('elefunds');
         $headBlock = $this->getLayout()->getBlock('head');
         try {

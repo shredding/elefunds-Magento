@@ -1,9 +1,7 @@
 <?php
 
-class Knm_Elefunds_Block_Adminhtml_Logs extends Mage_Adminhtml_Block_Widget_Grid_Container
-{
-    public function __construct()
-    {
+class Knm_Elefunds_Block_Adminhtml_Logs extends Mage_Adminhtml_Block_Widget_Grid_Container {
+    public function __construct() {
         parent::__construct();
         $this->_blockGroup = 'elefunds';
         $this->_controller = 'adminhtml_logs';
