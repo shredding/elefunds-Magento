@@ -32,7 +32,7 @@ class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template
                 $receivers=$helper->getReceivers();
 
                 if (!$receivers) {
-                    Mage::log('Elefunds error - Can not get receivers', null, '2016.log');
+                    throw new Exception("Elefunds error - Can not get receivers TEST");
                     return '';
                 }
 
@@ -45,6 +45,8 @@ class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template
 
                 $template = $facade->renderTemplate();
             } catch (Exception $e) {
+                Mage::log($e->getMessage(), null, '2016.log');
+
                 Mage::log('Elefunds error - getting Facade object from helper', null, '2016.log');
                 Mage::log('Elefunds error - couldnt get template', null, '2016.log');
                 return '';
