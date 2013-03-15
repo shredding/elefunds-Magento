@@ -6,4 +6,8 @@ class Knm_Elefunds_Model_Mysql4_Donation_Collection extends Mage_Core_Model_Mysq
     {
         $this->_init('elefunds/donation'); 
     }
+
+    public function findSyncables() {
+
+    }
 }

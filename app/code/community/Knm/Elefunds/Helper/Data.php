@@ -136,7 +136,10 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
         }
         return $receivers;
     }
-    
+
+    /**
+     * @return Mage_Core_Model_Abstract|null
+     */
     public function getVirtualProduct() {
         $sku = $this->getVirtualProductSku();
         
