@@ -153,15 +153,6 @@
                     </captureDonation>
                 </observers>
             </checkout_type_onepage_save_order_after>
-            <checkout_onepage_controller_success_action>
-                <observers>
-                    <sendDonation>
-                        <type>model</type>
-                        <class>elefunds/observer</class>
-                        <method>sendDonation</method>
-                    </sendDonation>
-                </observers>
-            </checkout_onepage_controller_success_action>
             <!-- 
                 Implemented basic functionality, in case of payment methods not using
                 the standard methods of magento, this observer should hook to a more general 

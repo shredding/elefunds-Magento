@@ -8,6 +8,7 @@
 
  
 class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
+
     protected $_virtualProduct;
 
     /* Gets the configurated Elefunds Facade Object to use on other positions
@@ -19,7 +20,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
      * @author Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
      * 
      */
-    public function getElefundsFacade($configurationType = 'Checkout', $withReceivers = true) {
+    public function getConfiguredFacade($configurationType = 'Checkout', $withReceivers = true) {
         $facadePath = Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Facade.php';
         require_once $facadePath;
 

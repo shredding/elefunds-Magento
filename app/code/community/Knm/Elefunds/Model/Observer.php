@@ -55,12 +55,17 @@ class Knm_Elefunds_Model_Observer
      */
     protected $helper;
 
+    protected $syncManager;
+
     public function __construct() {
         $this->helper = Mage::helper('elefunds');
+        $this->syncManager = new Knm_Elefunds_Manager_SyncManager($this->helper->getConfiguredFacade());
     }
 
     /**
      * Dispatched when the order is saved.
+     *
+     * Manipulates the quote with an elefunds virtual product.
      *
      * @param Varien_Event_Observer $observer
      * @return void
@@ -88,7 +93,6 @@ class Knm_Elefunds_Model_Observer
             return;
         }
 
-
         /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
         $elefundsProduct = $this->helper->getVirtualProduct();
 
@@ -102,8 +106,6 @@ class Knm_Elefunds_Model_Observer
         }
 
         $elefundsProduct->setPrice($donationAmountCents/100);
-
-        /** @todo check if this is needed or even exists! */
         $elefundsProduct->setBasePrice($donationAmountCents/100);
         $quote->addProduct($elefundsProduct);
     }
@@ -117,10 +119,6 @@ class Knm_Elefunds_Model_Observer
     public function onOrderFinished(Varien_Event_Observer $observer)
     {
         $request = Mage::app()->getRequest();
-
-
-        /** @todo What is the event that is fired here=? */
-
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
 
@@ -134,152 +132,78 @@ class Knm_Elefunds_Model_Observer
             return;
         }
 
+        /** @var Knm_Elefunds_Model_Mysql4_Donation_Collection $donationCollection  */
+        $donationCollection = Mage::getModel('elefunds/donation')->getCollection();
 
-        $storeId = Mage::app()->getStore()->getId();
-        $captureItem = Mage::getModel('elefunds/donation');
-        $captureItem->loadByAttribute('order_id', $id);
-        if (!$captureItem->getId()) {
-            $captureItem = Mage::getModel('elefunds/donation');
-        }
-        $captureItem->setOrderId($id) //For update.
-                    ->setStoreId($storeId)
-                    ->setAmount($request->getParam('elefunds_donation_cent', 0)/100)
-                    ->setSuggestedAmount($request->getParam('elefunds_suggested_round_up_cent', 0)/100)
-                    ->setStatus(Knm_Elefunds_Model_Donation::STATE_NEW)
-                    ->setReceivers(serialize($request->getParam('elefunds_receiver', array())))
-                    ->setCreatedAt(date("Y-m-d H:i:s"))
-                    ->setUpdatedAt(date("Y-m-d H:i:s"));
-        $receipt=$request->getParam('elefunds_receipt_input');
-        if (!empty($receipt)) {
-            $captureItem->setReceipt(true);
-        }
-        
-        try {            
-            $captureItem->save(); //TODO: Try catch and management. 
-        } catch (Exception $e) {
-            Mage::log("ELEFUNDS: The data related to donation on order {$id} could not be saved", null, '2016.log');
-        }
-    }
-    
-    public function sendDonation($observer)
-    {
-        $helper=Mage::helper('elefunds');
-        //NOTE:Depending on the Event the Order should be adquired.!
-        $orderId = $observer->getEvent()->getOrderIds();
-        if (is_array($orderId) && !empty($orderId)) {
-        	$orderId=$orderId[0];
-        }
-        $order=Mage::getModel('sales/order')->load($orderId);
-        //End Note.
-        $donationItem = Mage::getModel('elefunds/donation');
-        $donationItem->loadByAttribute('order_id', $orderId);
-        $logItem = Mage::getModel('elefunds/logs');
-        
-        if (!$donationItem->getId()) {
-            //Donation data was not saved? TODO: log? ... return.
-            return;
-        }
-        $donationStatus=$donationItem->getStatus();
-        $oldUpdatedAt=$donationItem->getUpdatedAt();
-        
-        try {
-            $time = new DateTime(); //date("Y-m-d H:i:s");
-            $facade = $helper->getElefundsFacade();
+        $params = $request->getParams();
 
-        	$receiversArray = unserialize($donationItem->getReceivers());
-        	$receiversArray =  array_map(function($x) { return (int)$x;}, $receiversArray); //TODO: Sdk more flexible
-            $donation = $facade->createDonation()
-                        ->setForeignId($order->getIncrementId())
-                        ->setAmount((int)($donationItem->getAmount()*100))
-                        ->setSuggestedAmount((int)($donationItem->getSuggestedAmount()*100))
-                        ->setGrandTotal((int)($order->getGrandTotal()*100))
-                        ->setReceiverIds($receiversArray)
-                        ->setTime($time);
-            if ($donationItem->getReceipt()) 
-            {
-                $billingAddress = $order->getBillingAddress();
-                $firstname = $billingAddress->getFirstname()? $billingAddress->getFirstname() : '';
-                $lastname = $billingAddress->getLastname()? $billingAddress->getLastname() : $order->getCustomerName();
-                $email = $billingAddress->getEmail();
-                $streetAddressSource = $billingAddress->getStreet();
-                $streetAddress = is_array($streetAddressSource) ? implode("\n",$streetAddressSource) : $streetAddressSource ;
-                $zip = (int)$billingAddress->getPostcode();
-                $city = $billingAddress->getCity();
-                $countryCode = $billingAddress->getCountryId();
+        if (isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
+            /** +++ Input Validation +++ */
 
-                $donation->setDonator($email, $firstname, $lastname, $streetAddress, $zip, $city, $countryCode);
+            $roundup  = (int)$params['elefunds_donation_cent'];
+
+            // We have to cast the amount to string and then to int, as the session does not care about
+            // floating point precision.
+            $grandTotal = (int)$grandTotal = $order->getTotalDue() * 100;
+
+            $receiverIds = array_map(function($x) { return (int)$x; }, $params['elefunds_receiver']);
+
+            if (isset($params['elefunds_suggested_round_up_cent']) && ctype_digit($params['elefunds_suggested_round_up_cent'])) {
+                $suggestedRoundUp = (int)$params['elefunds_suggested_round_up_cent'];
+            } else {
+                $suggestedRoundUp = 0;
             }
-            //Available receivers will not be sent for the time being in
-            //accordance with chat of today 29.01.2013 with christian.
-            
-            $response = $facade->addDonations(array($donation));
-            
-            $donationAsArray = $donation->toArray();
-                       
-            $logItem->setRequest(serialize($donationAsArray))
-                    ->setResponse($response)
-                    ->setCreatedAt($time->format("Y-m-d H:i:s"));
-            $logItem->save();
-            
-            $donationItem->setStatus(Knm_Elefunds_Model_Donation::STATUS_SENT);
-            $donationItem->setUpdatedAt($time->format("Y-m-d H:i:s"));
-            $donationItem->save();
-        } catch (Exception $e) {
-            $donationItem->setStatus($donationStatus);
-            $donationItem->setUpdatedAt($oldUpdatedAt);
-            $donationItem->save(); //TODO: Better to handle things here with transactions
-            Mage::log ("Error sending the donation from order {$orderId}", null, '2016.log');
+
+            $billingAddress = $order->getBillingAddress();
+
+            if (isset($params['elefunds_receipt_input'])) {
+                $user = array(
+                    'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
+                    'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
+                    'email'          =>  $billingAddress->getEmail(),
+                    'streetAddress'  =>  $billingAddress->getStreet(),
+                    'zip'            =>  (int)$billingAddress->getPostcode(),
+                    'city'           =>   $billingAddress->getCity()
+                );
+            } else {
+                $user = array();
+            }
+            /** ^^^ Input Validation ^^^ */
+            $donationCollection->addDonation(
+                $order->getIncrementId(),
+                $roundup,
+                $grandTotal,
+                $receiverIds,
+                $availableReceiverIds, // @todo retrieve from database
+                $user,
+                $billingAddress->getCountryId()
+            );
+
+            $this->syncManager->syncDonations();
+
         }
     }
     
     public function captureCancelDonation($observer)
     {
         $order = $observer->getEvent()->getOrder();
-        
-        if(!$order->getId()) {
-            return; //Needed?
+
+        /** @var Knm_Elefunds_Model_Donation $donation  */
+        $donation = Mage::getModel('elefunds/donation');
+        $donation->loadByAttribute('order_id', $order->getId());
+
+        if ($donation !== NULL) {
+            $donation->setState(Knm_Elefunds_Model_Donation::SCHEDULED_FOR_CANCELLATION);
+            $this->syncManager->syncDonations();
         }
-        $donationItem = Mage::getModel('elefunds/donation');
-        $donationItem->loadByAttribute('order_id', $order->getId());
         
-        if (!$donationItem->getId()) {
-            return;
-        }
-        
-        $donationItem->setStatus(Knm_Elefunds_Model_Donation::STATUS_CANCELLED_CAPTURE);
-        $order->addRelatedObject($donationItem);
+/** @todo What's going on here?
+        $order->addRelatedObject($donation);
         Mage::register('donation_item', $donationItem);
         $order->getResource()->addCommitCallback(array($this , 'sendCancelDonation'));
+ */
     }
-    
-    public function sendCancelDonation()
-    {
-        $helper = Mage::helper('elefunds');
-        $facade = $helper->getElefundsFacade();
-        //Get cached receivers and add them to the facade? need?
-        
-        $toSendDonations = Mage::getModel('elefunds/donation')->getCollection()
-                        ->addFieldToFilter('status', Knm_Elefunds_Model_Donation::STATUS_CANCELLED_CAPTURE);
-                        
-        foreach($toSendDonations as $toSendDonation) {
-            $orderId = $toSendDonation->getOrderId();
-            $incrementId = Mage::getModel('sales/order')->load($orderId)->getIncrementId();
-            $response=$facade->deleteDonation(intval($incrementId));//?I should give the donation id? whats that? The foreigId?
-            //TODO: Factor out to function login. 
-            $time = new DateTime();
-            $logItem = Mage::getModel('elefunds/logs');
-            $logItem->setRequest($incrementId)
-                    ->setResponse($response)
-                    ->setCreatedAt($time->format("Y-m-d H:i:s"));
-            $logItem->save();
-            $toSendDonation->setStatus(Knm_Elefunds_Model_Donation::STATUS_CANCELLED_SENT);
-            $toSendDonation->setUpdatedAt($time->format("Y-m-d H:i:s"));
-            $toSendDonation->save();
-        }
-        //Write the cancellation on the log. !!
-    }
-    
-    
+
     /*
      * name: limitPayments
      * 
