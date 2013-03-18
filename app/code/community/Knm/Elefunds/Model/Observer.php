@@ -1,7 +1,7 @@
 <?php
 
 /**
- * elefunds Shopware Module
+ * elefunds Magento Module
  *
  * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
  * All rights reserved.
@@ -174,7 +174,7 @@ class Knm_Elefunds_Model_Observer
                 $roundup,
                 $grandTotal,
                 $receiverIds,
-                $availableReceiverIds, // @todo retrieve from database
+                $this->helper->getAvailableReceiverIds(),
                 $user,
                 $billingAddress->getCountryId()
             );
@@ -194,43 +194,34 @@ class Knm_Elefunds_Model_Observer
 
         if ($donation !== NULL) {
             $donation->setState(Knm_Elefunds_Model_Donation::SCHEDULED_FOR_CANCELLATION);
+            $donation->save();
             $this->syncManager->syncDonations();
         }
         
-/** @todo What's going on here?
         $order->addRelatedObject($donation);
-        Mage::register('donation_item', $donationItem);
+        Mage::register('donation', $donation);
         $order->getResource()->addCommitCallback(array($this , 'sendCancelDonation'));
- */
     }
 
-    /*
-     * name: limitPayments
-     * 
-     * Based on backend settings (payment methods), limits the display of elefunds banner in checkout review
-     * 
-     * @param      Varien_Event_Observer $observer
-     * @author Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return void
      */
-     public function limitPayments($observer) {
-         //Knm_Elefunds_Block_Checkout_Banner
-         $block = $observer->getEvent()->getObject();
-         $mcode = Mage::getSingleton('checkout/session')->getQuote()->getPayment()->getMethodInstance()->getCode();
-         
-         $path='elefunds/config/authorized_payment_methods';
-         $storeId =Mage::app()->getStore()->getId();
-         $authorizedMethods=Mage::getStoreConfig($path, $storeId);
-        if (empty($authorizedMethods)) {
-            $authorizedMethods=array();
-        } else {
-            $authorizedMethods=explode(',',$authorizedMethods);
-        }
+    public function limitPayments(Varien_Event_Observer $observer) {
+        /**  @var Knm_Elefunds_Block_Checkout_Banner $block */
+        $block = $observer->getEvent()->getObject();
+        $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
+                                                             ->getPayment()
+                                                             ->getMethodInstance()
+                                                             ->getCode();
 
-         
-         if (!in_array($mcode, $authorizedMethods))
-         {
-             $block->canShowBanner(false);
-         }
+        $path = 'elefunds/config/authorized_payment_methods';
+        $storeId = Mage::app()->getStore()->getId();
+
+        $authorizedMethodsAsString = Mage::getStoreConfig($path, $storeId);
+        $authorizedMethods = !empty($authorizedMethods) ? explode(',', $authorizedMethodsAsString) : array();
+
+        $block->canShowBanner(in_array($paymentCode, $authorizedMethods));
     }
     
     

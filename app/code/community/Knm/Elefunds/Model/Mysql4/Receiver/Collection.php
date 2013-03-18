@@ -1,7 +1,7 @@
 <?php
 
 /**
- * elefunds Magento Module
+ * elefunds Shopware Module
  *
  * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
  * All rights reserved.
@@ -40,44 +40,62 @@
  * General helper function to access and configure the SDK in magento
  *
  * @package    elefunds Magento Module
- * @subpackage Block
+ * @subpackage Model
  * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>, Christian Peters <christian@elefunds.de>
  * @copyright  2012 elefunds GmbH <hello@elefunds.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class  Knm_Elefunds_Block_Page_Head extends Mage_Core_Block_Template {
+class Knm_Elefunds_Model_Mysql4_Receivers_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+{
+    public function _construct()
+    {
+        $this->_init('elefunds/receiver');
+    }
 
     /**
-     * @todo analyze this
-     * Gets CSS- and Javascript-files from the Elefunds Facade and adds them to the head block
+     * Removes receivers by given language.
+     *
+     * @param string $code
+     * @return $this
      */
-    protected function _prepareLayout() {
-        $helper = Mage::helper('elefunds');
-        $headBlock = $this->getLayout()->getBlock('head');
-        try {
-            $facade = $helper->getElefundsFacade();
-            $scriptFiles = $facade->getTemplateJavascriptFiles();
-            $cssFiles = $facade->getTemplateCssFiles();
-        } catch (Exception $e) {
-            Mage::log('Elefunds error - getting Facade object from helper', null, '2016.log');
-            Mage::log('Elefunds error - getting JS or CSS', null, '2016.log');
-            Mage::log($e->getMessage(), null, '2016.log');
-            //TODO: On the final version of the Module, just return on Exception
-            parent::_prepareLayout();  
-            return;
-        }
-        
-        array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
+    public function removeByLanguage($code) {
+        $select = $this->getSelect()
+                       ->where('countrycode = :code');
 
-        foreach ($scriptFiles as $jsFile) {
-            $headBlock->addItem('skin_js', 'js'.DS.'knm_elefunds'.DS.basename($jsFile));
+        $receivers = $this->_fetchAll($select, array($code));
+
+        /** @var Knm_Elefunds_Model_Receiver $receiver */
+        foreach ($receivers as $receiver) {
+            $receiver->delete();
         }
-        foreach ($cssFiles as $cssFile) {
-            $headBlock->addCss('css'.DS.'knm_elefunds'.DS.basename($cssFile));
+
+        return $this;
+    }
+
+    /**
+     * Maps an array of receivers (as returned from the SDK) to a doctrine model.
+     *
+     * @param array $receivers that are implementing Library_Elefunds_Model_ReceiverInterface
+     * @param string $languageCode
+     *
+     * @return $this
+     */
+    public function mapArrayOfSDKReceiversToEntitiesAndSave(array $receivers, $languageCode) {
+
+        /** @var \Library_Elefunds_Model_ReceiverInterface $receiver */
+        foreach ($receivers as $receiver) {
+            $entity = new Knm_Elefunds_Model_Receiver();
+            $entity->setId($receiver->getId())
+                   ->setName($receiver->getName())
+                   ->setImage($receiver->getImage('horizontal', 'medium'))
+                   ->setValid($receiver->getValidTime())
+                   ->setDescription($receiver->getDescription())
+                   ->setCountrycode($languageCode)
+
+                   ->save();
         }
-        
-        parent::_prepareLayout();        
+        return $this;
     }
 }

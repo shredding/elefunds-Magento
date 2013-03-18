@@ -84,7 +84,7 @@ class Knm_Elefunds_Manager_SyncManager
     public function syncReceivers() {
 
         /** @var Knm_Elefunds_Model_Mysql4_Receivers_Collection $receiverCollection  */
-        $receiverCollection = Mage::getModel('elefunds/receivers')->getCollection();
+        $receiverCollection = Mage::getModel('elefunds/receiver')->getCollection();
 
         // We want this to be available from anywhere, so we do not set state!
         $originalCountryCode = $this->facade->getConfiguration()->getCountrycode();

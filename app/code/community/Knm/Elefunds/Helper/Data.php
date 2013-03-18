@@ -1,173 +1,172 @@
-
 <?php
-/*
- * Data.php
- * 
- * Copyright 2013 Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+
+/**
+ * elefunds Magento Module
+ *
+ * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *   * Neither the name of the elefunds GmbH nor the names of its
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
- 
+/**
+ * General helper function to access and configure the SDK in magento
+ *
+ * @package    elefunds Magento Module
+ * @subpackage Helper
+ * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>, Christian Peters <christian@elefunds.de>
+ * @copyright  2012 elefunds GmbH <hello@elefunds.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.elefunds.de
+ * @since      File available since Release 1.0.0
+ */
 class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
 
-    protected $_virtualProduct;
+    protected $virtualProduct;
 
-    /* Gets the configurated Elefunds Facade Object to use on other positions
-     * of Magento. 
-     * 
-     * @param
-     * @trows       Library_Elefunds_Exception_ElefundsCommunicationException
-     * @return      Library_Elefunds_Facade
-     * @author Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
-     * 
+    /**
+     * @var Library_Elefunds_Facade
      */
-    public function getConfiguredFacade($configurationType = 'Checkout', $withReceivers = true) {
-        $facadePath = Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Facade.php';
-        require_once $facadePath;
+    protected $facade;
 
-        $configPath = Mage::getBaseDir('lib').DS.'Elefunds'.DS.'Template';
-        $configPath.=DS.'Shop'.DS.$configurationType.'Configuration.php';
-        $className = 'Library_Elefunds_Template_Shop_'.$configurationType.'Configuration';
+    /**
+     * @var array
+     */
+    protected $receivers;
 
-        switch ($configurationType) {
-            case 'Checkout':
-            case 'CheckoutSuccess':
-                    if (!file_exists($configPath)) {
-                        return null; //TODO: throw exception? no valid Configuration File.
-                    }
-                    include_once $configPath;
-                    $configuration = new $className();
-                    //$setupFunction = 'setupConfig'.$configurationType;
-                    //$this->$setupFunction($configuration);
-                    $this->setupConfigCheckout($configuration);
-                    break;
-            default:
-                return null; //Needed? Throw exception? 
-        }
+    /**
+     * Configures the facade based on the plugin settings and the current locale.
+     *
+     * @param bool $checkoutSuccess
+     * @return Library_Elefunds_Facade
+     */
+    protected  function getConfiguredFacade($checkoutSuccess = FALSE) {
 
-        $facade = new Library_Elefunds_Facade($configuration);
-        //TODO: Wait ultil shopname is added to $configuration into SDK, then 
-        // move the setup of the shopname into the function setupConfigCheckout
-        //$shopName=Mage::app()->getStore()->getName();
-        //NOTE: Responsabilities of Configuration, Facade and View objects on SDK
-        // should be improved and functionality isolated. so that this external 
-        // assignments are not needed here. 
-        
-        $shopName=Mage::getStoreConfig('general/store_information/name');
-        $donationEnabled = Mage::getStoreConfig('elefunds/config/donation_receipt');
-        $configuration->getView()->assign('shopName', $shopName);
-        $configuration->getView()->assign('offerDonationReceipt', isset($donationEnabled) ? $donationEnabled : FALSE);
-        
-        if ($withReceivers) {
-            $receivers = $this->getReceivers();  //This should be moved to the facade? 
-            $resp = array();
-            foreach ($receivers as $receiver) {
-                $resp[$receiver->getId()]=$receiver->getName();
-            }
-            $configuration->getView()->assign('receivers', $resp);
-        }
+        if ($this->facade === NULL) {
 
-        return $facade;
-    }
-    
-    public function setupConfigCheckout($configuration) {
-        //TODO: Validation of all the values comming from backend
-        $basePath = 'elefunds/config';
-        $clientId = Mage::getStoreConfig($basePath.'/client_id');
-        $apiKey=Mage::getStoreConfig($basePath.'/api_key');
-        $countryCode = Mage::app()->getLocale()->getLocaleCode();
-        $countryCode = substr($countryCode, 0, 2);
+            $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
 
-        if ($apiKey && $clientId) {
+            $configPath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Template'
+                        . DS . 'Shop' . DS . $configurationType . 'Configuration.php';
+            $facadePath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Facade.php';
+
+            $className = 'Library_Elefunds_Template_Shop_'.$configurationType.'Configuration';
+
+            require_once($facadePath);
+            require_once($configPath);
+
+            /** @var Library_Elefunds_Configuration_ConfigurationInterface $configuration  */
+            $configuration = new $className();
+
+            $magentoConfigBasePath = 'elefunds/config';
+            $clientId = Mage::getStoreConfig($magentoConfigBasePath . '/client_id');
+            $apiKey = Mage::getStoreConfig($magentoConfigBasePath . '/api_key');
+            $countryCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
+
             $configuration->setClientId($clientId)
-                            ->setApiKey($apiKey)
-                            ->setCountrycode($countryCode);
+                          ->setApiKey($apiKey)
+                          ->setCountrycode($countryCode);
+
+            $this->facade = new Library_Elefunds_Facade($configuration);
         }
+
+        return $this->facade;
     }
-    
+
+
+    /**
+     * Returns a valid set of
+     *
+     * @return array
+     */
     public function getReceivers() {
-        $time = new DateTime(); //date("Y-m-d H:i:s");
-        
-        $receiversLocal = Mage::getModel('elefunds/receivers')->getCollection();
-        $receiversLocal->addFieldToFilter(
-            'valid', array(
-                'from'=>$time->format("Y-m-d H:i:s")
-        ));
-        $size = $receiversLocal->getSize();
-        if ($size < 3) {
-            //Update or add new receivers by calling the api. 
-            try {
-                $facade = $this->getElefundsFacade('Checkout', false);
-                $receivers = $facade->getReceivers();
-                if (!$receivers || !is_array($receivers)) {
-                    $receivers = array ($receivers);
+
+        if ($this->receivers === NULL) {
+            $time = new DateTime();
+
+            /** @var Knm_Elefunds_Model_Mysql4_Receivers_Collection $receiversCollection  */
+            $receiversCollection = Mage::getModel('elefunds/receiver')->getCollection();
+            $receiversCollection->addFieldToFilter(
+                'valid', array(
+                           'from'  =>  $time->format("Y-m-d H:i:s")
+                 )
+            )
+            ->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
+
+            if ($$receiversCollection->getSize() < 3) {
+                $syncManager = new Knm_Elefunds_Manager_SyncManager($this->getConfiguredFacade());
+                $this->receivers = $syncManager->syncReceivers();
+
+                if (count($this->receivers) < 3) {
+                    // Okay, this line of code will hopefully never execute! We do ALWAYS provide three receivers.
+                    $this->receivers = array();
                 }
-                foreach ($receivers as $receiver) {
-                    $receiverItem = Mage::getModel('elefunds/receivers')->load($receiver->getId(), 'receiver_id');
-                    $receiverItem->setReceiverId($receiver->getId())
-                                ->setName($receiver->getName())
-                                ->setCountry($facade->getConfiguration()->getCountrycode())
-                                ->setDescription($receiver->getDescription())
-                                ->setImageUrl(serialize($receiver->getImages()))
-                                ->setValid($receiver->getValidTime()->format("Y-m-d H:i:s"));
-                    $receiverItem->save();
-                }
-            } catch (Exception $e) {
-                Mage::log("ELEFUNDS: Receivers couldnt be retrieved", null, '2016.log');
-                return array();
             }
         }
-        
-        $size = $receiversLocal->getSize();
-        if ($size < 3) {
-            Mage::log("ELEFUNDS: Receivers couldnt be retrieved", null, '2016.log');
-            return array();
-        }
-        $facade = $this->getElefundsFacade('Checkout', false);
-        $receivers = array();
-        foreach ($receiversLocal as $receiverLocal) {
-            $valid = DateTime::createFromFormat("Y-m-d H:i:s", $receiverLocal->getValid());
-            $receiver = $facade->createReceiver();
-            $imagesArray = unserialize($receiverLocal->getImageUrl());
-            $receivers[] = $receiver->setId((int)$receiverLocal->getReceiverId())
-                                    ->setName($receiverLocal->getName())
-                                    ->setDescription($receiverLocal->getDescription())
-                                    ->setImages($imagesArray)
-                                    ->setValidTime($valid);
-            
-        }
-        return $receivers;
+
+        return $this->receivers;
     }
 
     /**
-     * @return Mage_Core_Model_Abstract|null
+     * Returns the available receiver ids
+     *
+     * @return array
+     */
+    public function getAvailableReceiverIds() {
+        $ids = array();
+        /** @var Knm_Elefunds_Model_Mysql4_Receivers_Collection $receiversCollection  */
+        $receiversCollection = Mage::getModel('elefunds/receiver')->getCollection();
+        $receiversCollection->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
+
+        /** Knm_Elefunds_Model_Receiver $receiver */
+        foreach ($this->getAvailableReceiverIds() as $receiver) {
+            $ids[] = $receiver->getId();
+        }
+        return $ids;
+    }
+
+    /**
+     * Retrieves the virtual product.
+     *
+     * @return Mage_Core_Model_Abstract
      */
     public function getVirtualProduct() {
-        $sku = $this->getVirtualProductSku();
-        
-        //Load product should be done this way, so stock info is loaded
         $virtualProduct = Mage::getModel('catalog/product');
-        $id = $virtualProduct->getIdBySku($sku);
+        $id = $virtualProduct->getIdBySku(Knm_Elefunds_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU);
         if (!$id) {
-            $this->_virtualProduct = null;
-            return null;
+            $this->virtualProduct = NULL;
+        } else {
+            $this->virtualProduct = $virtualProduct->load($id);
         }
-        $this->_virtualProduct = $virtualProduct->load($id);
-        
-        if (!$this->_virtualProduct->getId()) {
-        }
-        
-        return $this->_virtualProduct;
-    }
-    
-    public function getVirtualProductSku() {
-        $key = 'elefunds/config/product';
-        
-        if (!($sku = Mage::getStoreConfig($key))) {
-            $sku = 'donation';
-        }
-        
-        return $sku;
-    }
-}
 
-?>
+        return $this->virtualProduct;
+    }
+
+}

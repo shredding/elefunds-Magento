@@ -54,15 +54,12 @@
  */
 $installer = $this;
 
-/**
- * @var string
- */
-$virtualProductSku = 'donation';
+define('ELEFUNDS_VIRTUAL_PRODUCT_SKU', 'elefunds-donation');
 
 /**
  * @var int
  */
-$donationProduct = Mage::getModel('catalog/product')->getIdBySku($virtualProductSku);
+$donationProduct = Mage::getModel('catalog/product')->getIdBySku(ELEFUNDS_VIRTUAL_PRODUCT_SKU);
 
 
 /**
@@ -75,7 +72,7 @@ if (!$donationProduct) {
 
     /** @var Mage_Catalog_Model_Product $donationProduct  */
     $donationProduct = Mage::getModel('catalog/product');
-    $donationProduct->setSku($virtualProductSku)
+    $donationProduct->setSku(ELEFUNDS_VIRTUAL_PRODUCT_SKU)
             ->setAttributeSetId(4)
             ->setTypeId(Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL)
             ->setName('elefunds Donation')
@@ -155,10 +152,10 @@ $installer->getConnection()->createTable($donationTable);
 
 
 /**
- * Creating Table elefunds/receivers
+ * Creating Table elefunds/receiver
  */
 $receiverTable = $installer->getConnection()
-    ->newTable($installer->getTable('elefunds/receivers'))
+    ->newTable($installer->getTable('elefunds/receiver'))
     ->addColumn('internal_identifier', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
         'unsigned' => false,
         'identity' => true,
