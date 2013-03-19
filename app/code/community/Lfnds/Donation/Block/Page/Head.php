@@ -49,35 +49,32 @@
  */
 class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
 
-    // @todo analyze
     /**
      * Gets CSS- and Javascript-files from the Elefunds Facade and adds them to the head block
      */
     protected function _prepareLayout() {
+
+        /** @var Lfnds_Donation_Helper_Data $helper */
         $helper = Mage::helper('elefunds');
         $headBlock = $this->getLayout()->getBlock('head');
+
         try {
             $facade = $helper->getConfiguredFacade();
             $scriptFiles = $facade->getTemplateJavascriptFiles();
             $cssFiles = $facade->getTemplateCssFiles();
-        } catch (Exception $e) {
-            Mage::log('Elefunds error - getting Facade object from helper', null, '2016.log');
-            Mage::log('Elefunds error - getting JS or CSS', null, '2016.log');
-            Mage::log($e->getMessage(), null, '2016.log');
-            //TODO: On the final version of the Module, just return on Exception
-            parent::_prepareLayout();  
-            return;
-        }
-        
-        array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
 
-        foreach ($scriptFiles as $jsFile) {
-            $headBlock->addItem('skin_js', 'js'.DS.'lfnds_donation'.DS.basename($jsFile));
+            array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
+
+            foreach ($scriptFiles as $jsFile) {
+                $headBlock->addItem('skin_js', 'js'.DS.'lfnds_donation'.DS.basename($jsFile));
+            }
+            foreach ($cssFiles as $cssFile) {
+                $headBlock->addCss('css'.DS.'lfnds_donation'.DS.basename($cssFile));
+            }
+
+        } catch (Exception $exception) {
+            Mage::logException($exception);
         }
-        foreach ($cssFiles as $cssFile) {
-            $headBlock->addCss('css'.DS.'lfnds_donation'.DS.basename($cssFile));
-        }
-        
         parent::_prepareLayout();        
     }
 }

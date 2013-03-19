@@ -15,6 +15,7 @@
  * @link       http://www.elefunds.de
  */
 class Lfnds_Donation_IndexController extends Mage_Core_Controller_Front_Action {
+
     /**
      * The default Action for any controller
      * Loads and renders the layout
