@@ -1,9 +1,4 @@
 <?xml version="1.0"?>
-<!--
-   system.xml
-   
-   Copyright 2013 Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
--->
 <config>
     <tabs>
         <elefunds translate="label" module="elefunds">
@@ -13,7 +8,7 @@
     </tabs>
     <sections>
         <elefunds translate="label" module="elefunds">
-            <label>Elefunds</label>
+            <label>Donation</label>
             <tab>elefunds</tab>
             <sort_order>100</sort_order>
             <show_in_default>1</show_in_default>

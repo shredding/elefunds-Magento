@@ -79,10 +79,29 @@
         <layout>
             <updates>
                 <elefunds>
-                    <file>lfnds_donation.xml</file>
+                    <file>lfnds_elefunds.xml</file>
                 </elefunds>
             </updates>
         </layout>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <elefunds>
+                                            <title>Elefunds</title>
+                                        </elefunds>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
     </adminhtml>
 
 	<frontend>
