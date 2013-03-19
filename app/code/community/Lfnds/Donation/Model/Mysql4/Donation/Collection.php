@@ -51,7 +51,7 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
 {
     public function _construct()
     {
-        $this->_init('elefunds/donation'); 
+        $this->_init('lfnds_donation_donation');
     }
 
     /**

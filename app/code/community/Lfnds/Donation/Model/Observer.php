@@ -136,7 +136,7 @@ class Lfnds_Donation_Model_Observer
         }
 
         /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
-        $donationCollection = Mage::getModel('elefunds/donation')->getCollection();
+        $donationCollection = Mage::getModel('lfnds_donation_donation')->getCollection();
 
         $params = $request->getParams();
 
@@ -200,7 +200,7 @@ class Lfnds_Donation_Model_Observer
         $order = $observer->getEvent()->getOrder();
 
         /** @var Lfnds_Donation_Model_Donation $donation  */
-        $donation = Mage::getModel('elefunds/donation');
+        $donation = Mage::getModel('lfnds_donation_donation');
         $donation->loadByAttribute('foreign_id', $order->getId());
 
         if ($donation !== NULL) {

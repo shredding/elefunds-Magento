@@ -98,11 +98,11 @@ if (!$donationProduct) {
 }
 
 /**
- * Creating table elefunds/donation
+ * Creating table lfnds_donation_donation
  */
-if (!$installer->tableExists('elefunds/donation')) {
+if (!$installer->tableExists('lfnds_donation_donation')) {
     $donationTable = $installer->getConnection()
-        ->newTable($installer->getTable('elefunds/donation'))
+        ->newTable($installer->getTable('lfnds_donation_donation'))
         ->addColumn('donation_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'unsigned' => true,
             'identity' => true,
@@ -153,11 +153,11 @@ if (!$installer->tableExists('elefunds/donation')) {
 }
 
 /**
- * Creating Table elefunds/receiver
+ * Creating Table lfnds_donation_receiver
  */
-if (!$installer->tableExists('elefunds/receiver')) {
+if (!$installer->tableExists('lfnds_donation_receiver')) {
     $receiverTable = $installer->getConnection()
-        ->newTable($installer->getTable('elefunds/receiver'))
+        ->newTable($installer->getTable('lfnds_donation_receiver'))
         ->addColumn('internal_identifier', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'unsigned' => false,
             'identity' => true,

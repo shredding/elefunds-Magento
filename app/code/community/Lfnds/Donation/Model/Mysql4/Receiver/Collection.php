@@ -47,11 +47,11 @@
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Lfnds_Donation_Model_Mysql4_Receivers_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class Lfnds_Donation_Model_Mysql4_Receiver_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
     public function _construct()
     {
-        $this->_init('elefunds/receiver');
+        $this->_init('lfnds_donation_receiver');
     }
 
     /**

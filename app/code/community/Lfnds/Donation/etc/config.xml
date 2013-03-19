@@ -16,10 +16,10 @@
                 <class>Lfnds_Donation_Model_Mysql4</class>
                 <entities>
                     <donation>
-                        <table>elefunds_donation</table>
+                        <table>lfnds_donation_donation</table>
                     </donation>
                     <receiver>
-                        <table>elefunds_receiver</table>
+                        <table>lfnds_donation_receiver</table>
                     </receiver>
                 </entities>
             </elefunds_mysql4>

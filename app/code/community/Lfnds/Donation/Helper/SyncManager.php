@@ -73,8 +73,8 @@ class Lfnds_Donation_Helper_SyncManager
      */
     public function syncReceivers() {
 
-        /** @var Lfnds_Donation_Model_Mysql4_Receivers_Collection $receiverCollection  */
-        $receiverCollection = Mage::getModel('elefunds/receiver')->getCollection();
+        /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiverCollection  */
+        $receiverCollection = Mage::getModel('lfnds_donation_receiver')->getCollection();
 
         // We want this to be available from anywhere, so we do not set state!
         $originalCountryCode = $this->facade->getConfiguration()->getCountrycode();
@@ -125,7 +125,7 @@ class Lfnds_Donation_Helper_SyncManager
     public function syncDonations() {
 
         /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
-        $donationCollection = Mage::getModel('elefunds/donation')->getCollection();
+        $donationCollection = Mage::getModel('lfnds_donation_donation')->getCollection();
         $donationModels = $donationCollection->findSyncables();
 
         $donationsToBeCancelled = array();
