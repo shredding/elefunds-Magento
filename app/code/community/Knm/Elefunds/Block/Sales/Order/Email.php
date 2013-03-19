@@ -48,7 +48,6 @@
  */
 class Knm_Elefunds_Block_Sales_Order_Email extends Mage_Core_Block_Template {
 
-    // @todo analyze this
     protected function _toHtml() {
         $item = $this->getLayout()->getBlock('additional.product.info')->getItem();
         

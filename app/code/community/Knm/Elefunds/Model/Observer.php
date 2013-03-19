@@ -55,6 +55,9 @@ class Knm_Elefunds_Model_Observer
      */
     protected $helper;
 
+    /**
+     * @var Knm_Elefunds_Manager_SyncManager
+     */
     protected $syncManager;
 
     public function __construct() {
@@ -180,27 +183,69 @@ class Knm_Elefunds_Model_Observer
             );
 
             $this->syncManager->syncDonations();
-
         }
     }
-    
-    public function captureCancelDonation($observer)
+
+    /**
+     * Whenever an order is saved, we check if it contains a donation and if the status change is of
+     * interest for the API. If so, we invoke the sync process.
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function onOrderSaved(Varien_Event_Observer $observer)
     {
+        /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
 
         /** @var Knm_Elefunds_Model_Donation $donation  */
         $donation = Mage::getModel('elefunds/donation');
-        $donation->loadByAttribute('order_id', $order->getId());
+        $donation->loadByAttribute('foreign_id', $order->getId());
 
         if ($donation !== NULL) {
-            $donation->setState(Knm_Elefunds_Model_Donation::SCHEDULED_FOR_CANCELLATION);
-            $donation->save();
-            $this->syncManager->syncDonations();
+            $stateHasChanged = $order->getData('state') !== $order->getOrigData('state');
+
+            if ($stateHasChanged) {
+
+                $newState = $order->getData('state');
+
+                // We have to map the magento states to API states ...
+                $statesToBeMappedToAddingState = array(
+                    Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+                    Mage_Sales_Model_Order::STATE_PROCESSING,
+                );
+
+                $statesToBeMappedToCancelledState = array(
+                    Mage_Sales_Model_Order::STATE_CANCELED
+                );
+
+                $statesToBeMappedToCompletedState = array(
+                    Mage_Sales_Model_Order::STATE_CLOSED,
+                    Mage_Sales_Model_Order::STATE_COMPLETE
+                );
+
+                $stateToBySyncedToTheApi = -1;
+
+                if (in_array($newState, $statesToBeMappedToAddingState)) {
+                    $stateToBySyncedToTheApi = Knm_Elefunds_Model_Donation::SCHEDULED_FOR_ADDING;
+                }
+                if (in_array($newState, $statesToBeMappedToCancelledState)) {
+                    $stateToBySyncedToTheApi = Knm_Elefunds_Model_Donation::SCHEDULED_FOR_CANCELLATION;
+                }
+                if (in_array($newState, $statesToBeMappedToCompletedState)) {
+                    $stateToBySyncedToTheApi = Knm_Elefunds_Model_Donation::SCHEDULED_FOR_VERIFICATION;
+                }
+
+                if ($stateToBySyncedToTheApi > -1) {
+
+                    if ($donation->getState() !== $stateToBySyncedToTheApi) {
+                        $donation->setState($stateToBySyncedToTheApi);
+                        $donation->save();
+                        $this->syncManager->syncDonations();
+                    }
+                }
+            }
         }
-        
-        $order->addRelatedObject($donation);
-        Mage::register('donation', $donation);
-        $order->getResource()->addCommitCallback(array($this , 'sendCancelDonation'));
     }
 
     /**
@@ -223,16 +268,15 @@ class Knm_Elefunds_Model_Observer
 
         $block->canShowBanner(in_array($paymentCode, $authorizedMethods));
     }
-    
-    
-    public function noDonationRules($observer){
+
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function excludeDonationFromDiscount(Varien_Event_Observer $observer){
         $quoteItem = $observer->getQuoteItem();
         $product = $observer->getProduct();
-        $helper = Mage::helper('elefunds');
-        $donationSku = $helper->getVirtualProductSku();
-        
-        if ($product->getSku()==$donationSku) {
-            $quoteItem->setNoDiscount(1);
+        if ($product->getSku() == Knm_Elefunds_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+            $quoteItem->setNoDiscount(TRUE);
         }
     }
 }

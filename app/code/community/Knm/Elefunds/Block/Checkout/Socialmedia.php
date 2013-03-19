@@ -48,81 +48,97 @@
  */
 class Knm_Elefunds_Block_Checkout_Socialmedia extends Mage_Core_Block_Template {
 
-    protected $_order;
+    /**
+     * @var Mage_Sales_Model_Order
+     */
+    protected $order;
 
-    /** @todo analyze this */
+    /**
+     * @var Knm_Elefunds_Helper_Data
+     */
+    protected $helper;
+
+    public function __construct() {
+        $this->helper = Mage::helper('elefunds');
+    }
+
+    /**
+     * Adds the elefunds page head to the layout.
+     */
     protected function _prepareLayout() {
         $headBlock = $this->getLayout()->createBlock('elefunds/page_head', 'elefunds.head');
         $this->getLayout()->getBlock('head')->setChild('elefunds.head', $headBlock);
 
         parent::_prepareLayout();
     }
-    
+
+    /**
+     * Checks wether a donation exists in the actual order.
+     *
+     * @return bool
+     */
     public function existDonation() {
-        try {
-            $helper = Mage::helper('elefunds');  //TODO: Refactor this into class variable to avoid multiple loading.
-            $virtualProduct = $helper->getVirtualProduct();
-
-            if (!$virtualProduct) {
-                throw new Exception("Elefunds error - Can not get virtual product");
+        $virtualProduct = $this->helper->getVirtualProduct();
+        if (!$virtualProduct) {
+            Mage::log('Unable to retrieve virtual product for elefunds.');
+        } else {
+            if ($this->getOrder() !== NULL  && $this->getOrder()->getItemsCollection()->getItemByColumnValue('product_id', $virtualProduct->getId())) {
+                return TRUE;
             }
-
-            $order = $this->getOrder();
-
-            if ($order && $order->getItemsCollection()->getItemByColumnValue('product_id', $virtualProduct->getId())) {
-                return true;
-            }
-            return false;
-        } catch (Exception $e) {
-            Mage::log($e->getMessage(), null, '2016.log');
-            return false;
         }
+        return FALSE;
     }
 
+    /**
+     * Retrieves the current order.
+     *
+     * @return Mage_Sales_Model_Order
+     */
     public function getOrder() {
-        if (!$this->_order) {
+        if (!$this->order) {
             $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
             if ($orderId) {
                 $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-                $this->_order = $order;
-                if (!$order->getId())
-                    $this->_order = null;
+                $this->order = $order;
+                if (!$order->getId()) {
+                    $this->order = NULL;
+                }
             }
         }
-        return $this->_order;
+        return $this->order;
     }
-    
+
+    /**
+     * Renders the social media template or returns an empty string if we do have nothing to show.
+     *
+     * @return string
+     */
     public function renderSocialMedia() {
-        $helper = Mage::helper('elefunds');
         $order = $this->getOrder();
-        
-        try {
-            $facade = $helper->getElefundsFacade('CheckoutSuccess');
-            $donationItem = Mage::getModel('elefunds/donation');
-            $donationItem->loadByAttribute('order_id', $order->getId());
-            if (!$donationItem->getId()) {
-                //No donation Available -- Dont render anything. 
-                return;
-            }
-            
-            $receivers = $helper->getReceivers();
-            $receiversArray = unserialize($donationItem->getReceivers());
-            $receiversArray = array_flip($receiversArray);  //values and keys are unique!
+
+        $facade = $this->helper->getConfiguredFacade(TRUE);
+        $donationItem = Mage::getModel('elefunds/donation');
+
+        /** @var Knm_Elefunds_Model_Donation $donationItem */
+        $donationItem->loadByAttribute('foreign_id', $order->getId());
+        if ($donationItem->getId()) {
+            $receivers = $this->helper->getReceivers();
+
+            $receiverIds = $donationItem->getReceiverIds();
+            $receiversArray = array();
+
             foreach ($receivers as $receiver) {
-                if (array_key_exists($receiver->getId(), $receiversArray)) 
+                if (in_array($receiver->getId(), $receiverIds)) {
                     $receiversArray[$receiver->getId()]=$receiver->getName();
+                }
             }
-            
-            $facade->getConfiguration()->getView()->assign('foreignId', $order->getId());
+
+            $facade->getConfiguration()->getView()->assign('foreignId', $donationItem->getForeignId());
             $facade->getConfiguration()->getView()->assign('receivers', $receiversArray);
-            //TODO: Ask for the status of the donation? Rendersocialmedia is supposed to be used 
-            //      only at the Success page. --> put on Function documentation? 
-            $html = $facade->renderTemplate('CheckoutSuccess');
-            
-        } catch (Exception $e) {
-            Mage::log('Elefunds: Success template could not be rendered.!!', null, '2016.log');
-            return '';
+
+            return $facade->renderTemplate('CheckoutSuccess');
         }
-        return $html;
+
+        return '';
     }
 }

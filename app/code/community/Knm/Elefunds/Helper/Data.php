@@ -67,7 +67,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
      * @param bool $checkoutSuccess
      * @return Library_Elefunds_Facade
      */
-    protected  function getConfiguredFacade($checkoutSuccess = FALSE) {
+    public function getConfiguredFacade($checkoutSuccess = FALSE) {
 
         if ($this->facade === NULL) {
 
@@ -102,7 +102,7 @@ class Knm_Elefunds_Helper_Data extends Mage_Core_Helper_Abstract {
 
 
     /**
-     * Returns a valid set of
+     * Returns a valid set of receivers.
      *
      * @return array
      */

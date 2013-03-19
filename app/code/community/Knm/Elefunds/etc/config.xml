@@ -1,10 +1,8 @@
 <?xml version="1.0" ?>
-
-<!-- Tells Magento what Code we want to run (routing, structure, events) -->
 <config>
     <modules>
         <Knm_Elefunds>
-            <version>0.3.0</version>
+            <version>1.0.0</version>
         </Knm_Elefunds>
     </modules>
 
@@ -17,9 +15,6 @@
             <elefunds_mysql4>
                 <class>Knm_Elefunds_Model_Mysql4</class>
                 <entities>
-                    <logs>
-                        <table>elefunds_logs</table>
-                    </logs>
                     <donation>
                         <table>elefunds_donation</table>
                     </donation>
@@ -62,20 +57,17 @@
         <events>
             <order_cancel_after>
                 <observers>
-                    <captureCancelDonation>
+                    <cancelDonation>
                         <type>model</type>
                         <class>elefunds/observer</class>
-                        <method>captureCancelDonation</method>
-                    </captureCancelDonation>
+                        <method>cancelDonation</method>
+                    </cancelDonation>
                 </observers>
             </order_cancel_after>
         </events>
     </global>
 
-    <admin></admin>
-
     <adminhtml>
-        <menu></menu>
         <translate>
             <modules>
                 <Knm_Elefunds>
@@ -92,30 +84,9 @@
                 </elefunds>
             </updates>
         </layout>
-        <acl>
-            <resources>
-                <admin>
-                    <children>
-                        <system>
-                            <children>
-                                <config>
-                                    <children>
-                                        <elefunds>
-                                            <title>Elefunds</title>
-                                        </elefunds>
-                                    </children>
-                                </config>
-                            </children>
-                        </system>
-                    </children>
-                </admin>
-            </resources>
-        </acl>
     </adminhtml>
 
 	<frontend>
-        <!-- any url with the frontName elefunds should use the controller Knm_Elefunds
-             ( ../controllers/IndexController.php ) -->
 		<routers>
 			<elefunds>
 				<use>standard</use>
@@ -144,7 +115,7 @@
                     </addDonation>
                 </observers>
             </controller_action_predispatch_checkout_onepage_saveOrder>
-            <checkout_type_onepage_save_order_after>
+            <checkout_onepage_controller_success_action>
                 <observers>
                     <captureDonation>
                         <type>model</type>
@@ -152,35 +123,27 @@
                         <method>onOrderFinished</method>
                     </captureDonation>
                 </observers>
-            </checkout_type_onepage_save_order_after>
-            <!-- 
-                Implemented basic functionality, in case of payment methods not using
-                the standard methods of magento, this observer should hook to a more general 
-                event 
-            -->
-            <order_cancel_after>
+            </checkout_onepage_controller_success_action>
+            <sales_order_save_after>
                 <observers>
-                    <captureCancelDonation>
+                    <captureDonation>
                         <type>model</type>
                         <class>elefunds/observer</class>
-                        <method>captureCancelDonation</method>
-                    </captureCancelDonation>
+                        <method>onOrderSaved</method>
+                    </captureDonation>
                 </observers>
-            </order_cancel_after>
+            </sales_order_save_after>
             <sales_quote_item_set_product>
                 <observers>
                     <noRules>
                         <type>model</type>
                         <class>elefunds/observer</class>
-                        <method>noDonationRules</method>
+                        <method>excludeDonationFromDiscount</method>
                     </noRules>
                 </observers>
             </sales_quote_item_set_product>
         </events>
-		<!--
-		    Include our layout-xml-file
-		    (design/frontend/default/layout/knm_elefunds.xml)
-		-->
+
 		<layout>
 			<updates>
 				<elefunds>
@@ -198,16 +161,5 @@
             </config>
         </elefunds>
     </default>
-
-    <crontab>
-        <jobs>
-            <!--
-            <jobname>
-                <schedule><cron_expr>0 2 * * *</cron_expr></schedule>
-                <run><model>elefunds/modelname::tocallfunction</model></run>
-            </jobname>
-            -->
-        </jobs>
-    </crontab>
 
 </config>

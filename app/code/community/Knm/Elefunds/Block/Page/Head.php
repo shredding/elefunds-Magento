@@ -50,7 +50,6 @@
 class  Knm_Elefunds_Block_Page_Head extends Mage_Core_Block_Template {
 
     /**
-     * @todo analyze this
      * Gets CSS- and Javascript-files from the Elefunds Facade and adds them to the head block
      */
     protected function _prepareLayout() {

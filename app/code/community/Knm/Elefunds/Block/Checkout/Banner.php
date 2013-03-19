@@ -49,43 +49,43 @@
  */
 class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template {
 
-    /** @todo analyze this */
-
     /**
      * Controls if banner should be shown
      *
      * @var bool
      */
-    protected $showBanner = true;
+    protected $isActive = true;
 
     /**
-     * Returns the API Template
+     * Returns the API Template.
+     *
+     * If we cannot display the Template, we return an empty string.
+     *
      * Used and shown in /design/frontend/base/default/template/knm/elefunds/checkout/onepage/review/donation_banner.phtml
      *
      * @return string The rendered HTML Snippet
      */
     public function getApiTemplate() {
-        $path = 'elefunds/config/active';
-        $active = Mage::getStoreConfig($path);
-        $this->canShowBanner($active);
+        $this->isActive = Mage::getStoreConfig('elefunds/config/active');
         
         Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
-        
-        if ($this->canShowBanner()) {
+
+        $template = '';
+
+        if ($this->isActive) {
+            /** @var Knm_Elefunds_Helper_Data $helper */
             $helper = Mage::helper('elefunds');
             try {
-                $facade = $helper->getElefundsFacade();
-                $basePath='elefunds/config';
-                $banner_width = Mage::getStoreConfig($basePath.'/banner_width');
+                $facade = $helper->getConfiguredFacade();
+
+                $banner_width = Mage::getStoreConfig('elefunds/config/banner_width');
                 $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
                 $localeCode = Mage::app()->getLocale()->getLocaleCode();
                 $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
                 
                 $receivers = $helper->getReceivers();
 
-                if (!$receivers) {
-                    throw new Exception("Elefunds error - Can not get receivers");
-                }
+                if (count($receivers) >= 3) {
 
                 $facade->getConfiguration()
                        ->getView()
@@ -95,28 +95,22 @@ class Knm_Elefunds_Block_Checkout_Banner extends Mage_Core_Block_Template {
                           ->assign('receivers', $receivers);
 
                 $template = $facade->renderTemplate();
-            } catch (Exception $e) {
-                Mage::log($e->getMessage(), null, '2016.log');
 
-                Mage::log('Elefunds error - getting Facade object from helper', null, '2016.log');
-                Mage::log('Elefunds error - couldnt get template', null, '2016.log');
-                return '';
+                }
+            } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
+                Mage::logException($exception);
             }
-            return $template;
         }
-        return '';
+        return $template;
     }
 
     /**
+     * Returns true if the elefunds plugin can be displayed.
      *
-     * @param int $value
-     * @return int
+     * @return bool
      */
-    public function canShowBanner($value = null) {
-        if (null !== $value) {
-            $this->showBanner = $value;
-        }
-        return $this->showBanner;
+    public function canShowBanner() {
+        return $this->isActive;
     }
     
     

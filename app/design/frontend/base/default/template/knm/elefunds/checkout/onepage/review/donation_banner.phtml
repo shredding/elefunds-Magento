@@ -1,7 +1,7 @@
 <?php 
     $html = $this->getApiTemplate();
-    if ($html) {
-        $html="<form id='elefunds-form'>".$html."</form>";
+    if (!empty($html)):
+        $html = '<form id="elefunds-form">' . $html . '</form>';
         echo $html;
 ?>    
     <script type="text/javascript">
@@ -41,6 +41,6 @@
     //]]>
     </script>
 <?php 
-    }
+    endif;
 ?>
 
