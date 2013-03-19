@@ -100,7 +100,7 @@ class Lfnds_Donation_Model_Observer
         $elefundsProduct = $this->helper->getVirtualProduct();
 
         if ($elefundsProduct === NULL) {
-            Mage::log('Elefunds object not found on store!!', NULL, 'elefunds.log');
+            Mage::log('Elefunds object not found on store!');
             return;
         }
         
@@ -179,7 +179,8 @@ class Lfnds_Donation_Model_Observer
                 $receiverIds,
                 $this->helper->getAvailableReceiverIds(),
                 $user,
-                $billingAddress->getCountryId()
+                $billingAddress->getCountryId(),
+                $suggestedRoundUp
             );
 
             $this->syncManager->syncDonations();
@@ -219,7 +220,7 @@ class Lfnds_Donation_Model_Observer
                     Mage_Sales_Model_Order::STATE_CANCELED
                 );
 
-                $statesToBeMappedToCompletedState = array(
+                $statesToBeMappedToVerificationState = array(
                     Mage_Sales_Model_Order::STATE_CLOSED,
                     Mage_Sales_Model_Order::STATE_COMPLETE
                 );
@@ -232,12 +233,11 @@ class Lfnds_Donation_Model_Observer
                 if (in_array($newState, $statesToBeMappedToCancelledState)) {
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION;
                 }
-                if (in_array($newState, $statesToBeMappedToCompletedState)) {
+                if (in_array($newState, $statesToBeMappedToVerificationState)) {
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION;
                 }
 
                 if ($stateToBySyncedToTheApi > -1) {
-
                     if ($donation->getState() !== $stateToBySyncedToTheApi) {
                         $donation->setState($stateToBySyncedToTheApi);
                         $donation->save();
