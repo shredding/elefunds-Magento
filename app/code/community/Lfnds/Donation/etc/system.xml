@@ -32,15 +32,6 @@
                             <sort_order>10</sort_order>
                             <comment>activate / deactivate Elefunds module</comment>
                         </active>
-                        <product translate="label">
-                            <label>Product</label>
-                            <frontend_type>text</frontend_type>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <sort_order>20</sort_order>
-                            <comment>Insert the SKU of your donation product</comment>
-                        </product>
                         <client_id translate="label comment">
                             <label>Client Id</label>
                             <frontend_type>text</frontend_type>
@@ -67,16 +58,6 @@
                             <sort_order>50</sort_order>
                             <comment>Number, in px</comment>
                         </banner_width>
-                        <donation_receipt translate="label comment">
-                            <label>Donation receipt enabled</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <sort_order>55</sort_order>
-                            <comment>activate / deactivate donation receipt</comment>
-                        </donation_receipt>
                         <authorized_payment_methods translate="label comment">
                             <label>Authorized payment methods</label>
                             <frontend_type>multiselect</frontend_type>
