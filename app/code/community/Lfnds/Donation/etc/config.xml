@@ -53,17 +53,16 @@
                 <use>default_read</use>
             </elefunds_read>
         </resources>
-        
         <events>
-            <order_cancel_after>
+            <sales_order_save_after>
                 <observers>
-                    <cancelDonation>
+                    <captureDonation>
                         <type>model</type>
                         <class>elefunds/observer</class>
-                        <method>cancelDonation</method>
-                    </cancelDonation>
+                        <method>onOrderSaved</method>
+                    </captureDonation>
                 </observers>
-            </order_cancel_after>
+            </sales_order_save_after>
         </events>
     </global>
 
@@ -124,15 +123,6 @@
                     </captureDonation>
                 </observers>
             </checkout_onepage_controller_success_action>
-            <sales_order_save_after>
-                <observers>
-                    <captureDonation>
-                        <type>model</type>
-                        <class>elefunds/observer</class>
-                        <method>onOrderSaved</method>
-                    </captureDonation>
-                </observers>
-            </sales_order_save_after>
             <sales_quote_item_set_product>
                 <observers>
                     <noRules>
