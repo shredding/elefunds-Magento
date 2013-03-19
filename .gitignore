@@ -1,4 +1,9 @@
+.idea/
 .modgit/
+.htaccess
+.htaccess.sample
+api.php
+media/
 app/code/community/Find/
 app/code/community/Phoenix/
 app/code/core/
@@ -11,6 +16,10 @@ app/design/frontend/default/iphone/
 app/design/frontend/default/modern/
 app/design/frontend/enterprise/default
 app/design/install/
+app/etc/modules/Mage_Api2.xml
+app/etc/modules/Mage_Captcha.xml
+app/etc/modules/Mage_CurrencySymbol.xml
+app/etc/modules/Mage_Oauth.xml
 app/etc/modules/Enterprise_*
 app/etc/modules/Find_Feed.xml
 app/etc/modules/Mage_All.xml
