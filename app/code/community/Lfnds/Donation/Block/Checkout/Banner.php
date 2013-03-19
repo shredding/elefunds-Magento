@@ -54,7 +54,7 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      *
      * @var bool
      */
-    protected $isActive = true;
+    protected $isActive = FALSE;
 
     /**
      * Returns the API Template.
@@ -66,13 +66,13 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      * @return string The rendered HTML Snippet
      */
     public function getApiTemplate() {
-        $this->isActive = Mage::getStoreConfig('elefunds/config/active');
-        
-        Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
+        $this->isActive = (bool)Mage::getStoreConfig('elefunds/config/active');
 
+        Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
         $template = '';
 
         if ($this->isActive) {
+
             /** @var Lfnds_Donation_Helper_Data $helper */
             $helper = Mage::helper('elefunds');
             try {

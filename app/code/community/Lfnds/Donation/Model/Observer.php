@@ -260,11 +260,12 @@ class Lfnds_Donation_Model_Observer
                                                              ->getMethodInstance()
                                                              ->getCode();
 
+
         $path = 'elefunds/config/authorized_payment_methods';
         $storeId = Mage::app()->getStore()->getId();
 
         $authorizedMethodsAsString = Mage::getStoreConfig($path, $storeId);
-        $authorizedMethods = !empty($authorizedMethods) ? explode(',', $authorizedMethodsAsString) : array();
+        $authorizedMethods = !empty($authorizedMethodsAsString) ? explode(',', $authorizedMethodsAsString) : array();
 
         if (!in_array($paymentCode, $authorizedMethods)) {
             $block->deactivateBanner();
