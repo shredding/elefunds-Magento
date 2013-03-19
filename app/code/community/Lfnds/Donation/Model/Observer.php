@@ -266,7 +266,9 @@ class Lfnds_Donation_Model_Observer
         $authorizedMethodsAsString = Mage::getStoreConfig($path, $storeId);
         $authorizedMethods = !empty($authorizedMethods) ? explode(',', $authorizedMethodsAsString) : array();
 
-        $block->canShowBanner(in_array($paymentCode, $authorizedMethods));
+        if (!in_array($paymentCode, $authorizedMethods)) {
+            $block->deactivateBanner();
+        }
     }
 
     /**
