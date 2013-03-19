@@ -164,7 +164,7 @@ if (!$installer->tableExists('lfnds_donation_receiver')) {
             'nullable' => false,
             'primary' => true,
         ), 'Internal Identifier for magento')
-        ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('receiver_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'unsigned' => false,
             'nullable' => false,
         ), 'Receiver ID')
@@ -180,7 +180,7 @@ if (!$installer->tableExists('lfnds_donation_receiver')) {
         ->addColumn('image', Varien_Db_Ddl_Table::TYPE_LONGVARCHAR, null, array(
             'nullable' => true,
         ), 'Image URL')
-        ->addColumn('valid', Varien_Db_Ddl_Table::TYPE_DATE, null, array(
+        ->addColumn('valid', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
             'nullable' => false,
         ), 'Valid');
 

@@ -59,7 +59,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
     protected $helper;
 
     public function __construct() {
-        $this->helper = Mage::helper('elefunds');
+        $this->helper = Mage::helper('lfnds_donation');
     }
 
     /**

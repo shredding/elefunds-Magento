@@ -86,15 +86,16 @@ class Lfnds_Donation_Model_Mysql4_Receiver_Collection extends Mage_Core_Model_My
 
         /** @var \Library_Elefunds_Model_ReceiverInterface $receiver */
         foreach ($receivers as $receiver) {
-            $entity = new Lfnds_Donation_Model_Receiver();
-            $entity->setId($receiver->getId())
+            /** @var Lfnds_Donation_Model_Receiver $entity  */
+            $entity = Mage::getModel('lfnds_donation/receiver');
+            $entity->setReceiverId($receiver->getId())
                    ->setName($receiver->getName())
                    ->setImage($receiver->getImage('horizontal', 'medium'))
-                   ->setValid($receiver->getValidTime())
+                   ->setValid($receiver->getValidTime()->format('Y-m-d H:i:s'))
                    ->setDescription($receiver->getDescription())
-                   ->setCountrycode($languageCode)
+                   ->setCountrycode($languageCode);
 
-                   ->save();
+            $entity->save();
         }
         return $this;
     }

@@ -148,7 +148,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
 
         /** Lfnds_Donation_Model_Receiver $receiver */
         foreach ($this->getAvailableReceiverIds() as $receiver) {
-            $ids[] = $receiver->getId();
+            $ids[] = $receiver->getReceiverId();
         }
         return $ids;
     }

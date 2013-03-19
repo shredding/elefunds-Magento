@@ -200,7 +200,7 @@ class Lfnds_Donation_Model_Observer
         $order = $observer->getEvent()->getOrder();
 
         /** @var Lfnds_Donation_Model_Donation $donation  */
-        $donation = Mage::getModel('lfnds_donation_donation');
+        $donation = Mage::getModel('lfnds_donation/donation');
         $donation->loadByAttribute('foreign_id', $order->getId());
 
         if ($donation !== NULL) {
