@@ -51,6 +51,6 @@ class Lfnds_Donation_Model_Mysql4_Receiver extends Mage_Core_Model_Mysql4_Abstra
 {
     public function _construct()
     {
-        $this->_init('lfnds_donation_receiver', 'internal_identifier');
+        $this->_init('lfnds_donation/receiver', 'internal_identifier');
     }
 }

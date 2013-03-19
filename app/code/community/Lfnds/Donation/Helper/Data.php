@@ -112,7 +112,8 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             $time = new DateTime();
 
             /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiversCollection  */
-            $receiversCollection = Mage::getModel('lfnds_donation_receiver')->getCollection();
+            $receiversCollection = Mage::getModel('lfnds_donation/receiver')->getCollection();
+
             $receiversCollection->addFieldToFilter(
                 'valid', array(
                            'from'  =>  $time->format("Y-m-d H:i:s")
@@ -120,7 +121,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             )
             ->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
 
-            if ($$receiversCollection->getSize() < 3) {
+            if ($receiversCollection->getSize() < 3) {
                 $syncManager = new Lfnds_Donation_Helper_SyncManager($this->getConfiguredFacade());
                 $this->receivers = $syncManager->syncReceivers();
 
@@ -142,7 +143,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     public function getAvailableReceiverIds() {
         $ids = array();
         /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiversCollection  */
-        $receiversCollection = Mage::getModel('lfnds_donation_receiver')->getCollection();
+        $receiversCollection = Mage::getModel('lfnds_donation/receiver')->getCollection();
         $receiversCollection->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
 
         /** Lfnds_Donation_Model_Receiver $receiver */

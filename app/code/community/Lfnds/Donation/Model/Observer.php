@@ -61,7 +61,7 @@ class Lfnds_Donation_Model_Observer
     protected $syncManager;
 
     public function __construct() {
-        $this->helper = Mage::helper('elefunds');
+        $this->helper = Mage::helper('lfnds_donation');
         $this->syncManager = new Lfnds_Donation_Helper_SyncManager($this->helper->getConfiguredFacade());
     }
 

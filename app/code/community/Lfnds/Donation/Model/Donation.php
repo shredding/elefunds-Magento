@@ -115,7 +115,7 @@ class Lfnds_Donation_Model_Donation extends Mage_Core_Model_Abstract
 
     protected function _construct()
     {
-        $this->_init('lfnds_donation_donation');
+        $this->_init('lfnds_donation/donation');
     }
 
 

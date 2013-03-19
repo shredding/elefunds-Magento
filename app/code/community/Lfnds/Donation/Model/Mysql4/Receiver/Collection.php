@@ -51,7 +51,7 @@ class Lfnds_Donation_Model_Mysql4_Receiver_Collection extends Mage_Core_Model_My
 {
     public function _construct()
     {
-        $this->_init('lfnds_donation_receiver');
+        $this->_init('lfnds_donation/receiver');
     }
 
     /**
@@ -62,9 +62,9 @@ class Lfnds_Donation_Model_Mysql4_Receiver_Collection extends Mage_Core_Model_My
      */
     public function removeByLanguage($code) {
         $select = $this->getSelect()
-                       ->where('countrycode = :code');
+                       ->where('countrycode = ?', $code);
 
-        $receivers = $this->_fetchAll($select, array($code));
+        $receivers = $this->_fetchAll($select);
 
         /** @var Lfnds_Donation_Model_Receiver $receiver */
         foreach ($receivers as $receiver) {

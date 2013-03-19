@@ -8,11 +8,11 @@
 
     <global>
         <models>
-            <elefunds>
+            <lfnds_donation>
                 <class>Lfnds_Donation_Model</class>
-                <resourceModel>elefunds_mysql4</resourceModel>
-            </elefunds>
-            <elefunds_mysql4>
+                <resourceModel>donation_mysql4</resourceModel>
+            </lfnds_donation>
+            <donation_mysql4>
                 <class>Lfnds_Donation_Model_Mysql4</class>
                 <entities>
                     <donation>
@@ -22,43 +22,43 @@
                         <table>lfnds_donation_receiver</table>
                     </receiver>
                 </entities>
-            </elefunds_mysql4>
+            </donation_mysql4>
         </models>
         
         <blocks>
-            <elefunds>
+            <lfnds_donation>
                 <class>Lfnds_Donation_Block</class>
-            </elefunds>
+            </lfnds_donation>
         </blocks>
 
         <helpers>
-            <elefunds>
+            <lfnds_donation>
                 <class>Lfnds_Donation_Helper</class>
-            </elefunds>
+            </lfnds_donation>
         </helpers>
 
         <resources>
-            <elefunds_setup>
+            <lfnds_donation_setup>
                 <setup>
                     <module>Lfnds_Donation</module>
                     <class>Mage_Core_Model_Resource_Setup</class>
                 </setup>
                 <use>default_setup</use>
-            </elefunds_setup>
+            </lfnds_donation_setup>
 
-            <elefunds_write>
+            <lfnds_donation_write>
                 <use>default_write</use>
-            </elefunds_write>
-            <elefunds_read>
+            </lfnds_donation_write>
+            <lfnds_donation_read>
                 <use>default_read</use>
-            </elefunds_read>
+            </lfnds_donation_read>
         </resources>
         <events>
             <sales_order_save_after>
                 <observers>
                     <captureDonation>
                         <type>model</type>
-                        <class>elefunds/observer</class>
+                        <class>lfnds_donation/observer</class>
                         <method>onOrderSaved</method>
                     </captureDonation>
                 </observers>
@@ -71,16 +71,16 @@
             <modules>
                 <Lfnds_Donation>
                     <files>
-                        <default>Elefunds.csv</default>
+                        <default>Lfnds_Donation.csv</default>
                     </files>
                 </Lfnds_Donation>
             </modules>
         </translate>
         <layout>
             <updates>
-                <elefunds>
-                    <file>lfnds_elefunds.xml</file>
-                </elefunds>
+                <lfnds_donation>
+                    <file>lfnds_donation.xml</file>
+                </lfnds_donation>
             </updates>
         </layout>
         <acl>
@@ -91,9 +91,9 @@
                             <children>
                                 <config>
                                     <children>
-                                        <elefunds>
+                                        <lfnds_donation>
                                             <title>Elefunds</title>
-                                        </elefunds>
+                                        </lfnds_donation>
                                     </children>
                                 </config>
                             </children>
@@ -106,20 +106,20 @@
 
 	<frontend>
 		<routers>
-			<elefunds>
+			<lfnds_donation>
 				<use>standard</use>
 				<args>
 					<module>Lfnds_Donation</module>
 					<frontName>elefunds</frontName>
 				</args>
-			</elefunds>
+			</lfnds_donation>
 		</routers>
 		<events>
             <elefunds_checkout_review_before_enable>
                 <observers>
                     <limitPayments>
                         <type>model</type>
-                        <class>elefunds/observer</class>
+                        <class>lfnds_donation_read/observer</class>
                         <method>limitPayments</method>
                     </limitPayments>
                 </observers>
@@ -128,7 +128,7 @@
                 <observers>
                     <addDonation>
                         <type>model</type>
-                        <class>elefunds/observer</class>
+                        <class>lfnds_donation/observer</class>
                         <method>onSaveOrder</method>
                     </addDonation>
                 </observers>
@@ -137,7 +137,7 @@
                 <observers>
                     <captureDonation>
                         <type>model</type>
-                        <class>elefunds/observer</class>
+                        <class>lfnds_donation/observer</class>
                         <method>onOrderFinished</method>
                     </captureDonation>
                 </observers>
@@ -146,7 +146,7 @@
                 <observers>
                     <noRules>
                         <type>model</type>
-                        <class>elefunds/observer</class>
+                        <class>lfnds_donation/observer</class>
                         <method>excludeDonationFromDiscount</method>
                     </noRules>
                 </observers>
@@ -155,20 +155,19 @@
 
 		<layout>
 			<updates>
-				<elefunds>
+				<lfnds_donation>
 					<file>lfnds_donation.xml</file>
-				</elefunds>
+				</lfnds_donation>
 			</updates>
 		</layout>
 	</frontend>
 	
 	<default>
-        <elefunds>
+        <lfnds_donation>
             <config>
                 <active>0</active>
                 <product>donation</product>
             </config>
-        </elefunds>
+        </lfnds_donation>
     </default>
-
 </config>

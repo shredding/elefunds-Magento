@@ -52,7 +52,7 @@ class Lfnds_Donation_Model_Receiver extends Mage_Core_Model_Abstract
 
     protected function _construct()
     {
-        $this->_init('lfnds_donation_receiver');
+        $this->_init('lfnds_donation/receiver');
     }
 
 }

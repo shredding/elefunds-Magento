@@ -55,7 +55,7 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
     protected function _prepareLayout() {
 
         /** @var Lfnds_Donation_Helper_Data $helper */
-        $helper = Mage::helper('elefunds');
+        $helper = Mage::helper('lfnds_donation');
         $headBlock = $this->getLayout()->getBlock('head');
 
         try {

@@ -66,7 +66,7 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      * @return string The rendered HTML Snippet
      */
     public function getApiTemplate() {
-        $this->isActive = (bool)Mage::getStoreConfig('elefunds/config/active');
+        $this->isActive = (bool)Mage::getStoreConfig('lfnds_donation/config/active');
 
         Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
         $template = '';
@@ -74,11 +74,11 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
         if ($this->isActive) {
 
             /** @var Lfnds_Donation_Helper_Data $helper */
-            $helper = Mage::helper('elefunds');
+            $helper = Mage::helper('lfnds_donation');
             try {
                 $facade = $helper->getConfiguredFacade();
 
-                $banner_width = Mage::getStoreConfig('elefunds/config/banner_width');
+                $banner_width = Mage::getStoreConfig('lfnds_donation/config/banner_width');
                 $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
                 $localeCode = Mage::app()->getLocale()->getLocaleCode();
                 $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
