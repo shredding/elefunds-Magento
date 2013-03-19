@@ -87,14 +87,14 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
 
                 if (count($receivers) >= 3) {
 
-                $facade->getConfiguration()
-                       ->getView()
-                          ->assign('shopWidth', $banner_width)
-                          ->assign('currencyDelimiter', $symbols['decimal'])
-                          ->assign('total', $total*100)
-                          ->assign('receivers', $receivers);
+                    $facade->getConfiguration()
+                           ->getView()
+                              ->assign('shopWidth', $banner_width)
+                              ->assign('currencyDelimiter', $symbols['decimal'])
+                              ->assign('total', $total * 100)
+                              ->assign('receivers', $receivers);
 
-                $template = $facade->renderTemplate();
+                    $template = $facade->renderTemplate();
 
                 }
             } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
@@ -111,6 +111,10 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      */
     public function canShowBanner() {
         return $this->isActive;
+    }
+
+    public function deactivateBanner() {
+        $this->isActive = FALSE;
     }
     
     

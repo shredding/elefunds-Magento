@@ -55,16 +55,6 @@ class Lfnds_Donation_Helper_SyncManager
     protected $facade;
 
     /**
-     * @var array
-     */
-    protected $donationsToBeCancelled;
-
-    /**
-     * @var array
-     */
-    protected $donationsToBeVerified;
-
-    /**
      * Initialisation of the sync process.
      *
      * @param Library_Elefunds_Facade $facade
@@ -138,9 +128,8 @@ class Lfnds_Donation_Helper_SyncManager
         $donationCollection = Mage::getModel('elefunds/donation')->getCollection();
         $donationModels = $donationCollection->findSyncables();
 
-        $this->donationsToBeCancelled = array();
-        $this->donationsToBeVerified = array();
-
+        $donationsToBeCancelled = array();
+        $donationsToBeVerified = array();
         $donationsToBeAdded = array();
 
         /** @var Lfnds_Donation_Model_Donation $donationModel */
@@ -153,11 +142,11 @@ class Lfnds_Donation_Helper_SyncManager
                     break;
 
                 case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION:
-                    $this->donationsToBeCancelled[$donationModel->getForeignId()] = $donationModel;
+                    $donationsToBeCancelled[$donationModel->getForeignId()] = $donationModel;
                     break;
 
                 case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION:
-                    $this->donationsToBeVerified[$donationModel->getForeignId()] = $donationModel;
+                    $donationsToBeVerified[$donationModel->getForeignId()] = $donationModel;
                     break;
             }
         }
@@ -172,10 +161,10 @@ class Lfnds_Donation_Helper_SyncManager
 
         // Cancel donations
         try {
-            $this->facade->deleteDonations(array_keys($this->donationsToBeCancelled));
-            $donationCollection->setStates($this->donationsToBeCancelled, Lfnds_Donation_Model_Donation::CANCELLED);
+            $this->facade->deleteDonations(array_keys($donationsToBeCancelled));
+            $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::CANCELLED);
         } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
-            $donationCollection->setStates($this->donationsToBeCancelled, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION);
+            $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION);
         }
 
         /* @todo ADD AFTER SDK CHANGE
@@ -186,9 +175,9 @@ class Lfnds_Donation_Helper_SyncManager
         } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
              $donationCollection->setStates($this->donationsToBeVerified, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION);
         }
+        */
 
         return $this;
-        */
     }
 
     /**

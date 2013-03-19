@@ -49,6 +49,7 @@
  */
 class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
 
+    // @todo analyze
     /**
      * Gets CSS- and Javascript-files from the Elefunds Facade and adds them to the head block
      */
@@ -56,7 +57,7 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
         $helper = Mage::helper('elefunds');
         $headBlock = $this->getLayout()->getBlock('head');
         try {
-            $facade = $helper->getElefundsFacade();
+            $facade = $helper->getConfiguredFacade();
             $scriptFiles = $facade->getTemplateJavascriptFiles();
             $cssFiles = $facade->getTemplateCssFiles();
         } catch (Exception $e) {
