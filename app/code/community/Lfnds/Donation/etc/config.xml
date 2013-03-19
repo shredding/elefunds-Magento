@@ -18,9 +18,9 @@
                     <donation>
                         <table>elefunds_donation</table>
                     </donation>
-                    <receivers>
-                        <table>elefunds_receivers</table>
-                    </receivers>
+                    <receiver>
+                        <table>elefunds_receiver</table>
+                    </receiver>
                 </entities>
             </elefunds_mysql4>
         </models>
