@@ -51,28 +51,7 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
 {
     public function _construct()
     {
-        $this->_init('lfnds_donation_donation');
-    }
-
-    /**
-     * Receives all donations that have a potential for syncing.
-     *
-     * @return array of donations
-     */
-    public function findSyncables() {
-
-        $select = $this->getSelect()
-            ->where('state = :scheduledForAdding')
-            ->orWhere('state = :scheduledForCancellation')
-            ->orWhere('state = :scheduledForVerification');
-
-        return $this->_fetchAll($select,
-            array(
-                'scheduledForAdding'          =>  Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING,
-                'scheduledForCancellation'    =>  Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION,
-                'scheduledForVerification'    =>  Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION,
-            )
-        );
+        $this->_init('lfnds_donation/donation');
     }
 
     /**
@@ -105,14 +84,16 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
      * @param int $suggestedRoundUp
      * @return void
      */
-    public function addDonation($foreignId, $roundup, $grandTotal, array $receivers, $availableReceivers, $userData, $languageCode, $suggestedRoundUp = 0) {
+    public function addDonation($foreignId, $roundup, $grandTotal, array $receivers, array $availableReceivers, array $userData, $languageCode, $suggestedRoundUp = 0) {
+        $now = new DateTime();
+
         $donation = new Lfnds_Donation_Model_Donation();
         $donation->setForeignId($foreignId)
             ->setAmount((int)$roundup)
             ->setGrandTotal((int)$grandTotal)
             ->setReceiverIds($receivers)
             ->setAvailableReceiverIds($availableReceivers)
-            ->setTime(new \DateTime())
+            ->setTime($now->format('Y-m-d H:i:s'))
             ->setSuggestedAmount((int)$suggestedRoundUp);
 
         foreach ($userData as $key => $value) {
@@ -121,8 +102,11 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
         if (count($userData) > 0) {
             $donation->setDonatorCountrycode($languageCode);
         }
-
-        $donation->save();
+        try {
+            $donation->save();
+        } catch (Exception $exception) {
+            Mage::logException($exception);
+        }
 
     }
 }

@@ -126,7 +126,12 @@ class Lfnds_Donation_Helper_SyncManager
 
         /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
         $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
-        $donationModels = $donationCollection->findSyncables();
+
+        $donationModels = $donationCollection->addFieldToFilter(
+            array('state', Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING),
+            array('state', Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION),
+            array('state', Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION)
+        );
 
         $donationsToBeCancelled = array();
         $donationsToBeVerified = array();
@@ -134,7 +139,6 @@ class Lfnds_Donation_Helper_SyncManager
 
         /** @var Lfnds_Donation_Model_Donation $donationModel */
         foreach ($donationModels as $donationModel) {
-
             switch ($donationModel->getState()) {
 
                 case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING:
@@ -192,6 +196,7 @@ class Lfnds_Donation_Helper_SyncManager
 
         /** @var Donation $donationModel */
         foreach ($donationModels as $donationModel) {
+
             $donation = $this->facade->createDonation()
                 ->setForeignId($donationModel->getForeignId())
                 ->setAmount($donationModel->getAmount())

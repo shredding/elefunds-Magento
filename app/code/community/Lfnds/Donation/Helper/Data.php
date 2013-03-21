@@ -129,6 +129,8 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                     // Okay, this line of code will hopefully never execute! We do ALWAYS provide three receivers.
                     $this->receivers = array();
                 }
+            } else {
+                $this->receivers = $receiversCollection;
             }
         }
 
@@ -147,7 +149,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         $receiversCollection->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
 
         /** Lfnds_Donation_Model_Receiver $receiver */
-        foreach ($this->getAvailableReceiverIds() as $receiver) {
+        foreach ($receiversCollection as $receiver) {
             $ids[] = $receiver->getReceiverId();
         }
         return $ids;
@@ -159,12 +161,13 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return Mage_Core_Model_Abstract
      */
     public function getVirtualProduct() {
-        $virtualProduct = Mage::getModel('catalog/product');
-        $id = $virtualProduct->getIdBySku(Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU);
+        /** @var Mage_Catalog_Model_Product $productModel */
+        $productModel = Mage::getModel('catalog/product');
+        $id = $productModel->getIdBySku(Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU);
         if (!$id) {
             $this->virtualProduct = NULL;
         } else {
-            $this->virtualProduct = $virtualProduct->load($id);
+            $this->virtualProduct = $productModel->load($id);
         }
 
         return $this->virtualProduct;

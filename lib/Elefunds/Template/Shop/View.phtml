@@ -23,11 +23,11 @@
         <?php $numReceivers = count($view['receivers']); $i = 0; foreach ($view['receivers'] as $key => $receiver): ?>
         <input type="hidden" name="elefunds_receiver_name[]" value="<?php echo $receiver->getName(); ?>" />
         <div class="elefunds_receiver tiptip" desc="<?php echo $receiver->getDescription(); ?>" title="<?php echo $receiver->getName(); ?>">
-            <input type="checkbox" id="<?php echo 'elefunds_receiver_' . $receiver->getId(); ?>" name="<?php echo 'elefunds_receiver[]'; ?>" value="<?php echo $receiver->getId(); ?>"/>
+            <input type="checkbox" id="<?php echo 'elefunds_receiver_' . $receiver->getId(TRUE); ?>" name="<?php echo 'elefunds_receiver[]'; ?>" value="<?php echo $receiver->getId(TRUE); ?>"/>
             <?php if(++$i !== $numReceivers)  : ?>
-                <label for="<?php echo 'elefunds_receiver_' . $receiver->getId(); ?>" style="padding: 12px <?php echo $view['paddingRight']; ?> 8px <?php echo $view['paddingLeft']; ?>;"><img src="<?php echo $receiver->getImage('horizontal', 'medium'); ?>" /></label>
+                <label for="<?php echo 'elefunds_receiver_' . $receiver->getId(TRUE); ?>" style="padding: 12px <?php echo $view['paddingRight']; ?> 8px <?php echo $view['paddingLeft']; ?>;"><img src="<?php echo $receiver->getImage('horizontal', 'medium'); ?>" /></label>
             <?php else : ?>
-                <label for="<?php echo 'elefunds_receiver_' . $receiver->getId(); ?>" style="padding: 12px <?php echo $view['paddingRightLast']; ?> 8px <?php echo $view['paddingLeftLast']; ?>;"><img src="<?php echo $receiver->getImage('horizontal', 'medium'); ?>" /></label>
+                <label for="<?php echo 'elefunds_receiver_' . $receiver->getId(TRUE); ?>" style="padding: 12px <?php echo $view['paddingRightLast']; ?> 8px <?php echo $view['paddingLeftLast']; ?>;"><img src="<?php echo $receiver->getImage('horizontal', 'medium'); ?>" /></label>
             <?php endif; ?>
         </div>
         <?php endforeach; ?>

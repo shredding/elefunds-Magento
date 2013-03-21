@@ -71,7 +71,8 @@ class Lfnds_Donation_Model_Donation extends Mage_Core_Model_Abstract
     }
 
 
-    /** Sets all receivers and maps them to a csv for the database.
+    /**
+     * Sets all receivers and maps them to a csv for the database.
      *
      * @param array $receiverIds
      * @return $this

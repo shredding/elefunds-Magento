@@ -36,7 +36,7 @@
  */
 
 /**
- * General helper function to access and configure the SDK in magento
+ * Elefunds Receiver Model
  *
  * @package    elefunds Magento Module
  * @subpackage Model
@@ -49,6 +49,33 @@
 class Lfnds_Donation_Model_Receiver extends Mage_Core_Model_Abstract
 {
     protected $_eventPrefix = 'elefunds_receiver';
+
+    /**
+     * We want to have the receiver model interchangeable with the SDK receivers.
+     * Since getID is reserved, we provide an additional parameter that selectively
+     * bypasses this behaviour.
+     *
+     * @param bool $bypassInternalIdentifier
+     * @return int
+     */
+    public function getId($bypassInternalIdentifier = FALSE) {
+        if ($bypassInternalIdentifier) {
+            return $this->getReceiverId();
+        } else {
+            return parent::getId();
+        }
+    }
+
+    /**
+     * This methods just fakes the SDK signature to make calls interchangeable.
+     *
+     * @param string $direction
+     * @param string $size
+     * @return string
+     */
+    public function getImage($direction, $size) {
+        return parent::getImage();
+    }
 
     protected function _construct()
     {

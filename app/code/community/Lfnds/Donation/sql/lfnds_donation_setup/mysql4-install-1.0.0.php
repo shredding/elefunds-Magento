@@ -62,6 +62,7 @@ define('ELEFUNDS_VIRTUAL_PRODUCT_SKU', 'elefunds-donation');
 $donationProduct = Mage::getModel('catalog/product')->getIdBySku(ELEFUNDS_VIRTUAL_PRODUCT_SKU);
 
 
+
 /**
  * Adding donationProduct to catalog/product if not already created
  */
@@ -73,7 +74,7 @@ if (!$donationProduct) {
     /** @var Mage_Catalog_Model_Product $donationProduct  */
     $donationProduct = Mage::getModel('catalog/product');
     $donationProduct->setSku(ELEFUNDS_VIRTUAL_PRODUCT_SKU)
-            ->setAttributeSetId(4)
+            ->setAttributeSetId(Mage::getModel('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId())
             ->setTypeId(Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL)
             ->setName('elefunds Donation')
             ->setDescription('An item that is used when donations are added as items')
@@ -86,14 +87,14 @@ if (!$donationProduct) {
             ->setWebsiteIds(array(Mage::app()->getStore(TRUE)->getWebsite()->getId(), 1))
             ->setStockData(array(
                 'manage_stock' => 0,
-                'use_config_manage_stock'=>0,
+                'use_config_manage_stock'=> 0,
                 'is_in_stock' => 1
             ));
 
     try {
         $donationProduct->save();
-    } catch (exception $e){
-        Mage::log("VirtualProduct-Item (Donation) not saved properly.", null, "elefunds.log");
+    } catch (Exception $exception){
+        Mage::logException($exception);
     }
 }
 

@@ -76,8 +76,6 @@ class Lfnds_Donation_Model_Observer
     public function onSaveOrder(Varien_Event_Observer $observer)
     {
 
-        $request = Mage::app()->getRequest();
-
         /** @var Mage_Checkout_Model_Session $checkoutSession  */
         $checkoutSession = Mage::getSingleton('checkout/session');
         $quote = $checkoutSession->getQuote();
@@ -85,32 +83,58 @@ class Lfnds_Donation_Model_Observer
         $path = 'elefunds/config/active';
         $isActive = Mage::getStoreConfig($path);
 
-        if (!$isActive || !$request->has('elefunds_checkbox') || $request->getPost('elefunds_checkbox') !== 'on') {
-            return;
-        }
-        
-        $receivers = $request->getPost('elefunds_receiver');
-        $donationAmountCents= (int)$request->getPost('elefunds_donation_cent');
 
-        if ($receivers === NULL || $donationAmountCents === 0) {
-            return;
-        }
+        $params = Mage::app()->getRequest()->getParams();
+        if ($isActive && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
 
-        /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
-        $elefundsProduct = $this->helper->getVirtualProduct();
+            /** +++ Input Validation +++ */
+            $roundup  = (int)$params['elefunds_donation_cent'];
+            $receiverIds = array_map(function($x) { return (int)$x; }, $params['elefunds_receiver']);
 
-        if ($elefundsProduct === NULL) {
-            Mage::log('Elefunds object not found on store!');
-            return;
-        }
-        
-        if ($quote->hasProductId($elefundsProduct->getId())) {
-            return;
-        }
+            if (isset($params['elefunds_suggested_round_up_cent']) && ctype_digit($params['elefunds_suggested_round_up_cent'])) {
+                $suggestedRoundUp = (int)$params['elefunds_suggested_round_up_cent'];
+            } else {
+                $suggestedRoundUp = 0;
+            }
 
-        $elefundsProduct->setPrice($donationAmountCents/100);
-        $elefundsProduct->setBasePrice($donationAmountCents/100);
-        $quote->addProduct($elefundsProduct);
+            $isReceiptRequested = isset($params['elefunds_receipt_input']);
+
+            /** ^^^ Input Validation ^^^ */
+
+            /** +++ Add to quote +++ */
+
+            /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
+            $elefundsProduct = $this->helper->getVirtualProduct();
+
+            if ($elefundsProduct === NULL) {
+                Mage::log('Elefunds object not found on store!');
+                return;
+            }
+
+            if ($quote->hasProductId($elefundsProduct->getId())) {
+                return;
+            }
+
+            $elefundsProduct->setPrice($roundup/100);
+            $elefundsProduct->setBasePrice($roundup/100);
+            $quote->addProduct($elefundsProduct);
+
+            /** ^^^ Add to quote */
+
+            /** +++ Add to session +++ */
+            $coreSession = Mage::getSingleton('core/session');
+            $coreSession->setData('elefunds', array(
+                    'receiverIds'           => $receiverIds,
+                    'roundup'               => $roundup,
+                    'isReceiptRequested'    => $isReceiptRequested,
+                    'suggestedRoundUp'      => $suggestedRoundUp,
+                )
+            );
+
+            FB::log($coreSession->getData('elefunds'));
+            /** ^^^ Add to session ^^^ */
+
+        }
     }
 
     /**
@@ -121,66 +145,50 @@ class Lfnds_Donation_Model_Observer
      */
     public function onOrderFinished(Varien_Event_Observer $observer)
     {
-        $request = Mage::app()->getRequest();
-        /* @var $order Mage_Sales_Model_Order */
-        $order = $observer->getEvent()->getOrder();
+        $orderIds = $observer->getEvent()->getOrderIds();
 
-        /** @var Mage_Sales_Model_Quote $quote  */
-        $quote = $observer->getEvent()->getQuote();
+        $orderId = 0;
+        if (is_array($orderIds) && !empty($orderIds)) {
+            $orderId = (int)$orderIds[0];
+        }
+
+        /* @var $order Mage_Sales_Model_Order */
+        $order = Mage::getModel('sales/order')->load($orderId);
 
         /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
         $elefundsProduct = $this->helper->getVirtualProduct();
 
-        if ($elefundsProduct === NULL || !$quote->hasProductId($elefundsProduct->getId())) {
-            return;
-        }
+        if ($elefundsProduct !== NULL || $order->getItemByQuoteItemId($elefundsProduct->getQuoteId()) !== NULL) {
 
-        /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
-        $donationCollection = Mage::getModel('lfnds_donation_donation')->getCollection();
+            $coreSession = Mage::getSingleton('core/session');
+            $elefundsSession = $coreSession->getData('elefunds');
 
-        $params = $request->getParams();
-
-        if (isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
-            /** +++ Input Validation +++ */
-
-            $roundup  = (int)$params['elefunds_donation_cent'];
-
-            // We have to cast the amount to string and then to int, as the session does not care about
-            // floating point precision.
-            $grandTotal = (int)$grandTotal = $order->getTotalDue() * 100;
-
-            $receiverIds = array_map(function($x) { return (int)$x; }, $params['elefunds_receiver']);
-
-            if (isset($params['elefunds_suggested_round_up_cent']) && ctype_digit($params['elefunds_suggested_round_up_cent'])) {
-                $suggestedRoundUp = (int)$params['elefunds_suggested_round_up_cent'];
-            } else {
-                $suggestedRoundUp = 0;
-            }
-
-            $billingAddress = $order->getBillingAddress();
-
-            if (isset($params['elefunds_receipt_input'])) {
+            if ($elefundsSession['isReceiptRequested']) {
+                $billingAddress = $order->getBillingAddress();
+                $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
                 $user = array(
                     'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
                     'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
                     'email'          =>  $billingAddress->getEmail(),
-                    'streetAddress'  =>  $billingAddress->getStreet(),
+                    'streetAddress'  =>  $streets[0],
                     'zip'            =>  (int)$billingAddress->getPostcode(),
                     'city'           =>   $billingAddress->getCity()
                 );
             } else {
                 $user = array();
             }
-            /** ^^^ Input Validation ^^^ */
+
+            /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
+            $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
             $donationCollection->addDonation(
                 $order->getIncrementId(),
-                $roundup,
-                $grandTotal,
-                $receiverIds,
+                $elefundsSession['roundup'],
+                $order->getTotalDue() * 100,
+                $elefundsSession['receiverIds'],
                 $this->helper->getAvailableReceiverIds(),
                 $user,
-                $billingAddress->getCountryId(),
-                $suggestedRoundUp
+                $order->getBillingAddress()->getCountryId(),
+                $elefundsSession['suggestedRoundUp']
             );
 
             $this->syncManager->syncDonations();
