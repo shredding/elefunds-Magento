@@ -96,12 +96,16 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
             ->setTime($now->format('Y-m-d H:i:s'))
             ->setSuggestedAmount((int)$suggestedRoundUp);
 
-        foreach ($userData as $key => $value) {
-            call_user_func(array($donation, 'setDonator' . ucfirst($key)), $value);
+        if (count($userData) === 6) {
+            $donation->setDonatorFirstname($userData['firstName'])
+                     ->setDonatorLastname($userData['lastName'])
+                     ->setDonatorEmail($userData['email'])
+                     ->setDonatorStreetAddress($userData['streetAddress'])
+                     ->setDonatorZip($userData['zip'])
+                     ->setDonatorCity($userData['city'])
+                     ->setDonatorCountrycode($languageCode);
         }
-        if (count($userData) > 0) {
-            $donation->setDonatorCountrycode($languageCode);
-        }
+
         try {
             $donation->save();
         } catch (Exception $exception) {

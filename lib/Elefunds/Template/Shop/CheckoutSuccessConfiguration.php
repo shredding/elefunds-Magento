@@ -98,8 +98,6 @@ class Library_Elefunds_Template_Shop_CheckoutSuccessConfiguration extends Librar
 
         $this->view->addCssFile('elefunds.min.css');
 
-
-
         // L18n
         if ($this->countrycode === 'de') {
             $this->view->assign('tellAboutIt', 'Juhu! Vielen Dank für Deine Spende.');

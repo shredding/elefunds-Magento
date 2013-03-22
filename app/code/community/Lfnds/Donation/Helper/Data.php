@@ -52,9 +52,9 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $virtualProduct;
 
     /**
-     * @var Library_Elefunds_Facade
+     * @var array
      */
-    protected $facade;
+    protected $facade = array();
 
     /**
      * @var array
@@ -68,10 +68,9 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return Library_Elefunds_Facade
      */
     public function getConfiguredFacade($checkoutSuccess = FALSE) {
+        $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
 
-        if ($this->facade === NULL) {
-
-            $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
+        if (!isset($this->facade[$configurationType])) {
 
             $configPath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Template'
                         . DS . 'Shop' . DS . $configurationType . 'Configuration.php';
@@ -94,10 +93,10 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                           ->setApiKey($apiKey)
                           ->setCountrycode($countryCode);
 
-            $this->facade = new Library_Elefunds_Facade($configuration);
+            $this->facade[$configurationType] = new Library_Elefunds_Facade($configuration);
         }
 
-        return $this->facade;
+        return $this->facade[$configurationType];
     }
 
 

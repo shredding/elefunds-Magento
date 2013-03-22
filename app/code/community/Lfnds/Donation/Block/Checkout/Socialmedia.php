@@ -118,19 +118,19 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
 
         /** @var Library_Elefunds_Facade $facade  */
         $facade = $this->helper->getConfiguredFacade(TRUE);
-        $donationItem = Mage::getModel('lfnds_donation/donation');
 
+        $donationItem = Mage::getModel('lfnds_donation/donation');
         /** @var Lfnds_Donation_Model_Donation $donationItem */
-        $donationItem->loadByAttribute('foreign_id', $order->getId());
+        $donationItem->loadByAttribute('foreign_id', $order->getIncrementId());
+
         if ($donationItem->getId()) {
             $receivers = $this->helper->getReceivers();
 
             $receiverIds = $donationItem->getReceiverIds();
             $receiversArray = array();
-
             foreach ($receivers as $receiver) {
-                if (in_array($receiver->getId(), $receiverIds)) {
-                    $receiversArray[$receiver->getId()]=$receiver->getName();
+                if (in_array($receiver->getId(TRUE), $receiverIds)) {
+                    $receiversArray[$receiver->getId(TRUE)] = $receiver->getName();
                 }
             }
 

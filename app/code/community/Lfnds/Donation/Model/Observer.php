@@ -131,7 +131,6 @@ class Lfnds_Donation_Model_Observer
                 )
             );
 
-            FB::log($coreSession->getData('elefunds'));
             /** ^^^ Add to session ^^^ */
 
         }
@@ -204,12 +203,13 @@ class Lfnds_Donation_Model_Observer
      */
     public function onOrderSaved(Varien_Event_Observer $observer)
     {
+
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
 
         /** @var Lfnds_Donation_Model_Donation $donation  */
         $donation = Mage::getModel('lfnds_donation/donation');
-        $donation->loadByAttribute('foreign_id', $order->getId());
+        $donation->loadByAttribute('foreign_id', $order->getIncrementId());
 
         if ($donation !== NULL) {
             $stateHasChanged = $order->getData('state') !== $order->getOrigData('state');
@@ -217,7 +217,6 @@ class Lfnds_Donation_Model_Observer
             if ($stateHasChanged) {
 
                 $newState = $order->getData('state');
-
                 // We have to map the magento states to API states ...
                 $statesToBeMappedToAddingState = array(
                     Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
@@ -244,6 +243,7 @@ class Lfnds_Donation_Model_Observer
                 if (in_array($newState, $statesToBeMappedToVerificationState)) {
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION;
                 }
+
 
                 if ($stateToBySyncedToTheApi > -1) {
                     if ($donation->getState() !== $stateToBySyncedToTheApi) {

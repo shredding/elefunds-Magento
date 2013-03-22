@@ -226,14 +226,12 @@ class Library_Elefunds_Facade {
 
           if (count($donationIds) > 0) {
               $isValidArray = $donationIds === array_filter($donationIds, create_function('$donationIds', 'return is_int($donationIds) && $donationIds > 0;'));
-
               if (!$isValidArray) {
                   throw new InvalidArgumentException('Given array is not made up of integers only', 1348237365947);
               }
               $restUrl = $this->configuration->getApiUrl() . '/donations/delete/?clientId=' . $this->configuration->getClientId() . '&hashedKey=' . $this->configuration->getHashedKey();
 
               $body = json_encode($donationIds);
-
               $response = json_decode($this->configuration->getRestImplementation()->post($restUrl, $body), TRUE);
               return $response['message'];
           } else {
