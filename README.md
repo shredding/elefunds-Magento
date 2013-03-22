@@ -1,2 +1,2 @@
-magento-module
-==============
+magento
+=======
