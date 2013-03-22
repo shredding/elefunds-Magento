@@ -1,4 +1,4 @@
 magento v1.0.0
 ==============
 
-The elefunds
+The elefunds donation module
