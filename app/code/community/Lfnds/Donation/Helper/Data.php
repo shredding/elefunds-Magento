@@ -84,7 +84,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             /** @var Library_Elefunds_Configuration_ConfigurationInterface $configuration  */
             $configuration = new $className();
 
-            $magentoConfigBasePath = 'elefunds/config';
+            $magentoConfigBasePath = 'lfnds_donation/config';
             $clientId = Mage::getStoreConfig($magentoConfigBasePath . '/client_id');
             $apiKey = Mage::getStoreConfig($magentoConfigBasePath . '/api_key');
             $countryCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);

@@ -119,7 +119,7 @@
                 <observers>
                     <limitPayments>
                         <type>model</type>
-                        <class>lfnds_donation_read/observer</class>
+                        <class>lfnds_donation/observer</class>
                         <method>limitPayments</method>
                     </limitPayments>
                 </observers>

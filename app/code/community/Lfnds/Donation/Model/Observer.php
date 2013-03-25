@@ -252,13 +252,13 @@ class Lfnds_Donation_Model_Observer
             ->getCode();
 
 
-        $path = 'elefunds/config/authorized_payment_methods';
+        $path = 'lfnds_donation/config/excluded_payment_methods';
         $storeId = Mage::app()->getStore()->getId();
 
-        $authorizedMethodsAsString = Mage::getStoreConfig($path, $storeId);
-        $authorizedMethods = !empty($authorizedMethodsAsString) ? explode(',', $authorizedMethodsAsString) : array();
-
-        if (in_array($paymentCode, $authorizedMethods)) {
+        $excludedMethodsAsString = Mage::getStoreConfig($path, $storeId);
+        $excludedMethods = !empty($excludedMethodsAsString) ? explode(',', $excludedMethodsAsString) : array();
+        FB::log($excludedMethods);
+        if (in_array($paymentCode, $excludedMethods)) {
             $block->deactivateBanner();
         }
     }
@@ -280,7 +280,7 @@ class Lfnds_Donation_Model_Observer
      */
     protected function getElefundsVariablesFromRequestParams(array $params) {
 
-        $path = 'elefunds/config/active';
+        $path = 'lfnds_donation/config/active';
         $isActive = Mage::getStoreConfig($path);
 
         $elefundsVariables = array();

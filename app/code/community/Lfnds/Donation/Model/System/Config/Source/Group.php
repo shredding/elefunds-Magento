@@ -56,11 +56,11 @@ class Lfnds_Donation_Model_System_Config_Source_Group
             $options = Mage::getSingleton('payment/config')->getActiveMethods();
             foreach ($options as $code=>$value) {
                 $optionsArray[] = array(
-                   'value' => $code,
-                   'label' => Mage::getStoreConfig('payment/'.$code.'/title'),
+                   'value'      => $code,
+                   'label'      => Mage::getStoreConfig('payment/' . $code . '/title'),
                 );
             }         
-            $this->_options=$optionsArray; 
+            $this->_options = $optionsArray;
         }
 
         $options = $this->_options;
@@ -68,8 +68,8 @@ class Lfnds_Donation_Model_System_Config_Source_Group
         if(!$isMultiselect){
             array_unshift($options,
                 array(
-                    'value' =>  '',
-                    'label'=> Mage::helper('adminhtml')->__('--Please Select--')
+                    'value'     =>  '',
+                    'label'     => Mage::helper('adminhtml')->__('--Please Select--'),
                 )
             );
         }
