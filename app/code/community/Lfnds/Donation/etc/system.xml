@@ -74,4 +74,12 @@
             </groups>
         </lfnds_donation>
     </sections>
+
+    <default>
+        <lfnds_donation>
+            <config>
+                <banner_width>681</banner_width>
+            </config>
+        </lfnds_donation>
+    </default>
 </config>
