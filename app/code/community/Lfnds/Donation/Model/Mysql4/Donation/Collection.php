@@ -82,10 +82,10 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
      * @param array $userData
      * @param string $languageCode
      * @param int $suggestedRoundUp
+     * @param int $status
      * @return void
      */
     public function addDonation($foreignId, $roundup, $grandTotal, array $receivers, array $availableReceivers, array $userData, $languageCode, $suggestedRoundUp = 0, $status = 0) {
-        $now = new DateTime();
 
         $donation = new Lfnds_Donation_Model_Donation();
         $donation->setForeignId($foreignId)
@@ -93,7 +93,7 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
             ->setGrandTotal((int)$grandTotal)
             ->setReceiverIds($receivers)
             ->setAvailableReceiverIds($availableReceivers)
-            ->setTime($now->format('Y-m-d H:i:s'))
+            ->setTime(new DateTime(NULL, new \DateTimeZone('UTC')))
             ->setSuggestedAmount((int)$suggestedRoundUp)
             ->setState($status);
 

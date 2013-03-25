@@ -71,6 +71,25 @@ class Lfnds_Donation_Model_Donation extends Mage_Core_Model_Abstract
         return $this;
     }
 
+    /**
+     * Timestamp wrapper for time.
+     *
+     * @param DateTime $time
+     * @return $this
+     */
+    public function setTime(DateTime $time) {
+        parent::setTime($time->format('Y-m-d H:i:s'));
+        return $this;
+    }
+
+    /**
+     * Timestamp wrapper for time.
+     *
+     * @return DateTime
+     */
+    public function getTime() {
+        return Datetime::createFromFormat('Y-m-d H:i:s', parent::getTime(), new DateTimeZone('UTC'));
+    }
 
     /**
      * Sets all receivers and maps them to a csv for the database.

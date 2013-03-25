@@ -77,6 +77,26 @@ class Lfnds_Donation_Model_Receiver extends Mage_Core_Model_Abstract
         return parent::getImage();
     }
 
+    /**
+     * Timestamp wrapper for time.
+     *
+     * @param DateTime $time
+     * @return $this
+     */
+    public function setValid(DateTime $time) {
+        parent::setValid($time->format('Y-m-d H:i:s'));
+        return $this;
+    }
+
+    /**
+     * Timestamp wrapper for time.
+     *
+     * @return DateTime
+     */
+    public function getValid() {
+        return Datetime::createFromFormat('Y-m-d H:i:s', parent::getValid(), new DateTimeZone('UTC'));
+    }
+
     protected function _construct()
     {
         $this->_init('lfnds_donation/receiver');

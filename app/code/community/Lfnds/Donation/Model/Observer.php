@@ -87,9 +87,11 @@ class Lfnds_Donation_Model_Observer
         $params = Mage::app()->getRequest()->getParams();
         $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
 
-        $elefundsProduct->setPrice($elefundsVariables['roundup'] / 100);
-        $elefundsProduct->setBasePrice($elefundsVariables['roundup'] / 100);
-        $quote->addProduct($elefundsProduct);
+        if (count($elefundsVariables) > 0) {
+            $elefundsProduct->setPrice($elefundsVariables['roundup'] / 100);
+            $elefundsProduct->setBasePrice($elefundsVariables['roundup'] / 100);
+            $quote->addProduct($elefundsProduct);
+        }
 
     }
 
@@ -102,39 +104,44 @@ class Lfnds_Donation_Model_Observer
      * @return void
      */
     public function onSaveOrderAfter(Varien_Event_Observer $observer) {
-        /* @var $order Mage_Sales_Model_Order */
-        $order = $observer->getEvent()->getOrder();
 
         $params = Mage::app()->getRequest()->getParams();
         $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
 
-        if ($elefundsVariables['isReceiptRequested']) {
-            $billingAddress = $order->getBillingAddress();
-            $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
-            $user = array(
-                'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
-                'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
-                'email'          =>  $billingAddress->getEmail(),
-                'streetAddress'  =>  $streets[0],
-                'zip'            =>  (int)$billingAddress->getPostcode(),
-                'city'           =>   $billingAddress->getCity()
+        if(count($elefundsVariables) > 0) {
+
+            /* @var $order Mage_Sales_Model_Order */
+            $order = $observer->getEvent()->getOrder();
+
+            if ($elefundsVariables['isReceiptRequested']) {
+                $billingAddress = $order->getBillingAddress();
+                $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
+                $user = array(
+                    'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
+                    'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
+                    'email'          =>  $billingAddress->getEmail(),
+                    'streetAddress'  =>  $streets[0],
+                    'zip'            =>  (int)$billingAddress->getPostcode(),
+                    'city'           =>   $billingAddress->getCity()
+                );
+            } else {
+                $user = array();
+            }
+
+            /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
+            $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
+            $donationCollection->addDonation(
+                $order->getIncrementId(),
+                $elefundsVariables['roundup'],
+                $order->getTotalDue() * 100,
+                $elefundsVariables['receiverIds'],
+                $this->helper->getAvailableReceiverIds(),
+                $user,
+                $order->getBillingAddress()->getCountryId(),
+                $elefundsVariables['suggestedRoundUp'],
+                Lfnds_Donation_Model_Donation::NEW_ORDER
             );
-        } else {
-            $user = array();
         }
-        /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
-        $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
-        $donationCollection->addDonation(
-            $order->getIncrementId(),
-            $elefundsVariables['roundup'],
-            $order->getTotalDue() * 100,
-            $elefundsVariables['receiverIds'],
-            $this->helper->getAvailableReceiverIds(),
-            $user,
-            $order->getBillingAddress()->getCountryId(),
-            $elefundsVariables['suggestedRoundUp'],
-            Lfnds_Donation_Model_Donation::NEW_ORDER
-        );
     }
 
     /**
@@ -181,7 +188,6 @@ class Lfnds_Donation_Model_Observer
      */
     public function onOrderSaved(Varien_Event_Observer $observer)
     {
-
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
 

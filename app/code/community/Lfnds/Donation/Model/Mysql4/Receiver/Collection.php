@@ -88,7 +88,7 @@ class Lfnds_Donation_Model_Mysql4_Receiver_Collection extends Mage_Core_Model_My
             $entity->setReceiverId($receiver->getId())
                    ->setName($receiver->getName())
                    ->setImage($receiver->getImage('horizontal', 'medium'))
-                   ->setValid($receiver->getValidTime()->format('Y-m-d H:i:s'))
+                   ->setValid($receiver->getValidTime())
                    ->setDescription($receiver->getDescription())
                    ->setCountrycode($languageCode);
 

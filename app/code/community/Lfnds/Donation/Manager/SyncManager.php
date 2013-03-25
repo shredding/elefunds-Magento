@@ -205,7 +205,7 @@ class Lfnds_Donation_Manager_SyncManager
                 ->setGrandTotal($donationModel->getGrandTotal())
                 ->setReceiverIds($donationModel->getReceiverIds())
                 ->setAvailableReceiverIds($donationModel->getAvailableReceiverIds())
-                ->setTime(new DateTime());
+                ->setTime($donationModel->getTime());
 
             try {
                 $donation->setDonator(

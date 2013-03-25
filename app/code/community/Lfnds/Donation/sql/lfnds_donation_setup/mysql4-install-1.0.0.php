@@ -61,8 +61,6 @@ define('ELEFUNDS_VIRTUAL_PRODUCT_SKU', 'elefunds-donation');
  */
 $donationProduct = Mage::getModel('catalog/product')->getIdBySku(ELEFUNDS_VIRTUAL_PRODUCT_SKU);
 
-
-
 /**
  * Adding donationProduct to catalog/product if not already created
  */
@@ -104,50 +102,50 @@ if (!$donationProduct) {
 if (!$installer->tableExists('lfnds_donation_donation')) {
     $donationTable = $installer->getConnection()
         ->newTable($installer->getTable('lfnds_donation_donation'))
-        ->addColumn('donation_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'unsigned' => true,
-            'identity' => true,
-            'nullable' => false,
-            'primary' => true,
+        ->addColumn('donation_id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'unsigned' => TRUE,
+            'identity' => TRUE,
+            'nullable' => FALSE,
+            'primary' => TRUE,
         ), 'Donation ID')
         ->addColumn('foreign_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-            'nullable' => false,
+            'nullable' => FALSE,
         ), 'Store ID')
-        ->addColumn('amount', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'nullable' => true,
+        ->addColumn('amount', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'nullable' => TRUE,
         ), 'Amount')
-        ->addColumn('suggested_amount', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'nullable' => true,
+        ->addColumn('suggested_amount', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'nullable' => TRUE,
         ), 'Suggested Amount')
-        ->addColumn('grand_total', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'nullable' => true,
+        ->addColumn('grand_total', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'nullable' => TRUE,
         ), 'Suggested Amount')
         ->addColumn('receiver_ids', Varien_Db_Ddl_Table::TYPE_VARCHAR, 45, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Receiver Ids')
         ->addColumn('available_receiver_ids', Varien_Db_Ddl_Table::TYPE_VARCHAR, 45, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Available Receiver Ids')
-        ->addColumn('time', Varien_Db_Ddl_Table::TYPE_DATE, null, array(
-            'nullable' => true,
+        ->addColumn('time', Varien_Db_Ddl_Table::TYPE_DATETIME, NULL, array(
+            'nullable' => FALSE,
         ), 'Time')
         ->addColumn('donator_firstname', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Donator Firstname')
         ->addColumn('donator_lastname', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Donator Lastname')
-        ->addColumn('donator_zip', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'nullable' => true,
+        ->addColumn('donator_zip', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'nullable' => TRUE,
         ), 'Donator ZIP Code')
         ->addColumn('donator_city', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Donator Citry')
         ->addColumn('donator_countrycode', Varien_Db_Ddl_Table::TYPE_VARCHAR, 2, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Donator Countrycode')
         ->addColumn('state', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
-            'nullable' => false,
+            'nullable' => FALSE,
         ), 'The donation state');
 
     $installer->getConnection()->createTable($donationTable);
@@ -159,30 +157,30 @@ if (!$installer->tableExists('lfnds_donation_donation')) {
 if (!$installer->tableExists('lfnds_donation_receiver')) {
     $receiverTable = $installer->getConnection()
         ->newTable($installer->getTable('lfnds_donation_receiver'))
-        ->addColumn('internal_identifier', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'unsigned' => false,
-            'identity' => true,
-            'nullable' => false,
-            'primary' => true,
+        ->addColumn('internal_identifier', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'unsigned' => FALSE,
+            'identity' => TRUE,
+            'nullable' => FALSE,
+            'primary' => TRUE,
         ), 'Internal Identifier for magento')
-        ->addColumn('receiver_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-            'unsigned' => false,
-            'nullable' => false,
+        ->addColumn('receiver_id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
+            'unsigned' => FALSE,
+            'nullable' => FALSE,
         ), 'Receiver ID')
         ->addColumn('name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 45, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Receiver ID')
         ->addColumn('countrycode', Varien_Db_Ddl_Table::TYPE_VARCHAR, 5, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Country Code')
         ->addColumn('description', Varien_Db_Ddl_Table::TYPE_VARCHAR, 200, array(
-            'nullable' => true,
+            'nullable' => TRUE,
         ), 'Description')
-        ->addColumn('image', Varien_Db_Ddl_Table::TYPE_LONGVARCHAR, null, array(
-            'nullable' => true,
+        ->addColumn('image', Varien_Db_Ddl_Table::TYPE_LONGVARCHAR, NULL, array(
+            'nullable' => TRUE,
         ), 'Image URL')
-        ->addColumn('valid', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-            'nullable' => false,
+        ->addColumn('valid', Varien_Db_Ddl_Table::TYPE_DATETIME, NULL, array(
+            'nullable' => FALSE,
         ), 'Valid');
 
     $installer->getConnection()->createTable($receiverTable);
