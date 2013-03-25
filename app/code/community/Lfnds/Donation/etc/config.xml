@@ -126,20 +126,29 @@
             </elefunds_checkout_review_before_enable>
             <controller_action_predispatch_checkout_onepage_saveOrder>
                 <observers>
-                    <addDonation>
+                    <addDonationToBasket>
                         <type>model</type>
                         <class>lfnds_donation/observer</class>
-                        <method>onSaveOrder</method>
-                    </addDonation>
+                        <method>onPreDispatchSaveOrder</method>
+                    </addDonationToBasket>
                 </observers>
             </controller_action_predispatch_checkout_onepage_saveOrder>
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <addDonationToElefundsModel>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onSaveOrderAfter</method>
+                    </addDonationToElefundsModel>
+                </observers>
+            </checkout_type_onepage_save_order_after>
             <checkout_onepage_controller_success_action>
                 <observers>
-                    <captureDonation>
+                    <updateDonationStateAndSync>
                         <type>model</type>
                         <class>lfnds_donation/observer</class>
                         <method>onOrderFinished</method>
-                    </captureDonation>
+                    </updateDonationStateAndSync>
                 </observers>
             </checkout_onepage_controller_success_action>
             <sales_quote_item_set_product>

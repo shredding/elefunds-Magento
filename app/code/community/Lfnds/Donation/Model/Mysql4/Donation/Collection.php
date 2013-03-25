@@ -84,7 +84,7 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
      * @param int $suggestedRoundUp
      * @return void
      */
-    public function addDonation($foreignId, $roundup, $grandTotal, array $receivers, array $availableReceivers, array $userData, $languageCode, $suggestedRoundUp = 0) {
+    public function addDonation($foreignId, $roundup, $grandTotal, array $receivers, array $availableReceivers, array $userData, $languageCode, $suggestedRoundUp = 0, $status = 0) {
         $now = new DateTime();
 
         $donation = new Lfnds_Donation_Model_Donation();
@@ -94,7 +94,8 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
             ->setReceiverIds($receivers)
             ->setAvailableReceiverIds($availableReceivers)
             ->setTime($now->format('Y-m-d H:i:s'))
-            ->setSuggestedAmount((int)$suggestedRoundUp);
+            ->setSuggestedAmount((int)$suggestedRoundUp)
+            ->setState($status);
 
         if (count($userData) === 6) {
             $donation->setDonatorFirstname($userData['firstName'])

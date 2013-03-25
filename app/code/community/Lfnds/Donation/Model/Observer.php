@@ -66,94 +66,81 @@ class Lfnds_Donation_Model_Observer
     }
 
     /**
-     * Dispatched when the order is saved.
+     * Adds the virtual product to the quote, so it's in included in the
+     * processed order on save order after.
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
+    public function onPreDispatchSaveOrder(Varien_Event_Observer $observer) {
+
+        /** @var Mage_Checkout_Model_Session $checkoutSession  */
+        $checkoutSession = Mage::getSingleton('checkout/session');
+        $quote = $checkoutSession->getQuote();
+
+        /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
+        $elefundsProduct = $this->helper->getVirtualProduct();
+
+        if ($elefundsProduct === NULL) {
+            Mage::log('Elefunds object not found on store!');
+            return;
+        }
+
+        if ($quote->hasProductId($elefundsProduct->getId())) {
+            return;
+        }
+
+        $params = Mage::app()->getRequest()->getParams();
+        $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
+
+        $elefundsProduct->setPrice($elefundsVariables['roundup'] / 100);
+        $elefundsProduct->setBasePrice($elefundsVariables['roundup'] / 100);
+        $quote->addProduct($elefundsProduct);
+
+    }
+
+    /**
+     * Dispatched after the order is saved.
      *
      * Manipulates the quote with an elefunds virtual product.
      *
      * @param Varien_Event_Observer $observer
      * @return void
      */
-    public function onSaveOrder(Varien_Event_Observer $observer)
-    {
+    public function onSaveOrderAfter(Varien_Event_Observer $observer) {
         /* @var $order Mage_Sales_Model_Order */
-        $order= $observer->getEvent()->getOrder();
-
-        /** @var Mage_Checkout_Model_Session $checkoutSession  */
-        $checkoutSession = Mage::getSingleton('checkout/session');
-        $quote = $checkoutSession->getQuote();
-
-        $path = 'elefunds/config/active';
-        $isActive = Mage::getStoreConfig($path);
-
+        $order = $observer->getEvent()->getOrder();
 
         $params = Mage::app()->getRequest()->getParams();
-        if ($isActive && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
+        $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
 
-            /** +++ Input Validation +++ */
-            $roundup  = (int)$params['elefunds_donation_cent'];
-            $receiverIds = array_map(function($x) { return (int)$x; }, $params['elefunds_receiver']);
-
-            if (isset($params['elefunds_suggested_round_up_cent']) && ctype_digit($params['elefunds_suggested_round_up_cent'])) {
-                $suggestedRoundUp = (int)$params['elefunds_suggested_round_up_cent'];
-            } else {
-                $suggestedRoundUp = 0;
-            }
-
-            $isReceiptRequested = isset($params['elefunds_receipt_input']);
-
-            if ($isReceiptRequested) {
-                $billingAddress = $order->getBillingAddress();
-                $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
-                $user = array(
-                    'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
-                    'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
-                    'email'          =>  $billingAddress->getEmail(),
-                    'streetAddress'  =>  $streets[0],
-                    'zip'            =>  (int)$billingAddress->getPostcode(),
-                    'city'           =>   $billingAddress->getCity()
-                );
-            } else {
-                $user = array();
-            }
-
-            /** ^^^ Input Validation ^^^ */
-
-            /** +++ Add to quote +++ */
-
-            /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
-            $elefundsProduct = $this->helper->getVirtualProduct();
-
-            if ($elefundsProduct === NULL) {
-                Mage::log('Elefunds object not found on store!');
-                return;
-            }
-
-            if ($quote->hasProductId($elefundsProduct->getId())) {
-                return;
-            }
-
-            $elefundsProduct->setPrice($roundup/100);
-            $elefundsProduct->setBasePrice($roundup/100);
-            $quote->addProduct($elefundsProduct);
-
-            /** ^^^ Add to quote ^^^ */
-
-            /** +++ Add donation to elefunds model +++ */
-
-            /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
-            $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
-            $donationCollection->addDonation(
-                $order->getIncrementId(),
-                $roundup,
-                $order->getTotalDue() * 100,
-                $receiverIds,
-                $this->helper->getAvailableReceiverIds(),
-                $user,
-                $order->getBillingAddress()->getCountryId(),
-                $suggestedRoundUp
+        if ($elefundsVariables['isReceiptRequested']) {
+            $billingAddress = $order->getBillingAddress();
+            $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
+            $user = array(
+                'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
+                'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
+                'email'          =>  $billingAddress->getEmail(),
+                'streetAddress'  =>  $streets[0],
+                'zip'            =>  (int)$billingAddress->getPostcode(),
+                'city'           =>   $billingAddress->getCity()
             );
-            /** ^^^ Add donation to elefunds model ^^^ */
+        } else {
+            $user = array();
         }
+        /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
+        $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
+        $donationCollection->addDonation(
+            $order->getIncrementId(),
+            $elefundsVariables['roundup'],
+            $order->getTotalDue() * 100,
+            $elefundsVariables['receiverIds'],
+            $this->helper->getAvailableReceiverIds(),
+            $user,
+            $order->getBillingAddress()->getCountryId(),
+            $elefundsVariables['suggestedRoundup'],
+            Lfnds_Donation_Model_Donation::NEW_ORDER
+        );
     }
 
     /**
@@ -285,6 +272,40 @@ class Lfnds_Donation_Model_Observer
         if ($product->getSku() == Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             $quoteItem->setNoDiscount(TRUE);
         }
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     */
+    protected function getElefundsVariablesFromRequestParams(array $params) {
+
+        $path = 'elefunds/config/active';
+        $isActive = Mage::getStoreConfig($path);
+
+        $elefundsVariables = array();
+
+
+        if ($isActive && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
+
+            /** +++ Input Validation +++ */
+
+            $elefundsVariables['roundup']  = (int)$params['elefunds_donation_cent'];
+            $elefundsVariables['receiverIds'] = array_map(function($x) { return (int)$x; }, $params['elefunds_receiver']);
+
+            if (isset($params['elefunds_suggested_round_up_cent']) && ctype_digit($params['elefunds_suggested_round_up_cent'])) {
+                $elefundsVariables['suggestedRoundUp'] = (int)$params['elefunds_suggested_round_up_cent'];
+            } else {
+                $elefundsVariables['suggestedRoundUp'] = 0;
+            }
+
+            $elefundsVariables['isReceiptRequested'] = isset($params['elefunds_receipt_input']);
+
+            /** +++ Input Validation +++ */
+
+        }
+
+        return $elefundsVariables;
     }
 }
 
