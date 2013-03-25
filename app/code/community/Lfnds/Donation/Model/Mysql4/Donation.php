@@ -1,6 +1,6 @@
 <?
 /**
- * elefunds Shopware Module
+ * elefunds Magento Module
  *
  * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
  * All rights reserved.

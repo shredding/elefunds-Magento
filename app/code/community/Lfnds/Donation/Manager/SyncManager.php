@@ -67,7 +67,7 @@ class Lfnds_Donation_Manager_SyncManager
      * Retrieves fresh sets of receivers.
      *
      * The sync is done for the german and english language. For convenience,
-     * the receivers of the current shopware locale are returned.
+     * the receivers of the current magento locale are returned.
      *
      * @return array with receivers of the facade's original countrycode
      */
