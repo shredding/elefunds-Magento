@@ -45,7 +45,6 @@ app/etc/enterprise.xml
 app/etc/local.xml.additional
 app/etc/local.xml.template
 app/.htaccess
-app/locale/
 app/Mage.php
 cron.php
 cron.sh
@@ -116,3 +115,7 @@ skin/frontend/default/modern/
 skin/frontend/enterprise
 skin/install/
 var/
+app/locale/en_US/Mage_*
+app/locale/en_US/Phoenix_*
+app/locale/de_DE/Mage_*
+app/locale/de_DE/Phoenix_*
