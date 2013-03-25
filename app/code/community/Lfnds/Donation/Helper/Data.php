@@ -121,7 +121,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             ->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
 
             if ($receiversCollection->getSize() < 3) {
-                $syncManager = new Lfnds_Donation_Helper_SyncManager($this->getConfiguredFacade());
+                $syncManager = new Lfnds_Donation_Manager_SyncManager($this->getConfiguredFacade());
                 $this->receivers = $syncManager->syncReceivers();
 
                 if (count($this->receivers) < 3) {

@@ -39,14 +39,14 @@
  * Syncs between database and API.
  *
  * @package    elefunds Magento Module
- * @subpackage Helper
+ * @subpackage Manager
  * @author     Christian Peters <christian@elefunds.de>
  * @copyright  2012 elefunds GmbH <hello@elefunds.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Lfnds_Donation_Helper_SyncManager
+class Lfnds_Donation_Manager_SyncManager
 {
 
     /**

@@ -56,13 +56,13 @@ class Lfnds_Donation_Model_Observer
     protected $helper;
 
     /**
-     * @var Lfnds_Donation_Helper_SyncManager
+     * @var Lfnds_Donation_Manager_SyncManager
      */
     protected $syncManager;
 
     public function __construct() {
         $this->helper = Mage::helper('lfnds_donation');
-        $this->syncManager = new Lfnds_Donation_Helper_SyncManager($this->helper->getConfiguredFacade());
+        $this->syncManager = new Lfnds_Donation_Manager_SyncManager($this->helper->getConfiguredFacade());
     }
 
     /**
