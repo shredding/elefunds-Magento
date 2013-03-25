@@ -138,7 +138,7 @@ class Lfnds_Donation_Model_Observer
             $this->helper->getAvailableReceiverIds(),
             $user,
             $order->getBillingAddress()->getCountryId(),
-            $elefundsVariables['suggestedRoundup'],
+            $elefundsVariables['suggestedRoundUp'],
             Lfnds_Donation_Model_Donation::NEW_ORDER
         );
     }
@@ -258,7 +258,7 @@ class Lfnds_Donation_Model_Observer
         $authorizedMethodsAsString = Mage::getStoreConfig($path, $storeId);
         $authorizedMethods = !empty($authorizedMethodsAsString) ? explode(',', $authorizedMethodsAsString) : array();
 
-        if (!in_array($paymentCode, $authorizedMethods)) {
+        if (in_array($paymentCode, $authorizedMethods)) {
             $block->deactivateBanner();
         }
     }

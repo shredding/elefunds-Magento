@@ -56,11 +56,11 @@
         <events>
             <sales_order_save_after>
                 <observers>
-                    <captureDonation>
+                    <syncDonationOnChangedState>
                         <type>model</type>
                         <class>lfnds_donation/observer</class>
                         <method>onOrderSaved</method>
-                    </captureDonation>
+                    </syncDonationOnChangedState>
                 </observers>
             </sales_order_save_after>
         </events>

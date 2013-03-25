@@ -36,7 +36,7 @@
  */
 
 /**
- * General helper function to access and configure the SDK in magento
+ * Retrieves available payment groups.
  *
  * @package    elefunds Magento Module
  * @subpackage Model
@@ -50,8 +50,7 @@ class Lfnds_Donation_Model_System_Config_Source_Group
 {
     protected $_options;
     
-    // @todo analyze this class
-    public function toOptionArray($isMultiselect=false)
+    public function toOptionArray($isMultiselect = FALSE)
     {
         if (!$this->_options) {
             $options = Mage::getSingleton('payment/config')->getActiveMethods();
@@ -65,8 +64,14 @@ class Lfnds_Donation_Model_System_Config_Source_Group
         }
 
         $options = $this->_options;
+
         if(!$isMultiselect){
-            array_unshift($options, array('value'=>'', 'label'=> Mage::helper('adminhtml')->__('--Please Select--')));
+            array_unshift($options,
+                array(
+                    'value' =>  '',
+                    'label'=> Mage::helper('adminhtml')->__('--Please Select--')
+                )
+            );
         }
 
         return $options;
