@@ -49,6 +49,9 @@
  */
 class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
 
+    /**
+     * @var Mage_Core_Model_Abstract
+     */
     protected $virtualProduct;
 
     /**
@@ -60,6 +63,11 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * @var array
      */
     protected $receivers;
+
+    /**
+     * @var Lfnds_Donation_Manager
+     */
+    protected $syncManager;
 
     /**
      * Configures the facade based on the plugin settings and the current locale.
@@ -121,8 +129,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             ->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
 
             if ($receiversCollection->getSize() < 3) {
-                $syncManager = new Lfnds_Donation_Manager_SyncManager($this->getConfiguredFacade());
-                $this->receivers = $syncManager->syncReceivers();
+                $this->receivers = $this->getSyncManager()->syncReceivers();
 
                 if (count($this->receivers) < 3) {
                     // Okay, this line of code will hopefully never execute! We do ALWAYS provide three receivers.
@@ -170,6 +177,14 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         return $this->virtualProduct;
+    }
+
+    public function getSyncManager() {
+        if ($this->syncManager === NULL) {
+            $this->syncManager = new Lfnds_Donation_Manager_SyncManager($this->getConfiguredFacade());
+        }
+
+        return $this->syncManager;
     }
 
 }

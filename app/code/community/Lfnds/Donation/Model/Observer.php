@@ -55,14 +55,8 @@ class Lfnds_Donation_Model_Observer
      */
     protected $helper;
 
-    /**
-     * @var Lfnds_Donation_Manager_SyncManager
-     */
-    protected $syncManager;
-
     public function __construct() {
         $this->helper = Mage::helper('lfnds_donation');
-        $this->syncManager = new Lfnds_Donation_Manager_SyncManager($this->helper->getConfiguredFacade());
     }
 
     /**
@@ -174,7 +168,7 @@ class Lfnds_Donation_Model_Observer
                 $donation->save();
             }
 
-            $this->syncManager->syncDonations();
+            $this->helper->getSyncManager()->syncDonations();
         }
     }
 
@@ -232,7 +226,7 @@ class Lfnds_Donation_Model_Observer
                     if ($donation->getState() !== $stateToBySyncedToTheApi) {
                         $donation->setState($stateToBySyncedToTheApi);
                         $donation->save();
-                        $this->syncManager->syncDonations();
+                        $this->helper->getSyncManager()->syncDonations();
                     }
                 }
             }
@@ -257,7 +251,7 @@ class Lfnds_Donation_Model_Observer
 
         $excludedMethodsAsString = Mage::getStoreConfig($path, $storeId);
         $excludedMethods = !empty($excludedMethodsAsString) ? explode(',', $excludedMethodsAsString) : array();
-        FB::log($excludedMethods);
+
         if (in_array($paymentCode, $excludedMethods)) {
             $block->deactivateBanner();
         }
@@ -307,5 +301,6 @@ class Lfnds_Donation_Model_Observer
 
         return $elefundsVariables;
     }
+
 }
 
