@@ -55,12 +55,13 @@ class Lfnds_Donation_Model_Donation extends Mage_Core_Model_Abstract
      * Donation states
      */
     const
-        SCHEDULED_FOR_ADDING          = 0,
-        SCHEDULED_FOR_CANCELLATION    = 1,
-        SCHEDULED_FOR_VERIFICATION    = 2,
-        PENDING                       = 3,
-        CANCELLED                     = 4,
-        VERIFIED                      = 5;
+        NEW_ORDER                     =  0,
+        SCHEDULED_FOR_ADDING          =  1,
+        SCHEDULED_FOR_CANCELLATION    =  2,
+        SCHEDULED_FOR_VERIFICATION    =  3,
+        PENDING                       =  4,
+        CANCELLED                     =  5,
+        VERIFIED                      =  6;
 
     const ELEFUNDS_VIRTUAL_PRODUCT_SKU = 'elefunds-donation';
 

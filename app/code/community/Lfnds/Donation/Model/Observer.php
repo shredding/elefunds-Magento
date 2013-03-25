@@ -75,6 +75,8 @@ class Lfnds_Donation_Model_Observer
      */
     public function onSaveOrder(Varien_Event_Observer $observer)
     {
+        /* @var $order Mage_Sales_Model_Order */
+        $order= $observer->getEvent()->getOrder();
 
         /** @var Mage_Checkout_Model_Session $checkoutSession  */
         $checkoutSession = Mage::getSingleton('checkout/session');
@@ -99,6 +101,21 @@ class Lfnds_Donation_Model_Observer
 
             $isReceiptRequested = isset($params['elefunds_receipt_input']);
 
+            if ($isReceiptRequested) {
+                $billingAddress = $order->getBillingAddress();
+                $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
+                $user = array(
+                    'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
+                    'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
+                    'email'          =>  $billingAddress->getEmail(),
+                    'streetAddress'  =>  $streets[0],
+                    'zip'            =>  (int)$billingAddress->getPostcode(),
+                    'city'           =>   $billingAddress->getCity()
+                );
+            } else {
+                $user = array();
+            }
+
             /** ^^^ Input Validation ^^^ */
 
             /** +++ Add to quote +++ */
@@ -119,20 +136,23 @@ class Lfnds_Donation_Model_Observer
             $elefundsProduct->setBasePrice($roundup/100);
             $quote->addProduct($elefundsProduct);
 
-            /** ^^^ Add to quote */
+            /** ^^^ Add to quote ^^^ */
 
-            /** +++ Add to session +++ */
-            $coreSession = Mage::getSingleton('core/session');
-            $coreSession->setData('elefunds', array(
-                    'receiverIds'           => $receiverIds,
-                    'roundup'               => $roundup,
-                    'isReceiptRequested'    => $isReceiptRequested,
-                    'suggestedRoundUp'      => $suggestedRoundUp,
-                )
+            /** +++ Add donation to elefunds model +++ */
+
+            /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
+            $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
+            $donationCollection->addDonation(
+                $order->getIncrementId(),
+                $roundup,
+                $order->getTotalDue() * 100,
+                $receiverIds,
+                $this->helper->getAvailableReceiverIds(),
+                $user,
+                $order->getBillingAddress()->getCountryId(),
+                $suggestedRoundUp
             );
-
-            /** ^^^ Add to session ^^^ */
-
+            /** ^^^ Add donation to elefunds model ^^^ */
         }
     }
 
@@ -159,36 +179,13 @@ class Lfnds_Donation_Model_Observer
 
         if ($elefundsProduct !== NULL || $order->getItemByQuoteItemId($elefundsProduct->getQuoteId()) !== NULL) {
 
-            $coreSession = Mage::getSingleton('core/session');
-            $elefundsSession = $coreSession->getData('elefunds');
+            $donation = Mage::getModel('lfnds_donation/donation');
+            $donation->loadByAttribute('foreign_id', $order->getIncrementId());
 
-            if ($elefundsSession['isReceiptRequested']) {
-                $billingAddress = $order->getBillingAddress();
-                $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
-                $user = array(
-                    'firstName'      =>  $billingAddress->getFirstname() ? $billingAddress->getFirstname() : '',
-                    'lastName'       =>  $billingAddress->getLastname() ? $billingAddress->getLastname() : $order->getCustomerName(),
-                    'email'          =>  $billingAddress->getEmail(),
-                    'streetAddress'  =>  $streets[0],
-                    'zip'            =>  (int)$billingAddress->getPostcode(),
-                    'city'           =>   $billingAddress->getCity()
-                );
-            } else {
-                $user = array();
+            if ($donation !== NULL && $donation->getId()) {
+                $donation->setState(Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING);
+                $donation->save();
             }
-
-            /** @var Lfnds_Donation_Model_Mysql4_Donation_Collection $donationCollection  */
-            $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
-            $donationCollection->addDonation(
-                $order->getIncrementId(),
-                $elefundsSession['roundup'],
-                $order->getTotalDue() * 100,
-                $elefundsSession['receiverIds'],
-                $this->helper->getAvailableReceiverIds(),
-                $user,
-                $order->getBillingAddress()->getCountryId(),
-                $elefundsSession['suggestedRoundUp']
-            );
 
             $this->syncManager->syncDonations();
         }
@@ -244,8 +241,7 @@ class Lfnds_Donation_Model_Observer
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION;
                 }
 
-
-                if ($stateToBySyncedToTheApi > -1) {
+                if ($stateToBySyncedToTheApi > Lfnds_Donation_Model_Donation::NEW_ORDER) {
                     if ($donation->getState() !== $stateToBySyncedToTheApi) {
                         $donation->setState($stateToBySyncedToTheApi);
                         $donation->save();
@@ -264,9 +260,9 @@ class Lfnds_Donation_Model_Observer
         /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
         $block = $observer->getEvent()->getObject();
         $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
-                                                             ->getPayment()
-                                                             ->getMethodInstance()
-                                                             ->getCode();
+            ->getPayment()
+            ->getMethodInstance()
+            ->getCode();
 
 
         $path = 'elefunds/config/authorized_payment_methods';
