@@ -69,6 +69,14 @@ if (!$donationProduct) {
     Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
     Mage::app()->setUpdateMode(FALSE);
 
+
+    $websiteId = Mage::app()->getStore(TRUE)->getWebsiteId();
+    // In case the module gets installed with a brand new installation
+    // we assume a website id of 0
+    if (is_null($websiteId)) {
+        $websiteId = 0;
+    }
+
     /** @var Mage_Catalog_Model_Product $donationProduct  */
     $donationProduct = Mage::getModel('catalog/product');
     $donationProduct->setSku(ELEFUNDS_VIRTUAL_PRODUCT_SKU)
@@ -82,7 +90,7 @@ if (!$donationProduct) {
             ->setStatus(Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
             ->setTaxClassId(0)
             ->setCreatedAt(strtotime('now'))
-            ->setWebsiteIds(array(Mage::app()->getStore(TRUE)->getWebsite()->getId(), 1))
+            ->setWebsiteIds(array($websiteId, 1))
             ->setStockData(array(
                 'manage_stock' => 0,
                 'use_config_manage_stock'=> 0,
