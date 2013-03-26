@@ -56,11 +56,16 @@
  */
 
 // Fix for not supported datetime in magento <= 1.5
+// Once we're done, change $datetime in the Table definitions
+// with Varien_Db_Ddl_Table::TYPE_DATETIME
+// ATM we're falling back to varchar for magento <=     1.5
 $class = new ReflectionClass('Varien_Db_Ddl_Table');
 if ($class->hasConstant('TYPE_DATETIME')) {
     $datetime = Varien_Db_Ddl_Table::TYPE_DATETIME;
+    $datetimeIdentifier = NULL;
 } else {
     $datetime = Varien_Db_Ddl_Table::TYPE_VARCHAR;
+    $datetimeIdentifier = 25;
 }
 
 /**
@@ -148,7 +153,7 @@ if (!$installer->tableExists('lfnds_donation_donation')) {
         ->addColumn('available_receiver_ids', Varien_Db_Ddl_Table::TYPE_VARCHAR, 45, array(
             'nullable' => TRUE,
         ), 'Available Receiver Ids')
-        ->addColumn('time', $datetime, NULL, array(
+        ->addColumn('time', $datetime, $datetimeIdentifier, array(
             'nullable' => FALSE,
         ), 'Time')
         ->addColumn('donator_firstname', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
@@ -201,9 +206,22 @@ if (!$installer->tableExists('lfnds_donation_receiver')) {
         ->addColumn('image', Varien_Db_Ddl_Table::TYPE_LONGVARCHAR, NULL, array(
             'nullable' => TRUE,
         ), 'Image URL')
-        ->addColumn('valid', $datetime, NULL, array(
+        ->addColumn('valid', $datetime, $datetimeIdentifier, array(
             'nullable' => FALSE,
         ), 'Valid');
 
     $installer->getConnection()->createTable($receiverTable);
+}
+
+/**
+ * Post database fixes
+ *
+ * @deprecated
+ */
+$version = Mage::getVersion();
+
+// For 1.5
+if ($version['major'] === '1' && $version['minor'] === '5') {
+    $installer->getConnection()->query('ALTER TABLE lfnds_donation_receiver MODIFY internal_identifier INTEGER NOT NULL AUTO_INCREMENT');
+    $installer->getConnection()->query('ALTER TABLE lfnds_donation_donation MODIFY donation_id INTEGER NOT NULL AUTO_INCREMENT');
 }

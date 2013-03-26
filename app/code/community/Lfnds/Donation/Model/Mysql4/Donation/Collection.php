@@ -93,7 +93,7 @@ class Lfnds_Donation_Model_Mysql4_Donation_Collection extends Mage_Core_Model_My
             ->setGrandTotal((int)$grandTotal)
             ->setReceiverIds($receivers)
             ->setAvailableReceiverIds($availableReceivers)
-            ->setTime(new DateTime(NULL, new \DateTimeZone('UTC')))
+            ->setTime(new DateTime(NULL, new DateTimeZone('UTC')))
             ->setSuggestedAmount((int)$suggestedRoundUp)
             ->setState($status);
 
