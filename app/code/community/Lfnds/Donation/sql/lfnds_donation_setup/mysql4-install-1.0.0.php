@@ -50,6 +50,18 @@
  */
 
 /**
+ * Fixes for Magento 1.5
+ *
+ * @deprecated
+ */
+$class = new ReflectionClass('Varien_Db_Ddl_Table');
+if ($class->hasConstant('TYPE_DATETIME')) {
+    $datetime = Varien_Db_Ddl_Table::TYPE_DATETIME;
+} else {
+    $datetime = 'datetime';
+}
+
+/**
  * @var $installer Mage_Core_Model_Resource_Setup
  */
 $installer = $this;
@@ -134,7 +146,7 @@ if (!$installer->tableExists('lfnds_donation_donation')) {
         ->addColumn('available_receiver_ids', Varien_Db_Ddl_Table::TYPE_VARCHAR, 45, array(
             'nullable' => TRUE,
         ), 'Available Receiver Ids')
-        ->addColumn('time', Varien_Db_Ddl_Table::TYPE_DATETIME, NULL, array(
+        ->addColumn('time', $datetime, NULL, array(
             'nullable' => FALSE,
         ), 'Time')
         ->addColumn('donator_firstname', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
@@ -187,7 +199,7 @@ if (!$installer->tableExists('lfnds_donation_receiver')) {
         ->addColumn('image', Varien_Db_Ddl_Table::TYPE_LONGVARCHAR, NULL, array(
             'nullable' => TRUE,
         ), 'Image URL')
-        ->addColumn('valid', Varien_Db_Ddl_Table::TYPE_DATETIME, NULL, array(
+        ->addColumn('valid', $datetime, NULL, array(
             'nullable' => FALSE,
         ), 'Valid');
 
