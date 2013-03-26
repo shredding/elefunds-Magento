@@ -66,7 +66,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
      * Adds the elefunds page head to the layout.
      */
     protected function _prepareLayout() {
-        $headBlock = $this->getLayout()->createBlock('elefunds/page_head', 'elefunds.head');
+        $headBlock = $this->getLayout()->createBlock('lfnds_donation/page_head', 'elefunds.head');
         $this->getLayout()->getBlock('head')->setChild('elefunds.head', $headBlock);
 
         parent::_prepareLayout();
