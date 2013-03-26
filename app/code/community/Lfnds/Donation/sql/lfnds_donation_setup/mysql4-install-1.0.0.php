@@ -54,11 +54,13 @@
  *
  * @deprecated
  */
+
+// Fix for not supported datetime in magento <= 1.5
 $class = new ReflectionClass('Varien_Db_Ddl_Table');
 if ($class->hasConstant('TYPE_DATETIME')) {
     $datetime = Varien_Db_Ddl_Table::TYPE_DATETIME;
 } else {
-    $datetime = 'datetime';
+    $datetime = Varien_Db_Ddl_Table::TYPE_VARCHAR;
 }
 
 /**
