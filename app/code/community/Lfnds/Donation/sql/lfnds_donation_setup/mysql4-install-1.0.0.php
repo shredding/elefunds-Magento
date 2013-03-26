@@ -218,7 +218,7 @@ if (!$installer->tableExists('lfnds_donation_receiver')) {
  *
  * @deprecated
  */
-$version = Mage::getVersion();
+$version = Mage::getVersionInfo();
 
 // For 1.5
 if ($version['major'] === '1' && $version['minor'] === '5') {
