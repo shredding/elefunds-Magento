@@ -46,6 +46,9 @@
 			var tiptip_arrow = $('<div id="tiptip_arrow"></div>');
 			$("body").append(tiptip_holder.html(tiptip_content).prepend(tiptip_arrow.html('<div id="tiptip_arrow_inner"></div>')));
 		} else {
+            var tiptip_holder = $('#tiptip_holder');
+            var tiptip_content = $('#tiptop_content');
+            var tiptip_inner = $('#tiptop_inner');
 			var tiptip_arrow = $("#tiptip_arrow");
 		}
 		
