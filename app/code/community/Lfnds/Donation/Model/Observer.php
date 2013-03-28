@@ -186,21 +186,34 @@ class Lfnds_Donation_Model_Observer
      * @param Varien_Event_Observer $observer
      * @return void
      */
+    /**
+     * Whenever an order is saved, we check if it contains a donation and if the status change is of
+     * interest for the API. If so, we invoke the sync process.
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
     public function onOrderSaved(Varien_Event_Observer $observer)
     {
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
+
+        $newState = $order->getData('state');
+        $oldState = $order->getOrigData('state');
+
+        if ($newState === NULL) {
+            return;
+        }
 
         /** @var Lfnds_Donation_Model_Donation $donation  */
         $donation = Mage::getModel('lfnds_donation/donation');
         $donation->loadByAttribute('foreign_id', $order->getIncrementId());
 
         if ($donation !== NULL) {
-            $stateHasChanged = $order->getData('state') !== $order->getOrigData('state');
+            $stateHasChanged = $newState !== $oldState;
 
             if ($stateHasChanged) {
 
-                $newState = $order->getData('state');
                 // We have to map the magento states to API states ...
                 $statesToBeMappedToAddingState = array(
                     Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
