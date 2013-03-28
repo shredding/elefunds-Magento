@@ -191,16 +191,22 @@ class Lfnds_Donation_Model_Observer
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
 
+        $newState = $order->getData('state');
+        $oldState = $order->getOrigData('state');
+
+        if ($newState === NULL) {
+            return;
+        }
+
         /** @var Lfnds_Donation_Model_Donation $donation  */
         $donation = Mage::getModel('lfnds_donation/donation');
         $donation->loadByAttribute('foreign_id', $order->getIncrementId());
 
         if ($donation !== NULL) {
-            $stateHasChanged = $order->getData('state') !== $order->getOrigData('state');
+            $stateHasChanged = $newState !== $oldState;
 
             if ($stateHasChanged) {
 
-                $newState = $order->getData('state');
                 // We have to map the magento states to API states ...
                 $statesToBeMappedToAddingState = array(
                     Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,

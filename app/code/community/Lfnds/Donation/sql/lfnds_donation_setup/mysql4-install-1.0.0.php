@@ -230,7 +230,7 @@ if (!$installer->tableExists('lfnds_donation_receiver')) {
  */
 $version = Mage::getVersionInfo();
 
-// For 1.5
+// For 1.5 or lower
 if ($version['major'] === '1' && in_array($version['minor'], array('4', '5'))) {
     $installer->getConnection()->query('ALTER TABLE lfnds_donation_receiver MODIFY internal_identifier INTEGER NOT NULL AUTO_INCREMENT');
     $installer->getConnection()->query('ALTER TABLE lfnds_donation_donation MODIFY donation_id INTEGER NOT NULL AUTO_INCREMENT');
