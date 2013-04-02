@@ -186,6 +186,13 @@ class Lfnds_Donation_Model_Observer
      * @param Varien_Event_Observer $observer
      * @return void
      */
+    /**
+     * Whenever an order is saved, we check if it contains a donation and if the status change is of
+     * interest for the API. If so, we invoke the sync process.
+     *
+     * @param Varien_Event_Observer $observer
+     * @return void
+     */
     public function onOrderSaved(Varien_Event_Observer $observer)
     {
         /* @var $order Mage_Sales_Model_Order */

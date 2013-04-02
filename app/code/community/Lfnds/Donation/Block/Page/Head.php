@@ -59,22 +59,26 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
         $headBlock = $this->getLayout()->getBlock('head');
 
         try {
+            $includeJQuery = Mage::getStoreConfig('lfnds_donation/config/include_jquery');
+
             $facade = $helper->getConfiguredFacade();
-            $scriptFiles = $facade->getTemplateJavascriptFiles();
+            $scriptFiles = $facade->getTemplateJavascriptFiles($includeJQuery);
             $cssFiles = $facade->getTemplateCssFiles();
 
-            array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
+            if ($includeJQuery) {
+                array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
+            }
 
             foreach ($scriptFiles as $jsFile) {
-                $headBlock->addItem('skin_js', 'js'.DS.'lfnds_donation'.DS.basename($jsFile));
+                $headBlock->addItem('skin_js', 'js' . DS . 'lfnds_donation' . DS . basename($jsFile));
             }
             foreach ($cssFiles as $cssFile) {
-                $headBlock->addCss('css'.DS.'lfnds_donation'.DS.basename($cssFile));
+                $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . basename($cssFile));
             }
 
         } catch (Exception $exception) {
             Mage::logException($exception);
         }
-        parent::_prepareLayout();        
+        parent::_prepareLayout();
     }
 }

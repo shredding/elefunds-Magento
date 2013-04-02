@@ -174,8 +174,10 @@
 	<default>
         <lfnds_donation>
             <config>
+                <banner_width>681</banner_width>
                 <active>0</active>
                 <product>donation</product>
+                <include_jquery>1</include_jquery>
             </config>
         </lfnds_donation>
     </default>
