@@ -40,7 +40,7 @@
 require_once dirname(__FILE__) . '/../../../Model/Receiver.php';
 
 /**
- * Unit Test for Library_Elefunds_Model_Receiver.
+ * Unit Test for Elefunds_Model_Receiver.
  * 
  * @package    elefunds API PHP Library
  * @subpackage Test
@@ -50,10 +50,10 @@ require_once dirname(__FILE__) . '/../../../Model/Receiver.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Test_Unit_Model_ReceiverTest extends PHPUnit_Framework_TestCase {
+class Elefunds_Test_Unit_Model_ReceiverTest extends PHPUnit_Framework_TestCase {
 
     /**
-     * @var Library_Elefunds_Model_Receiver
+     * @var Elefunds_Model_Receiver
      */
     protected $receiver;
 
@@ -61,7 +61,7 @@ class Library_Elefunds_Test_Unit_Model_ReceiverTest extends PHPUnit_Framework_Te
      * Sets up the class under test.
      */
     public function setUp() {
-      $this->receiver = new Library_Elefunds_Model_Receiver(); 
+      $this->receiver = new Elefunds_Model_Receiver();
    }
    
    /**

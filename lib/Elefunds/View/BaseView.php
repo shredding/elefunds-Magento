@@ -51,7 +51,7 @@ require_once dirname(__FILE__) . '/../Exception/ElefundsException.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterface {
+class Elefunds_View_BaseView implements Elefunds_View_ViewInterface {
     
     /**
      * @var array
@@ -97,7 +97,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * the name of a folder in the Template folder.
      *
      * @param string $template
-     * @return Library_Elefunds_View_ViewInterface
+     * @return Elefunds_View_ViewInterface
      */
     public function setTemplate($template) {   
         $this->template = ucfirst(strtolower($template));
@@ -162,7 +162,16 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
     public function getCssFiles() {
         return $this->cssFiles;
     }
-
+    
+    /**
+     * Removes all css files.
+     * 
+     * @param array $files
+     */
+    public function flushCssFiles() {
+        $this->cssFiles = array();
+    }
+    
     /**
      * Adds hooks that are called when a value is assigned to the view.
      *
@@ -178,7 +187,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * @param mixed $class string (class name) or instance
      * @param string $method
      * @throws InvalidArgumentException
-     * @return Library_Elefunds_View_ViewInterface
+     * @return Elefunds_View_ViewInterface
      */
     public function registerAssignHook($name, $class, $method) {
 
@@ -207,7 +216,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * @param string $key
      * @param mixed $value
      * @throws InvalidArgumentException if given key is not a string
-     * @return Library_Elefunds_View_ViewInterface
+     * @return Elefunds_View_ViewInterface
      */
     public function assign($key, $value) {
         if (is_string($key)) {
@@ -233,7 +242,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * Add multiple variables to the view.
      *
      * @param array $values array in the format array(key1 => value1, key2 => value2).
-     * @return Library_Elefunds_View_ViewInterface
+     * @return Elefunds_View_ViewInterface
      */
     public function assignMultiple(array $values) {
         foreach($values as $key => $value) {
@@ -248,7 +257,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      *
      * @param string $templateName name of the template to render
      * @param bool $givenTemplateNameIsAbsolutePathWithFullyQualifiedFilename
-     * @throws Library_Elefunds_Exception_ElefundsException
+     * @throws Elefunds_Exception_ElefundsException
      *
      * @return string the rendered HTML
      */
@@ -270,7 +279,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
             
             return $output;           
         } else {
-            throw new Library_Elefunds_Exception_ElefundsException('View.phtml not found in your template folder.', 
+            throw new Elefunds_Exception_ElefundsException('View.phtml not found in your template folder.',
                                                                     1348041578910, 
                                                                     array('filepath' => $filepath));
         }
@@ -281,8 +290,8 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * as /Template/YourTemplateFolder/Css/styles.css
      * 
      * @param string $file
-     * @throws Library_Elefunds_Exception_ElefundsException if file does not exist
-     * @return Library_Elefunds_View_ViewInterface
+     * @throws Elefunds_Exception_ElefundsException if file does not exist
+     * @return Elefunds_View_ViewInterface
      */
     public function addCssFile($file) {
         $templateFolder = ucfirst(strtolower($this->template));
@@ -290,7 +299,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
         if (file_exists(dirname(__FILE__) . '/../' .  $filepath)) {
             $this->cssFiles[] = $filepath;
         } else {
-            throw new Library_Elefunds_Exception_ElefundsException('Given CSS file ' . $file . ' does not exist.', 
+            throw new Elefunds_Exception_ElefundsException('Given CSS file ' . $file . ' does not exist.',
                                                                     1348041578905, 
                                                                     array('filepath' => $filepath));
         }
@@ -302,8 +311,8 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * Wrapper for addCss($file).
      * 
      * @param array $files
-     * @throws Library_Elefunds_Exception_ElefundsException if file does not exist
-     * @return Library_Elefunds_View_ViewInterface
+     * @throws Elefunds_Exception_ElefundsException if file does not exist
+     * @return Elefunds_View_ViewInterface
      */
     public function addCssFiles(array $files) {
         foreach ($files as $file) {
@@ -316,8 +325,8 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * as /Template/YourTemplateFolder/Javascript/myjavascript.js
      * 
      * @param string $file
-     * @throws Library_Elefunds_Exception_ElefundsException if file does not exist
-     * @return Library_Elefunds_View_ViewInterface
+     * @throws Elefunds_Exception_ElefundsException if file does not exist
+     * @return Elefunds_View_ViewInterface
      */
     public function addJavascriptFile($file) {
         $templateFolder = ucfirst(strtolower($this->template));
@@ -325,7 +334,7 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
         if (file_exists(dirname(__FILE__) . '/../' . $filepath)) {
             $this->javascriptFiles[] = $filepath;
         } else {
-            throw new Library_Elefunds_Exception_ElefundsException('Given Javascript file ' . $file . ' does not exist.',
+            throw new Elefunds_Exception_ElefundsException('Given Javascript file ' . $file . ' does not exist.',
                                                                     1348041578907,
                                                                     array('filepath' => $filepath));
         }
@@ -337,8 +346,8 @@ class Library_Elefunds_View_BaseView implements Library_Elefunds_View_ViewInterf
      * Wrapper for addJavascriptFiles($file).
      * 
      * @param array $files
-     * @throws Library_Elefunds_Exception_ElefundsException if file does not exist
-     * @return Library_Elefunds_View_ViewInterface
+     * @throws Elefunds_Exception_ElefundsException if file does not exist
+     * @return Elefunds_View_ViewInterface
      */
     public function addJavascriptFiles(array $files) {
         foreach ($files as $file) {

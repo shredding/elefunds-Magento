@@ -42,7 +42,7 @@ require_once dirname(__FILE__) . '/../../../Communication/RestInterface.php';
 require_once dirname(__FILE__) . '/../../../View/ViewInterface.php';
 
 /**
- * Unit Test for Library_Elefunds_Configuration_BaseConfiguration.
+ * Unit Test for Elefunds_Configuration_BaseConfiguration.
  *
  * @package    elefunds API PHP Library
  * @subpackage Test
@@ -52,7 +52,7 @@ require_once dirname(__FILE__) . '/../../../View/ViewInterface.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHPUnit_Framework_TestCase {
+class Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHPUnit_Framework_TestCase {
 
    protected $baseConfiguration;
 
@@ -62,7 +62,7 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setClientCalculatesHashedKeyIfApiKeyIsAlreadySetAndGettersForClientIdAndHashedKeyAreWorking() {
-        $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+        $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
         $this->baseConfiguration->setApiKey('asdfaAdf123ddddddddd');
         $this->baseConfiguration->setClientId(1234);
 
@@ -77,7 +77,7 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setApiKeyCalculatesHashedKeyIfClientIdIsAlreadySet() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
 
        $this->baseConfiguration->setClientId(1234);
        $this->baseConfiguration->setApiKey('asdfaAdf123ddddddddd');
@@ -89,10 +89,10 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * getHashedKeyThrowsErrorIfNotClientIdAndApiKeyAreSet
     *
     * @test
-    * @expectedException Library_Elefunds_Exception_ElefundsException
+    * @expectedException Elefunds_Exception_ElefundsException
     */
    public function getHashedKeyThrowsErrorIfNotClientIdAndApiKeyAreSet() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
        $this->baseConfiguration->getHashedKey();
 
    }
@@ -103,8 +103,8 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setViewWorks() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
-       $view = $this->getMock('Library_Elefunds_View_ViewInterface');
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
+       $view = $this->getMock('Elefunds_View_ViewInterface');
 
        $this->baseConfiguration->setView($view);
        $this->assertSame($view, $this->baseConfiguration->getView());
@@ -116,8 +116,8 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setRestImplementationWorks() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
-       $rest = $this->getMock('Library_Elefunds_Communication_RestInterface');
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
+       $rest = $this->getMock('Elefunds_Communication_RestInterface');
 
        $this->baseConfiguration->setRestImplementation($rest);
        $this->assertSame($rest, $this->baseConfiguration->getRestImplementation());
@@ -129,21 +129,21 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setDonationClassNameAcceptsOnlyLoadedClasses() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
 
        // Interface reqs are tested by the factory, so we can pass any class here.
-       $this->baseConfiguration->setDonationClassName('Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest');
-       $this->assertSame('Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest', $this->baseConfiguration->getDonationClassName());
+       $this->baseConfiguration->setDonationClassName('Elefunds_Test_Unit_Configuration_BaseConfigurationTest');
+       $this->assertSame('Elefunds_Test_Unit_Configuration_BaseConfigurationTest', $this->baseConfiguration->getDonationClassName());
    }
 
    /**
     * setDonationClassNameThrowsErrorIfClassIsNotLoaded
     *
     * @test
-    * @expectedException Library_Elefunds_Exception_ElefundsException
+    * @expectedException Elefunds_Exception_ElefundsException
     */
    public function setDonationClassNameThrowsErrorIfClassIsNotLoaded() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
        $this->baseConfiguration->setDonationClassName('Some_Made_Up_ClassName');
    }
 
@@ -153,21 +153,21 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setReceiverClassNameAcceptsOnlyLoadedClasses() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
 
        // Interface reqs are tested by the factory, so we can pass any class here.
-       $this->baseConfiguration->setReceiverClassName('Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest');
-       $this->assertSame('Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest', $this->baseConfiguration->getReceiverClassName());
+       $this->baseConfiguration->setReceiverClassName('Elefunds_Test_Unit_Configuration_BaseConfigurationTest');
+       $this->assertSame('Elefunds_Test_Unit_Configuration_BaseConfigurationTest', $this->baseConfiguration->getReceiverClassName());
    }
 
    /**
     * setReceiverClassNameThrowsErrorIfClassIsNotLoaded
     *
     * @test
-    * @expectedException Library_Elefunds_Exception_ElefundsException
+    * @expectedException Elefunds_Exception_ElefundsException
     */
    public function setReceiverClassNameThrowsErrorIfClassIsNotLoaded() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
        $this->baseConfiguration->setReceiverClassName('Some_Made_Up_ClassName');
    }
 
@@ -177,7 +177,7 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @test
     */
    public function setCountrycodeAcceptsCountrycodeAsString() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
        $this->baseConfiguration->setCountrycode('de');
        $this->assertSame('de', $this->baseConfiguration->getCountrycode());
    }
@@ -189,7 +189,7 @@ class Library_Elefunds_Test_Unit_Configuration_BaseConfigurationTest extends PHP
     * @expectedException InvalidArgumentException
     */
     public function setLanguageThrowsErrorIfGivenParamIsNotACountrycode() {
-       $this->baseConfiguration = new Library_Elefunds_Configuration_BaseConfiguration();
+       $this->baseConfiguration = new Elefunds_Configuration_BaseConfiguration();
        $this->baseConfiguration->setCountrycode('This is not a countrycode.');
    }
 

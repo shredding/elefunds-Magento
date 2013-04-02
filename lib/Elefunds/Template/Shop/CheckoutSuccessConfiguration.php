@@ -37,7 +37,7 @@
  *
  */
 
-require_once dirname(__FILE__) . '/../../Configuration/DefaultConfiguration.php';
+require_once dirname(__FILE__) . '/ShopConfiguration.php';
 require_once dirname(__FILE__) . '/../../View/BaseView.php';
 require_once dirname(__FILE__) . '/Hooks/ShopHooks.php';
 
@@ -52,7 +52,7 @@ require_once dirname(__FILE__) . '/Hooks/ShopHooks.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Template_Shop_CheckoutSuccessConfiguration extends Library_Elefunds_Configuration_DefaultConfiguration {
+class Template_Shop_CheckoutSuccessConfiguration extends Template_Shop_ShopConfiguration {
 
     /*
      * NOTE:
@@ -71,8 +71,6 @@ class Library_Elefunds_Template_Shop_CheckoutSuccessConfiguration extends Librar
      */
     public function init() {
         parent::init();
-
-        $this->setView(new Library_Elefunds_View_BaseView());
 
         $this->view->assign('clientId', $this->facade->getConfiguration()->getClientId());
         $this->view->assign('hashedKey', $this->facade->getConfiguration()->getHashedKey());
@@ -94,23 +92,18 @@ class Library_Elefunds_Template_Shop_CheckoutSuccessConfiguration extends Librar
 
         $this->view->assign('shareServices', array('facebook', 'twitter'));
 
-        $this->view->setTemplate('Shop');
-
-        $this->view->addCssFile('elefunds.min.css');
-
         // L18n
         if ($this->countrycode === 'de') {
             $this->view->assign('tellAboutIt', 'Juhu! Vielen Dank für Deine Spende.');
-            $this->view->assign('IDonatedAndWantToTellAboutIt', 'Teilen kannst du nicht nur mit deinem Einkauf, sondern auch mit deinen Freuden.<br />Erzähl deinen Freunden von elefunds!');
+            $this->view->assign('IDonatedAndWantToTellAboutIt', 'Teilen kann man nicht nur mit seinem Einkauf, sondern auch mit seinen Freunden.<br />Erzähle Deinen Freunden von elefunds!');
         } else {
             $this->view->assign('tellAboutIt', 'Yay! Thank you for your donation.');
             $this->view->assign('IDonatedAndWantToTellAboutIt', 'If everyone used their change for change we could make the world a better place. Tell your friends about elefunds.');
         }
 
         // Hooks
-       $this->view->registerAssignHook('receivers', 'Library_Elefunds_Template_Shop_Hooks_ShopHooks', 'onReceiversAdded');
-       $this->view->registerAssignHook('foreignId', 'Library_Elefunds_Template_Shop_Hooks_ShopHooks', 'onForeignIdAdded');
-
+       $this->view->registerAssignHook('receivers', 'Elefunds_Template_Shop_Hooks_ShopHooks', 'onReceiversAdded');
+       $this->view->registerAssignHook('foreignId', 'Elefunds_Template_Shop_Hooks_ShopHooks', 'onForeignIdAdded');
     }
 
 }

@@ -50,7 +50,7 @@ require_once 'ReceiverInterface.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_ReceiverInterface {
+class Elefunds_Model_Receiver implements Elefunds_Model_ReceiverInterface {
     
      const IMAGE_ORIENTATION_VERTICAL = 'vertical';
      const IMAGE_ORIENTATION_HORIZONTAL = 'horizontal';
@@ -123,7 +123,7 @@ class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_Receiver
       * 
       * @param int
       * @throws InvalidArgumentException if given type is not int
-      * @return Library_Elefunds_Model_ReceiverInterface
+      * @return Elefunds_Model_ReceiverInterface
       */
       public function setId($id) {
           if (is_int($id) && $id > 0) {
@@ -149,7 +149,7 @@ class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_Receiver
       * 
       * @param string $name
       * @throws InvalidArgumentException if given type is not string
-      * @return Library_Elefunds_Model_ReceiverInterface
+      * @return Elefunds_Model_ReceiverInterface
       */
      public function setName($name) {
          if (is_string($name)) {
@@ -175,7 +175,7 @@ class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_Receiver
       * 
       * @param string $description
       * @throws InvalidArgumentException if given type is not string
-      * @return Library_Elefunds_Model_ReceiverInterface
+      * @return Elefunds_Model_ReceiverInterface
       */
      public function setDescription($description) {
          if (is_string($description)) {
@@ -203,7 +203,7 @@ class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_Receiver
       * @param string $orientation must be either 'horizontal' or 'vertical'
       * @param string $size either 'small', 'medium' or 'large'
       * @throws InvalidArgumentException if url, orientation or size are not in correct format#
-      * @return Library_Elefunds_Model_ReceiverInterface 
+      * @return Elefunds_Model_ReceiverInterface
       */
      public function addImage($url, $orientation, $size) {
 
@@ -261,7 +261,7 @@ class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_Receiver
       * 
       * @param array $images
       * @throws InvalidArgumentException if array is not of correct structure
-      * @return Library_Elefunds_Model_ReceiverInterface
+      * @return Elefunds_Model_ReceiverInterface
       */
      public function setImages(array $images) {
          foreach ($images as $orientation => $sizes) {
@@ -332,7 +332,7 @@ class Library_Elefunds_Model_Receiver implements Library_Elefunds_Model_Receiver
      *
      * @param DateTime $validTime
      *
-     * @return Library_Elefunds_Model_ReceiverInterface
+     * @return Elefunds_Model_ReceiverInterface
      */
     public function setValidTime(DateTime $validTime) {
 

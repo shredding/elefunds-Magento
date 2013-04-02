@@ -40,7 +40,7 @@
 require_once dirname(__FILE__) . '/../../../View/BaseView.php';
 
 /**
- * Unit Test for Library_Elefunds_View_BaseView.
+ * Unit Test for Elefunds_View_BaseView.
  * 
  * @package    elefunds API PHP Library
  * @subpackage Test
@@ -50,10 +50,10 @@ require_once dirname(__FILE__) . '/../../../View/BaseView.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_TestCase {
+class Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_TestCase {
 
     /**
-     * @var Library_Elefunds_View_BaseView
+     * @var Elefunds_View_BaseView
      */
     protected $view;
    
@@ -68,13 +68,13 @@ class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_Tes
      * Sets up the class under test.
      */
     public function setUp() {
-      $this->view = new Library_Elefunds_View_BaseView(); 
+      $this->view = new Elefunds_View_BaseView();
       
       // Set dummy test name
       $this->view->setTemplate('Dummy');
       
       // We need some reflection for more insight here ...
-      $this->reflectionClass = new ReflectionClass('Library_Elefunds_View_BaseView');
+      $this->reflectionClass = new ReflectionClass('Elefunds_View_BaseView');
       
     }
 
@@ -106,7 +106,7 @@ class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_Tes
     public function registerHooksAddsHookIfClassAndMethodExistsAndItGetsCalledWhenAKeyIsAssigned() {
 
         // The class itself does not matter, we could use any as hook
-        $sampleClass = $this->getMock('Library_Elefunds_View_BaseView');
+        $sampleClass = $this->getMock('Elefunds_View_BaseView');
         $sampleClass->expects($this->once())
                     ->method('getCssFiles');
 
@@ -126,7 +126,7 @@ class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_Tes
        $additionalInformation = array();       
        try {
            $this->view->addCssFile('test.css');           
-       } catch (Library_Elefunds_Exception_ElefundsException $exception) {
+       } catch (Elefunds_Exception_ElefundsException $exception) {
                
            $additionalInformation = $exception->getAdditionalInformation();
        }
@@ -145,7 +145,7 @@ class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_Tes
        $additionalInformation = array();       
        try {
            $this->view->addJavascriptFile('test.js');           
-       } catch (Library_Elefunds_Exception_ElefundsException $exception) {
+       } catch (Elefunds_Exception_ElefundsException $exception) {
            $additionalInformation = $exception->getAdditionalInformation();
        }
        
@@ -199,7 +199,7 @@ class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_Tes
               
        try {
            $this->view->render('Test');
-       } catch (Library_Elefunds_Exception_ElefundsException $exception) {
+       } catch (Elefunds_Exception_ElefundsException $exception) {
            $additionalInformation = $exception->getAdditionalInformation();
        }
        
@@ -216,7 +216,7 @@ class Library_Elefunds_Test_Unit_View_BaseViewTest extends PHPUnit_Framework_Tes
     public function renderTakesFullpathIfFlagIsSet() {
         try {
             $this->view->render('FullyQualifiedGiven', TRUE);
-        } catch (Library_Elefunds_Exception_ElefundsException $exception) {
+        } catch (Elefunds_Exception_ElefundsException $exception) {
             $additionalInformation = $exception->getAdditionalInformation();
         }
 

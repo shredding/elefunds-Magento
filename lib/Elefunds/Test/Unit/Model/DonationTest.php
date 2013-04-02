@@ -40,7 +40,7 @@
 require_once dirname(__FILE__) . '/../../../Model/Donation.php';
 
 /**
- * Unit Test for Library_Elefunds_Models_Donation.
+ * Unit Test for Elefunds_Models_Donation.
  * 
  * @package    elefunds API PHP Library
  * @subpackage Test
@@ -50,10 +50,10 @@ require_once dirname(__FILE__) . '/../../../Model/Donation.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Test_Unit_Model_DonationTest extends PHPUnit_Framework_TestCase {
+class Elefunds_Test_Unit_Model_DonationTest extends PHPUnit_Framework_TestCase {
 
    /**
-    * @var Library_Elefunds_Model_Donation
+    * @var Elefunds_Model_Donation
     */
    protected $donation;
 
@@ -61,7 +61,7 @@ class Library_Elefunds_Test_Unit_Model_DonationTest extends PHPUnit_Framework_Te
     * Sets up the class under test.
     */
     public function setUp() {
-      $this->donation = new Library_Elefunds_Model_Donation(); 
+      $this->donation = new Elefunds_Model_Donation();
    }
    
    /**

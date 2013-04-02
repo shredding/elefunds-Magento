@@ -2,7 +2,7 @@
     <input type="hidden" id="elefunds_donation_cent" value="<?php echo $view['suggestedDonationAmountCent']; ?>" name="elefunds_donation_cent"/>
     <input type="hidden" id="<?php echo 'elefunds_suggested_round_up_cent'; ?>" name="<?php echo 'elefunds_suggested_round_up_cent'; ?>" value="<?php echo $view['suggestedDonationAmountCent'];?>"/>
     <div id="elefunds_top" style="width: <?php echo $view['shopWidth']; ?>px;">
-        <img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/elefunds_logo.png" id="elefunds_logo" class="tiptip" desc="<?php echo $view['elefundsDescription']; ?>" title="elefunds" />
+        <img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/elefunds_logo.png" id="elefunds_logo" class="tiptip" desc="<?php echo $view['elefundsDescription']; ?>" title="elefunds" />
         <span>
             <div id="elefunds_arrow">
                 <input type="checkbox" id="elefunds_checkbox" name="elefunds_checkbox"/>
@@ -10,7 +10,7 @@
                 <span id="elefunds_arrow_end"></span>
             </div>
             <div id="elefunds_plus_minus">
-                <a href="#" onclick="elefunds.decreaseDonation(); return false;" id="elefunds_decrease"><img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/minus.png"></a> <a href="#" onclick="elefunds.increaseDonation(); return false;" id="elefunds_increase"><img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/plus.png"></a>
+                <a href="#" onclick="elefunds.decreaseDonation(); return false;" id="elefunds_decrease"><img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/minus.png"></a> <a href="#" onclick="elefunds.increaseDonation(); return false;" id="elefunds_increase"><img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/plus.png"></a>
             </div>
             <div id="elefunds_input_container">
                 <span id="elefunds_currency"><?php echo $view['currency']; ?></span>
@@ -46,10 +46,10 @@
 </div>
 
 <script type="text/javascript">
-$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/arrow_on.png"/>');
-$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/checkbox_on.png"/>');
-$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/receiver_on_bg.png"/>');
-$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/receipt_on.png"/>');
+$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/arrow_on.png"/>');
+$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/checkbox_on.png"/>');
+$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/receiver_on_bg.png"/>');
+$('<img src="https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/<?php echo $view['theme'] . '/' . $view['color'] ?>/receipt_on.png"/>');
 
 var elefunds = (function(parent, $) {
     

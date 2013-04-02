@@ -54,7 +54,7 @@ require_once 'RestInterface.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Communication_RestInterface {
+class Elefunds_Communication_CurlRequest implements Elefunds_Communication_RestInterface {
 
     /**
      * @var resource
@@ -69,11 +69,11 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
     /**
      * Initializes curl - if the extension is installed.
      *
-     * @throws Library_Elefunds_Exception_ElefundsException if curl is not installed
+     * @throws Elefunds_Exception_ElefundsException if curl is not installed
      */
     public function __construct() {
         if (!extension_loaded('curl')) {
-            throw new Library_Elefunds_Exception_ElefundsException(
+            throw new Elefunds_Exception_ElefundsException(
                 'You are using the curl request method without having curl installed on your server.
                  Your options are to either use another implementation of the RestInterface or to install curl.',
                  1347875278);
@@ -88,7 +88,7 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
      * Performs a GET Request against a given URL.
      *
      * @param string $restUrl with fully qualified resource path
-     * @throws Library_Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
     public function get($restUrl) {
@@ -104,7 +104,7 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
      *
      * @param string $restUrl with fully qualified resource path
      * @param string $body the JSON body
-     * @throws Library_Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
     public function post($restUrl, $body) {
@@ -122,7 +122,7 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
      *
      * @param string $restUrl with fully qualified resource path
      * @param string $body the JSON body
-     * @throws Library_Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
     public function put($restUrl, $body) {
@@ -132,7 +132,6 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
         $this->curlOptions[CURLOPT_URL] = (string)$restUrl;
         $this->curlOptions[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
 
-
         return $this->performRequest();
     }
 
@@ -141,7 +140,7 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
      * Performs a DELETE Request against a given URL.
      *
      * @param string $restUrl with fully qualified resource path
-     * @throws Library_Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
     public function delete($restUrl) {
@@ -154,12 +153,12 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
     /**
      * Performs the actual curl request.
      *
-     * @throws Library_Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
     protected function performRequest() {
          $this->curlOptions[CURLOPT_RETURNTRANSFER] = TRUE;
-         $this->curlOptions[CURLOPT_USERAGENT] = 'elefunds-php-1.0';
+         $this->curlOptions[CURLOPT_USERAGENT] = 'elefunds-php-1.1';
          $this->curlOptions[CURLOPT_CAINFO] = dirname(__FILE__) . '/certificate/GandiProSSLCA.pem';
 
          curl_setopt_array($this->curl, $this->curlOptions);
@@ -168,7 +167,7 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
 
          if ($serverResponse === FALSE) {
 
-             throw new Library_Elefunds_Exception_ElefundsCommunicationException(
+             throw new Elefunds_Exception_ElefundsCommunicationException(
                 'Unable to connect to the elefunds API',
                 1347878604,
                 array(
@@ -181,7 +180,7 @@ class Library_Elefunds_Communication_CurlRequest implements Library_Elefunds_Com
          $httpResponseCode = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
 
          if ($httpResponseCode !== 200) {
-             throw new Library_Elefunds_Exception_ElefundsCommunicationException(
+             throw new Elefunds_Exception_ElefundsCommunicationException(
                 'An error occurred during the api call. Refer to additionalInformation of this exception for more details.',
                 1347899756668,
                 array(
