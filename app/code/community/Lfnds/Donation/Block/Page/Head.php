@@ -66,6 +66,7 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
             $cssFiles = $facade->getTemplateCssFiles();
 
             if ($includeJQuery) {
+                array_unshift($scriptFiles, 'jQueryNoConflict.js');
                 array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
             }
 
@@ -75,6 +76,7 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
             foreach ($cssFiles as $cssFile) {
                 $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . basename($cssFile));
             }
+
 
         } catch (Exception $exception) {
             Mage::logException($exception);
