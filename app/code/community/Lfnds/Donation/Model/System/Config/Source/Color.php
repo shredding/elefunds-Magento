@@ -50,11 +50,11 @@ class Lfnds_Donation_Model_System_Config_Source_Color
 {
     protected $_options;
 
-    public function toOptionArray($isMultiselect = FALSE)
+    public function toOptionArray()
     {
         /** @var Lfnds_Donation_Helper_Data $helper */
         $helper = Mage::helper('lfnds_donation');
-        $facade = $helper->getConfiguredFacade();
+        $facade = $helper->getConfiguredFacade(TRUE);
         if (!$this->_options) {
 
             /** @var Elefunds_Template_Shop_ShopConfiguration $configuration  */

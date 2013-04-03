@@ -47,10 +47,10 @@ require_once dirname(__FILE__) . '/Hooks/ShopHooks.php';
  * @package    elefunds API PHP Library
  * @subpackage Template\Shop
  * @author     Christian Peters <christian@elefunds.de>
- * @copyright  2012 elefunds GmbH <hello@elefunds.de>
+ * @copyright  2013 elefunds GmbH <hello@elefunds.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 1.2.0
  */
 class Elefunds_Template_Shop_ShopConfiguration extends Elefunds_Configuration_DefaultConfiguration {
 
@@ -89,8 +89,8 @@ class Elefunds_Template_Shop_ShopConfiguration extends Elefunds_Configuration_De
         $this->view->registerAssignHook('skin', 'Elefunds_Template_Shop_Hooks_ShopHooks', 'chooseCssFile');
         $this->view->assign('skin',
             array(
-                'theme'  =>   $theme,
-                'color'  =>    $color
+                'theme' =>  $theme,
+                'color' =>  $color
             )
         );
 

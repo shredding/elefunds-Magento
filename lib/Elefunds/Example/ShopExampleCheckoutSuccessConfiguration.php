@@ -64,7 +64,6 @@ class Elefunds_Example_ShopExampleCheckoutSuccessConfiguration extends Elefunds_
      */
     public function init() {
         parent::init();
-        $this->view->assign('shopName', 'My awesome shop');
     }
 
 }

@@ -18,6 +18,16 @@ try {
     $actualTotal = 960;
     $facade->getConfiguration()->getView()->assign('total', $actualTotal);
 
+    // Define the skin of the module. Currently, the skin is made up of the following
+    // theme: 'light', 'dark'
+    // color: 'orange', 'blue', 'green', 'purple'
+    $facade->getConfiguration()->getView()->assign('skin',
+        array(
+            'theme' =>  'dark',
+            'color' =>  'blue'
+        )
+    );
+
     $snippet = $facade->renderTemplate();
 
 } catch (Elefunds_Exception_ElefundsCommunicationException $error) {

@@ -73,9 +73,10 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * Configures the facade based on the plugin settings and the current locale.
      *
      * @param bool $checkoutSuccess
+     * @param bool $autoFetchReceivers
      * @return Elefunds_Facade
      */
-    public function getConfiguredFacade($checkoutSuccess = FALSE) {
+    public function getConfiguredFacade($checkoutSuccess = FALSE, $autoFetchReceivers = TRUE) {
         $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
 
         if (!isset($this->facade[$configurationType])) {

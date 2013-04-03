@@ -140,3 +140,21 @@ If everything went well, you'll retrieve a status code of `200` and a response m
 If you get an error, simply send the donation again later. If you used the `$facade->addDonations()` method to
 add multiple donations, you can send them all again later as well - if some of them were saved before something went wrong,
 the API is smart enough to sort things out.
+
+At this stage, the donation has a status of `pending` in our API. You can set it to completed, once you got your money by just
+sending in the `foreignId`, that you used when adding the donation:
+
+    // One donation:
+    $facade->completeDonation($foreignId);
+
+    // Multiple donations:
+    $facade->completeDonations(array($foreignId, $anotherForeignId));
+
+If you have to cancel the donation, you can do so by calling the cancel donation method:
+
+    // One donation:
+    $facade->cancelDonation($foreignId);
+
+    // Multiple donations:
+    $facade->cancelDonations(array($foreignId, $anotherForeignId));
+

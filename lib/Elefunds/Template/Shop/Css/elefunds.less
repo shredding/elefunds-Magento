@@ -24,7 +24,7 @@
 
 #elefunds_top {
     position: relative;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/top_bar.png') repeat-x;
+    background: url('@{cdn-URL}/@{theme}/top_bar.png') repeat-x;
     height: 49px;
     
     @border-color: "@{theme}-border";
@@ -34,7 +34,7 @@
     
     .user-select(none);
     
-    > span {
+    > div {
         float: right;
         margin-right: 10px;
     }
@@ -50,7 +50,7 @@
     position: relative;
     display: inline-block;
     float: left;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/arrow_bg.png') repeat-x;
+    background: url('@{cdn-URL}/@{theme}/arrow_bg.png') repeat-x;
     height: 49px;
     padding: 0;
 }
@@ -68,7 +68,6 @@
         font-family: @font-family;
         font-size: 12px;
         font-weight: normal;
-        
         @color: "@{theme}-label-color";
         color: @@color;
         padding: 9px 10px 9px 60px;
@@ -89,7 +88,7 @@
     width: 14px;
     height: 49px;
     display: inline-block;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/arrow_end.png') no-repeat;
+    background: url('@{cdn-URL}/@{theme}/arrow_end.png') no-repeat;
 }
 
 #elefunds_plus_minus {
@@ -116,13 +115,12 @@
     font-weight: normal;
     line-height: 18px;
     text-align: center;
-    
     @color: "@{theme}-currency";
     color: @@color;
     
     @shadow: "@{theme}-shadow";
     text-shadow: 0 1px 0 @@shadow;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/currency_bg.png') repeat-x;
+    background: url('@{cdn-URL}/@{theme}/currency_bg.png') repeat-x;
     
     @border: "@{theme}-input-border";
     border: 1px solid @@border;
@@ -141,13 +139,12 @@
     text-align: center;
     font-family: @font-family;
     font-size: 12px;
-    
     @color: "@{theme}-input-color";
     color: @@color;
     
     @shadow: "@{theme}-shadow";
     text-shadow: 0 1px 0 @@shadow;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/input_bg.png') repeat-x;
+    background: url('@{cdn-URL}/@{theme}/input_bg.png') repeat-x;
     
     @border: "@{theme}-input-border";
     border: 1px solid @@border;
@@ -175,7 +172,7 @@
     text-align: center;
     display: inline-block;
     border-right: 1px solid #a3a6ac;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/receiver_off_bg.png') repeat-x;
+    background: url('@{cdn-URL}/receiver_off_bg.png') repeat-x;
     float: left;
     position: relative;
     
@@ -202,14 +199,14 @@
         width: 165px;
         margin: 0;
         cursor: pointer;
-        background: url('@{cdn-URL}/@{theme}/@{theme-color}/checkbox_off.png') 10px 24px no-repeat;
+        background: url('@{cdn-URL}/checkbox_off.png') 10px 24px no-repeat;
         display: inline-block;
         border-left: 1px solid rgb(246, 246, 246);
         border-left: 1px solid rgba(255, 255, 255, 0.6);
     }
     
     > input:checked + label {
-        background: url('@{cdn-URL}/@{theme}/@{theme-color}/checkbox_on.png') 10px 24px no-repeat;
+        background: url('@{cdn-URL}/checkbox_on.png') 10px 24px no-repeat;
     }
 }
 
@@ -218,7 +215,7 @@
 }
 
 .elefunds_receiver_selected {
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/receiver_on_bg.png') repeat-x;
+    background: url('@{cdn-URL}/receiver_on_bg.png') repeat-x;
     
     > label > img {
         filter: none;
@@ -229,7 +226,7 @@
 #elefunds_round_sum_container {
     font-family: @font-family;
     font-size: 16px;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/elefunds_highlight.png') right bottom no-repeat;
+    background: url('@{cdn-URL}/elefunds_highlight.png') right bottom no-repeat;
     margin: 0;
     padding: 15px 0 0;
     text-align: right;
@@ -274,13 +271,13 @@
 #elefunds_receipt_input + label {
     margin: 0;
     cursor: pointer;
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/receipt_off.png') no-repeat;
+    background: url('@{cdn-URL}/receipt_off.png') no-repeat;
     display: inline-block;
     padding-left: 20px;
 }
 
 #elefunds_receipt > input:checked + label {
-    background: url('@{cdn-URL}/@{theme}/@{theme-color}/receipt_on.png') no-repeat;
+    background: url('@{cdn-URL}/receipt_on.png') no-repeat;
 }
 
 .elefunds_hidden {

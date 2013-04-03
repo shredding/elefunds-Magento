@@ -252,52 +252,6 @@ class Elefunds_Template_Shop_Hooks_ShopHooks {
     }
 
     /**
-     * Hooks in after receivers are set and calculates the text that will be displayed
-     * in the facebook share.
-     *
-     * This method is not in use atm, but can be used to replace the social share text.
-     * It uses %shopname% and %receivers% as placeholders!
-     *
-     * Receivers have to be given, 'shopName' has to be assigned to the view.
-     *
-     * @param Elefunds_View_ViewInterface $view
-     * @param array $receivers
-     * @return void
-     */
-    public static function calculateReceiversText(Elefunds_View_ViewInterface $view, array $receivers) {
-        $assigns = $view->getAssignments();
-
-        $shopname = $assigns['shopName'];
-
-        $baseText = $assigns['IDonatedAndWantToTellAboutIt'];
-        $baseText = str_replace('%shopname%', $shopname, $baseText);
-
-        $num = count($receivers);
-        if (count($receivers) === 1) {
-            $baseText = str_replace('%receivers%', array_shift($receivers), $baseText);
-        } else {
-            $conjunctionText = '';
-            $i = 0;
-            foreach($receivers as $receiver) {
-
-                if ($i < $num - 2) {
-                    $conjunctionText .= $receiver . ', ';
-                } else if ($i === $num - 2) {
-                    $conjunctionText .= $receiver . ' & ';
-                } else {
-                    $conjunctionText .= $receiver;
-                }
-
-                ++$i;
-            }
-            $baseText = str_replace('%receivers%', $conjunctionText, $baseText);
-        }
-
-        // Override with calculated text.
-        $view->assign('IDonatedAndWantToTellAboutIt', $baseText);
-    }
-
-    /**
      * Assigns shares to the success page!
      *
      * @param Elefunds_View_ViewInterface $view

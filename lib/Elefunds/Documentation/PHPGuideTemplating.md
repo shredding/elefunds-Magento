@@ -75,6 +75,20 @@ In order to have everything in place, you need to add CSS and Javascript snippet
 > At the moment, this template requires jQuery.
 
 
+If you use the `ShopConfiguration`, you can easily change the theme!
+
+    // Let's assume, that the facade is already configured!
+    $configuration = $facade->getConfiguration();
+
+    /** @var Elefunds_Template_Shop_ShopConfiguration $configuration  */
+    $configuration->getView()
+                  ->assign('skin'
+                      array(
+                          'theme'  =>  'light',
+                          'color'  =>  'purple'
+                      )
+                  );
+
 **Success**
 
 When a checkout was successful, you can send back the donation and display our facebook and twitter share. This is as easy as:

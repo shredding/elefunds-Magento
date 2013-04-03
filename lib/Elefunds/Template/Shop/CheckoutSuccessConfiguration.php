@@ -89,7 +89,13 @@ class Elefunds_Template_Shop_CheckoutSuccessConfiguration extends Elefunds_Templ
                 'title'     =>  $this->countrycode === 'de' ? 'Auf Twitter tweeten' : 'Tweet on twitter'
             ),
         ));
-
+        
+        if($this->countrycode === 'de') {
+            $this->view->assign('learnMore', 'Erfahre mehr über');
+        } else {
+            $this->view->assign('learnMore', 'Learn more about');
+        }
+        
         $this->view->assign('shareServices', array('facebook', 'twitter'));
 
         // L18n

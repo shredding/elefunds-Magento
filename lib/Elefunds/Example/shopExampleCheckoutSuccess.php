@@ -26,6 +26,16 @@ $facade->getConfiguration()->getView()->assign('receivers', array(
 // Assign current orderId as foreignId
 $facade->getConfiguration()->getView()->assign('foreignId', 1234);
 
+// Define the skin of the module. Currently, the skin is made up of the following...
+// theme: 'light', 'dark'
+// color: 'orange', 'blue', 'green', 'purple'
+$facade->getConfiguration()->getView()->assign('skin',
+    array(
+        'theme' =>  'dark',
+        'color' =>  'blue'
+    )
+);
+
 ?>
 
 <!DOCTYPE HTML >

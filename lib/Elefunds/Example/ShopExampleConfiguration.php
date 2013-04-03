@@ -73,7 +73,6 @@ class Elefunds_Example_ShopExampleConfiguration extends Elefunds_Template_Shop_C
 
         // These are default Values, you can override this if you have another currency # $this->view->assign('currency', '€'); #
         $this->view->assign('currencyDelimiter', '.');
-       
     }
  
 }
