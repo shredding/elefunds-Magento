@@ -195,30 +195,17 @@ class Elefunds_Template_Shop_Hooks_ShopHooks {
      * @param Elefunds_View_ViewInterface $view
      * @param array $skin
      */
-    public static function chooseCssFile(Elefunds_View_ViewInterface $view, $skin) {
-        
-        $themes = array('light', 'dark');
-        $colors = array('orange', 'blue', 'green', 'purple');
-        
+    public static function chooseCssFile(Elefunds_View_ViewInterface $view, array $skin) {
+
         $default_theme = 'light';
         $default_color = 'orange';
         
-        if(count($skin) !== 2) {
+        if(!isset($skin['theme']) || !isset($skin['color'])) {
             $theme = $default_theme;
             $color = $default_color;
-            
         } else {
-            if(in_array($skin[0], $themes)) {
-                $theme = $skin[0];
-            } else {
-                $theme = $default_theme;
-            }
-
-            if(in_array($skin[1], $colors)) {
-                $color = $skin[1];
-            } else {
-                $color = $default_color;
-            }
+            $theme = $skin['theme'];
+            $color = $skin['color'];
         }
         
         //Set theme & color to use in the view

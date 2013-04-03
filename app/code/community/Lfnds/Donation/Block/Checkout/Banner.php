@@ -97,7 +97,7 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
                     $template = $facade->renderTemplate();
 
                 }
-            } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
+            } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
                 Mage::logException($exception);
             }
         }

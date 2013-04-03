@@ -74,14 +74,14 @@ class Lfnds_Donation_Model_Mysql4_Receiver_Collection extends Mage_Core_Model_My
     /**
      * Maps an array of receivers (as returned from the SDK) to a doctrine model.
      *
-     * @param array $receivers that are implementing Library_Elefunds_Model_ReceiverInterface
+     * @param array $receivers that are implementing Elefunds_Model_ReceiverInterface
      * @param string $languageCode
      *
      * @return $this
      */
     public function mapArrayOfSDKReceiversToEntitiesAndSave(array $receivers, $languageCode) {
 
-        /** @var \Library_Elefunds_Model_ReceiverInterface $receiver */
+        /** @var Elefunds_Model_ReceiverInterface $receiver */
         foreach ($receivers as $receiver) {
             /** @var Lfnds_Donation_Model_Receiver $entity  */
             $entity = Mage::getModel('lfnds_donation/receiver');

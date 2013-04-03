@@ -125,12 +125,15 @@ class Elefunds_Communication_CurlRequest implements Elefunds_Communication_RestI
      * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
-    public function put($restUrl, $body) {
+    public function put($restUrl, $body = '') {
 
         $this->curlOptions[CURLOPT_CUSTOMREQUEST] = 'PUT';
-        $this->curlOptions[CURLOPT_POSTFIELDS] = (string)$body;
         $this->curlOptions[CURLOPT_URL] = (string)$restUrl;
-        $this->curlOptions[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+
+        if (strlen($body) > 0) {
+            $this->curlOptions[CURLOPT_POSTFIELDS] = (string)$body;
+            $this->curlOptions[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+        }
 
         return $this->performRequest();
     }

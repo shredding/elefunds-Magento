@@ -73,7 +73,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * Configures the facade based on the plugin settings and the current locale.
      *
      * @param bool $checkoutSuccess
-     * @return Library_Elefunds_Facade
+     * @return Elefunds_Facade
      */
     public function getConfiguredFacade($checkoutSuccess = FALSE) {
         $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
@@ -84,12 +84,12 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                         . DS . 'Shop' . DS . $configurationType . 'Configuration.php';
             $facadePath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Facade.php';
 
-            $className = 'Library_Elefunds_Template_Shop_'.$configurationType.'Configuration';
+            $className = 'Elefunds_Template_Shop_'.$configurationType.'Configuration';
 
             require_once($facadePath);
             require_once($configPath);
 
-            /** @var Library_Elefunds_Configuration_ConfigurationInterface $configuration  */
+            /** @var Elefunds_Configuration_ConfigurationInterface $configuration  */
             $configuration = new $className();
 
             $magentoConfigBasePath = 'lfnds_donation/config';
@@ -101,7 +101,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                           ->setApiKey($apiKey)
                           ->setCountrycode($countryCode);
 
-            $this->facade[$configurationType] = new Library_Elefunds_Facade($configuration);
+            $this->facade[$configurationType] = new Elefunds_Facade($configuration);
         }
 
         return $this->facade[$configurationType];

@@ -165,8 +165,8 @@ class Elefunds_View_BaseView implements Elefunds_View_ViewInterface {
     
     /**
      * Removes all css files.
-     * 
-     * @param array $files
+     *
+     * @return void
      */
     public function flushCssFiles() {
         $this->cssFiles = array();

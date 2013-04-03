@@ -51,7 +51,7 @@ require_once dirname(__FILE__) . '/BaseConfiguration.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Configuration_DefaultConfiguration extends Elefunds_Configuration_BaseConfiguration {
+class Elefunds_Configuration_DefaultConfiguration extends Elefunds_Configuration_BaseConfiguration {
 
     protected $apiUrl = 'https://connect.elefunds.de';
 

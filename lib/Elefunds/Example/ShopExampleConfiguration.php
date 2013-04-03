@@ -50,7 +50,7 @@ require_once dirname(__FILE__) . '/../Template/Shop/CheckoutConfiguration.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Elefunds_Example_ShopExampleConfiguration extends Template_Shop_CheckoutConfiguration {
+class Elefunds_Example_ShopExampleConfiguration extends Elefunds_Template_Shop_CheckoutConfiguration {
     
     //Insert your clientID and apiKey
     protected $clientId = 1001;

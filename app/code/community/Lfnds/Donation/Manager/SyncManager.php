@@ -50,16 +50,16 @@ class Lfnds_Donation_Manager_SyncManager
 {
 
     /**
-     * @var Library_Elefunds_Facade
+     * @var Elefunds_Facade
      */
     protected $facade;
 
     /**
      * Initialisation of the sync process.
      *
-     * @param Library_Elefunds_Facade $facade
+     * @param Elefunds_Facade $facade
      */
-    public function __construct(Library_Elefunds_Facade $facade) {
+    public function __construct(Elefunds_Facade $facade) {
         $this->facade = $facade;
     }
 
@@ -90,7 +90,7 @@ class Lfnds_Donation_Manager_SyncManager
             $this->facade->getConfiguration()->setCountrycode('en');
             $englishReceivers = $this->facade->getReceivers();
 
-        } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
+        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
             // Pass, we still use the old receivers.
         }
 
@@ -130,12 +130,12 @@ class Lfnds_Donation_Manager_SyncManager
             array(
                 Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING,
                 Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION,
-                Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION
+                Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION
             )
         );
 
         $donationsToBeCancelled = array();
-        $donationsToBeVerified = array();
+        $donationsToBeCompleted = array();
         $donationsToBeAdded = array();
 
         /** @var Lfnds_Donation_Model_Donation $donationModel */
@@ -150,8 +150,8 @@ class Lfnds_Donation_Manager_SyncManager
                     $donationsToBeCancelled[$donationModel->getForeignId()] = $donationModel;
                     break;
 
-                case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION:
-                    $donationsToBeVerified[$donationModel->getForeignId()] = $donationModel;
+                case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION:
+                    $donationsToBeCompleted[$donationModel->getForeignId()] = $donationModel;
                     break;
             }
         }
@@ -160,27 +160,26 @@ class Lfnds_Donation_Manager_SyncManager
         try {
             $this->facade->addDonations($this->mapArrayOfEntitiesToSDKObject($donationsToBeAdded));
             $donationCollection->setStates($donationsToBeAdded, Lfnds_Donation_Model_Donation::PENDING);
-        } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
+        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
             $donationCollection->setStates($donationsToBeAdded, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING);
         }
 
         // Cancel donations
         try {
-            $this->facade->deleteDonations(array_keys($donationsToBeCancelled));
+            $this->facade->cancelDonations(array_keys($donationsToBeCancelled));
             $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::CANCELLED);
-        } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
+        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
             $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION);
         }
 
-        /* @todo ADD AFTER SDK CHANGE
-        // Verify donation
+        // Complete donation
          try {
-            $this->facade->verifyDonations(array_keys($this->donationsToBeVerified));
-             $donationCollection->setStates($this->donationsToBeVerified, Lfnds_Donation_Model_Donation::VERIFIED);
-        } catch (Library_Elefunds_Exception_ElefundsCommunicationException $exception) {
-             $donationCollection->setStates($this->donationsToBeVerified, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION);
+            $this->facade->completeDonations(array_keys($donationsToBeCompleted));
+             $donationCollection->setStates($donationsToBeCompleted, Lfnds_Donation_Model_Donation::COMPLETED);
+        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
+             $donationCollection->setStates($donationsToBeCompleted, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION);
         }
-        */
+
 
         return $this;
     }

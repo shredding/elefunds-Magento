@@ -259,7 +259,7 @@ class Elefunds_Facade {
 
             $restUrl = $this->configuration->getApiUrl() . '/donations/' . $donationIdsString . '/?clientId=' . $this->configuration->getClientId() . '&hashedKey=' . $this->configuration->getHashedKey();
 
-            $response = json_decode($this->configuration->getRestImplementation()->put($restUrl, ''), TRUE);
+            $response = json_decode($this->configuration->getRestImplementation()->put($restUrl), TRUE);
 
             return $response['message'];
         } else {

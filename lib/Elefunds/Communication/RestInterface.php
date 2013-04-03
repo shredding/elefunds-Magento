@@ -82,7 +82,7 @@ interface Elefunds_Communication_RestInterface  {
      * @throws Elefunds_Exception_ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string the server response as JSON
      */
-    public function put($restUrl, $body);
+    public function put($restUrl, $body = '');
 
     /**
      * Performs a DELETE Request against a given URL.

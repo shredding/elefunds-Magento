@@ -116,7 +116,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
     public function renderSocialMedia() {
         $order = $this->getOrder();
 
-        /** @var Library_Elefunds_Facade $facade  */
+        /** @var Elefunds_Facade $facade  */
         $facade = $this->helper->getConfiguredFacade(TRUE);
 
         $donationItem = Mage::getModel('lfnds_donation/donation');

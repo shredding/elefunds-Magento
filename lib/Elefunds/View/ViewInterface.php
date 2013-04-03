@@ -209,4 +209,11 @@ interface Elefunds_View_ViewInterface {
      */
     public function addJavascriptFiles(array $files);
 
+    /**
+     * Removes all css files.
+     *
+     * @return void
+     */
+    public function flushCssFiles();
+
 }

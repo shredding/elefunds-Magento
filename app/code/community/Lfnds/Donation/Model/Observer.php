@@ -201,7 +201,7 @@ class Lfnds_Donation_Model_Observer
         $newState = $order->getData('state');
         $oldState = $order->getOrigData('state');
 
-        if ($newState === NULL) {
+        if ($newState === NULL || $oldState === NULL) {
             return;
         }
 
@@ -224,7 +224,7 @@ class Lfnds_Donation_Model_Observer
                     Mage_Sales_Model_Order::STATE_CANCELED
                 );
 
-                $statesToBeMappedToVerificationState = array(
+                $statesToBeMappedToCompletionState = array(
                     Mage_Sales_Model_Order::STATE_CLOSED,
                     Mage_Sales_Model_Order::STATE_COMPLETE
                 );
@@ -237,8 +237,8 @@ class Lfnds_Donation_Model_Observer
                 if (in_array($newState, $statesToBeMappedToCancelledState)) {
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION;
                 }
-                if (in_array($newState, $statesToBeMappedToVerificationState)) {
-                    $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_VERIFICATION;
+                if (in_array($newState, $statesToBeMappedToCompletionState)) {
+                    $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION;
                 }
 
                 if ($stateToBySyncedToTheApi > Lfnds_Donation_Model_Donation::NEW_ORDER) {

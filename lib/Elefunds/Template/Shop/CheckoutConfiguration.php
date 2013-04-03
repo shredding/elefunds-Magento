@@ -52,7 +52,7 @@ require_once dirname(__FILE__) . '/Hooks/ShopHooks.php';
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Template_Shop_CheckoutConfiguration extends Template_Shop_ShopConfiguration {
+class Elefunds_Template_Shop_CheckoutConfiguration extends Elefunds_Template_Shop_ShopConfiguration {
 
     /**
      * @var boolean
