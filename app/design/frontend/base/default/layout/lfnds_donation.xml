@@ -5,6 +5,7 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_additional.css</name></action>
             <block type="lfnds_donation/page_head" name="elefunds.head"/>
         </reference>
     </checkout_onepage_index>
