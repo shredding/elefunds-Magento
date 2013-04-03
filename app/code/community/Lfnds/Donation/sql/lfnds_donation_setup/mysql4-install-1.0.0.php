@@ -118,19 +118,29 @@ if (!$donationProduct) {
 
     try {
         $donationProduct->save();
-
-//        $basepath = dirname(__FILE__) . '/../../media/';
-//        $product->addImageToMediaGallery($filePath, $imageType, false);
-//        $product->addImageToMediaGallery($filePath, $imageType, false);
-//        $product->addImageToMediaGallery($filePath, $imageType, false);
-
     } catch (Exception $exception){
         Mage::logException($exception);
     }
 
+    // This is separated, as we do not want the extension to break when images cannot be added.
+    // ATM it does not look like we need product images, but in case the use case arises (e.g.
+    // when some shop wants it on it's invoice: Here you go.
+    /*
+     try {
+        $skinPath = Mage::getBaseDir('skin') . DS . 'frontend' . DS . 'base ' . DS . 'default' . DS . 'images' . DS . 'lfnds_donation' . DS;
+        $fullImagePath = $skinPath . 'elefunds_item_main.png';
+        $fullSmallImagePath  = $skinPath . 'elefunds_item_small.png';
+        $fullThumbnailPath = $skinPath . 'elefunds_item_thumbnail.png';
 
-
-
+        $donationProduct->addImageToMediaGallery ($fullImagePath, array ('image'), false, false);
+        $donationProduct->addImageToMediaGallery ($fullSmallImagePath, array ('small_image'), false, false);
+        $donationProduct->addImageToMediaGallery ($fullThumbnailPath, array ('thumbnail'), false, false);
+        $donationProduct->save();
+    } catch (Exception $exception) {
+        var_dump($exception); exit;
+        Mage::logException($exception);
+    }
+    */
 }
 
 /**

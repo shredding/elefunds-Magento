@@ -134,6 +134,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiversCollection  */
             $receiversCollection = Mage::getModel('lfnds_donation/receiver')->getCollection();
 
+
             $receiversCollection->addFieldToFilter(
                 'valid', array(
                            'from'  =>  $time->format("Y-m-d H:i:s")
@@ -141,16 +142,25 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             )
             ->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
 
-            if ($receiversCollection->getSize() < 3) {
-                $this->receivers = $this->getSyncManager()->syncReceivers();
+            try {
+                if ($receiversCollection->getSize() < 3) {
+                    $this->receivers = $this->getSyncManager()->syncReceivers();
 
-                if (count($this->receivers) < 3) {
-                    // Okay, this line of code will hopefully never execute! We do ALWAYS provide three receivers.
-                    $this->receivers = array();
+                    if (count($this->receivers) < 3) {
+                        // Okay, this line of code will hopefully never execute! We do ALWAYS provide three receivers.
+                        $this->receivers = array();
+                    }
+                } else {
+                    $this->receivers = $receiversCollection;
                 }
-            } else {
-                $this->receivers = $receiversCollection;
+            } catch (Exception $exception) {
+                Mage::logException($exception);
+                Mage::log('Elefunds database tables not available or module improperly configured.');
+
+                $this->receivers = array();
             }
+
+
         }
 
         return $this->receivers;

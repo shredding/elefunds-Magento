@@ -105,7 +105,14 @@ shell/log.php
 skin/adminhtml/default/default/
 skin/adminhtml/default/enterprise
 skin/frontend/base/default/css/*.css
-skin/frontend/base/default/images
+skin/frontend/base/default/images/*.gif
+skin/frontend/base/default/images/*.png
+skin/frontend/base/default/images/catalog
+skin/frontend/base/default/images/centinel
+skin/frontend/base/default/images/cookies
+skin/frontend/base/default/images/moneybookers
+skin/frontend/base/default/images/widgets
+skin/frontend/base/default/images/xmlconnect
 skin/frontend/base/default/lib
 skin/frontend/base/default/js/checkout
 skin/frontend/base/default/js/*.js

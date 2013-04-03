@@ -196,6 +196,8 @@ class Lfnds_Donation_Manager_SyncManager
         /** @var Donation $donationModel */
         foreach ($donationModels as $donationModel) {
 
+            FB::log($donationModel->getAvailableReceiverIds());
+
             $donation = $this->facade->createDonation()
                 ->setForeignId($donationModel->getForeignId())
                 ->setAmount($donationModel->getAmount())
