@@ -26,11 +26,12 @@
     <!-- +++ One step checkout implementation +++ -->
     <onestepcheckout_index_index>
         <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_additional.css</name></action>
             <block type="lfnds_donation/page_head" name="elefunds.head"/>
         </reference>
         <reference name="content">
             <reference name="onestepcheckout.checkout">
-                    <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
+                <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
             </reference>
         </reference>
     </onestepcheckout_index_index>

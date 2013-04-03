@@ -6,38 +6,53 @@
 ?>    
     <script type="text/javascript">
     //<![CDATA[
-        var ElefundsForm = Class.create();
-        ElefundsForm.prototype = {
-            initialize: function(form) {
-                this.form = form;
-            }
-        }
-        
-        eleForm = new ElefundsForm($('elefunds-form'));
 
-        Review.prototype.save = function(){
-            if (checkout.loadWaiting!=false) return;
-            checkout.setLoadWaiting('review');
-            var params = Form.serialize(payment.form);
-            if (this.agreementsForm) {
-                params += '&'+Form.serialize(this.agreementsForm);
-            }
-            if (eleForm.form) {
-                params += '&'+Form.serialize(eleForm.form);
-            }
-            
-            params.save = true;
-            var request = new Ajax.Request(
-                this.saveUrl,
-                {
-                    method:'post',
-                    parameters:params,
-                    onComplete: this.onComplete,
-                    onSuccess: this.onSave,
-                    onFailure: checkout.ajaxFailure.bind(checkout)
+        // Review is only defined in one page checkout
+        if (typeof Review !== 'undefined') {
+
+            /*
+             * One page checkout specific JS
+             */
+
+            var ElefundsForm = Class.create();
+            ElefundsForm.prototype = {
+                initialize: function(form) {
+                    this.form = form;
                 }
-            );
-        };
+            }
+
+            eleForm = new ElefundsForm($('elefunds-form'));
+
+            Review.prototype.save = function(){
+                if (checkout.loadWaiting!=false) return;
+                checkout.setLoadWaiting('review');
+                var params = Form.serialize(payment.form);
+                if (this.agreementsForm) {
+                    params += '&'+Form.serialize(this.agreementsForm);
+                }
+                if (eleForm.form) {
+                    params += '&'+Form.serialize(eleForm.form);
+                }
+
+                params.save = true;
+                var request = new Ajax.Request(
+                    this.saveUrl,
+                    {
+                        method:'post',
+                        parameters:params,
+                        onComplete: this.onComplete,
+                        onSuccess: this.onSave,
+                        onFailure: checkout.ajaxFailure.bind(checkout)
+                    }
+                );
+            };
+        } else {
+
+            /*
+             * One step checkout specific JS
+             */
+
+        }
     //]]>
     </script>
 <?php 
