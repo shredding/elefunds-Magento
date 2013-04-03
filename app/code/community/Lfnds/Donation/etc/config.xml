@@ -178,6 +178,8 @@
                 <active>0</active>
                 <product>donation</product>
                 <include_jquery>1</include_jquery>
+                <theme>light</theme>
+                <color>orange</color>
             </config>
         </lfnds_donation>
     </default>

@@ -46,7 +46,7 @@
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Lfnds_Donation_Model_System_Config_Source_Group
+class Lfnds_Donation_Model_System_Config_Source_Payment
 {
     protected $_options;
     
@@ -54,7 +54,7 @@ class Lfnds_Donation_Model_System_Config_Source_Group
     {
         if (!$this->_options) {
             $options = Mage::getSingleton('payment/config')->getActiveMethods();
-            foreach ($options as $code=>$value) {
+            foreach ($options as $code => $value) {
                 $optionsArray[] = array(
                    'value'      => $code,
                    'label'      => Mage::getStoreConfig('payment/' . $code . '/title'),

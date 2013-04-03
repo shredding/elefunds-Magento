@@ -180,7 +180,6 @@ class Lfnds_Donation_Manager_SyncManager
              $donationCollection->setStates($donationsToBeCompleted, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION);
         }
 
-
         return $this;
     }
 

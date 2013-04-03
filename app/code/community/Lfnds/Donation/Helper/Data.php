@@ -101,7 +101,20 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                           ->setApiKey($apiKey)
                           ->setCountrycode($countryCode);
 
-            $this->facade[$configurationType] = new Elefunds_Facade($configuration);
+            $theme = Mage::getStoreConfig($magentoConfigBasePath . '/theme');
+            $color = Mage::getStoreConfig($magentoConfigBasePath . '/color');
+
+
+            $facade = new Elefunds_Facade($configuration);
+            $facade->getConfiguration()->getView()->assign(
+                'skin',
+                array(
+                    'theme' => $theme,
+                    'color' => $color
+                )
+            );
+
+            $this->facade[$configurationType] = $facade;
         }
 
         return $this->facade[$configurationType];
