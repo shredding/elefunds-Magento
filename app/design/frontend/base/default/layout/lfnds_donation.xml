@@ -22,7 +22,20 @@
         </reference>
     </checkout_onepage_success>
 
-    <!-- Elefunds billing changes -->
+    <!-- +++ One step checkout implementation +++ -->
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <block type="lfnds_donation/page_head" name="elefunds.head"/>
+        </reference>
+        <reference name="content">
+            <reference name="onestepcheckout.checkout">
+                    <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
+            </reference>
+        </reference>
+    </onestepcheckout_index_index>
+    <!-- ^^^ One step checkout implementation ^^^ -->
+
+    <!-- +++ Elefunds billing changes +++ -->
     <sales_email_order_items>
         <reference name="additional.product.info">
             <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
@@ -46,4 +59,5 @@
             <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
         </reference>
     </sales_email_order_creditmemo_items>
+    <!-- ^^^ Elefunds billing changes ^^^ -->
 </layout>
