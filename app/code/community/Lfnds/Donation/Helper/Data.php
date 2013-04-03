@@ -65,7 +65,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $receivers;
 
     /**
-     * @var Lfnds_Donation_Manager
+     * @var Lfnds_Donation_Manager_SyncManager
      */
     protected $syncManager;
 
