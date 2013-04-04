@@ -115,6 +115,8 @@
 			</lfnds_donation>
 		</routers>
 		<events>
+
+            <!-- +++ One page checkout specific events +++ -->
             <elefunds_checkout_review_before_enable>
                 <observers>
                     <limitPayments>
@@ -151,6 +153,9 @@
                     </updateDonationStateAndSync>
                 </observers>
             </checkout_onepage_controller_success_action>
+            <!-- ^^^ One page checkout specific events ^^^ -->
+
+            <!-- +++ Shared events +++ -->
             <sales_quote_item_set_product>
                 <observers>
                     <noRules>
@@ -160,6 +165,8 @@
                     </noRules>
                 </observers>
             </sales_quote_item_set_product>
+            <!-- ^^^ Shared events ^^^ -->
+
         </events>
 
 		<layout>

@@ -211,4 +211,8 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         return $this->syncManager;
     }
 
+    public function isOneStepCheckoutInstalled() {
+        return TRUE;
+    }
+
 }
