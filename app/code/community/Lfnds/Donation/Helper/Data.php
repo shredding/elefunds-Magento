@@ -215,4 +215,15 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         return TRUE;
     }
 
+    /**
+     * @return array
+     */
+    public function getExcludedPaymentMethods() {
+        $path = 'lfnds_donation/config/excluded_payment_methods';
+        $storeId = Mage::app()->getStore()->getId();
+
+        $excludedMethodsAsString = Mage::getStoreConfig($path, $storeId);
+        return !empty($excludedMethodsAsString) ? explode(',', $excludedMethodsAsString) : array();
+    }
+
 }

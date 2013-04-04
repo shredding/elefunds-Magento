@@ -116,6 +116,7 @@
 		</routers>
 		<events>
 
+
             <!-- +++ One page checkout specific events +++ -->
             <elefunds_checkout_review_before_enable>
                 <observers>

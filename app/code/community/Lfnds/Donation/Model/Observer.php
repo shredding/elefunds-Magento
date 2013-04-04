@@ -254,28 +254,19 @@ class Lfnds_Donation_Model_Observer
 
     /**
      * @param Varien_Event_Observer $observer
-     * @return void
      */
     public function limitPayments(Varien_Event_Observer $observer) {
 
-        if (!$this->helper->isOneStepCheckoutInstalled()) {
-            /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
-            $block = $observer->getEvent()->getObject();
-            $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
-                ->getPayment()
-                ->getMethodInstance()
-                ->getCode();
+        /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
+        $block = $observer->getEvent()->getObject();
+        $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
+            ->getPayment()
+            ->getMethodInstance()
+            ->getCode();
 
-
-            $path = 'lfnds_donation/config/excluded_payment_methods';
-            $storeId = Mage::app()->getStore()->getId();
-
-            $excludedMethodsAsString = Mage::getStoreConfig($path, $storeId);
-            $excludedMethods = !empty($excludedMethodsAsString) ? explode(',', $excludedMethodsAsString) : array();
-
-            if (in_array($paymentCode, $excludedMethods)) {
-                $block->deactivateBanner();
-            }
+        $excludedMethods = $this->helper->getExcludedPaymentMethods();
+        if (in_array($paymentCode, $excludedMethods)) {
+            $block->deactivateBanner();
         }
     }
 

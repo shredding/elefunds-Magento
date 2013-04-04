@@ -57,6 +57,15 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
     protected $isActive = FALSE;
 
     /**
+     * @var Lfnds_Donation_Helper_Data $helper
+     */
+    protected $helper;
+
+    public function __construct() {
+        $this->helper = Mage::helper('lfnds_donation');
+    }
+
+    /**
      * Returns the API Template.
      *
      * If we cannot display the Template, we return an empty string.
@@ -66,24 +75,27 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      * @return string The rendered HTML Snippet
      */
     public function getApiTemplate() {
+
         $this->isActive = (bool)Mage::getStoreConfig('lfnds_donation/config/active');
 
-        Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
+        if (!$this->helper->isOneStepCheckoutInstalled()) {
+            // The event does not work with one step checkout.
+            // That's because the payment methods are not configured prior to the module.
+            Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
+        }
         $template = '';
 
         if ($this->isActive) {
 
-            /** @var Lfnds_Donation_Helper_Data $helper */
-            $helper = Mage::helper('lfnds_donation');
             try {
-                $facade = $helper->getConfiguredFacade();
+                $facade = $this->helper->getConfiguredFacade();
 
                 $banner_width = Mage::getStoreConfig('lfnds_donation/config/banner_width');
                 $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
                 $localeCode = Mage::app()->getLocale()->getLocaleCode();
                 $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
                 
-                $receivers = $helper->getReceivers();
+                $receivers = $this->helper->getReceivers();
 
                 if (count($receivers) >= 3) {
 
@@ -102,6 +114,10 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
             }
         }
         return $template;
+    }
+
+    public function getExcludedPaymentMethods() {
+        return $this->helper->getExcludedPaymentMethods();
     }
 
     /**
