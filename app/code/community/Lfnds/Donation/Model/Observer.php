@@ -68,31 +68,31 @@ class Lfnds_Donation_Model_Observer
      */
     public function onPreDispatchSaveOrder(Varien_Event_Observer $observer) {
 
-        /** @var Mage_Checkout_Model_Session $checkoutSession  */
-        $checkoutSession = Mage::getSingleton('checkout/session');
-        $quote = $checkoutSession->getQuote();
-
-        /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
-        $elefundsProduct = $this->helper->getVirtualProduct();
-
-        if ($elefundsProduct === NULL) {
-            Mage::log('Elefunds object not found on store!');
-            return;
-        }
-
-        if ($quote->hasProductId($elefundsProduct->getId())) {
-            return;
-        }
-
         $params = Mage::app()->getRequest()->getParams();
         $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
 
         if (count($elefundsVariables) > 0) {
+
+            /** @var Mage_Checkout_Model_Session $checkoutSession  */
+            $checkoutSession = Mage::getSingleton('checkout/session');
+            $quote = $checkoutSession->getQuote();
+
+            /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
+            $elefundsProduct = $this->helper->getVirtualProduct();
+
+            if ($elefundsProduct === NULL) {
+                Mage::log('Elefunds object not found on store!');
+                return;
+            }
+
+            if ($quote->hasProductId($elefundsProduct->getId())) {
+                return;
+            }
+
             $elefundsProduct->setPrice($elefundsVariables['roundup'] / 100);
             $elefundsProduct->setBasePrice($elefundsVariables['roundup'] / 100);
             $quote->addProduct($elefundsProduct);
         }
-
     }
 
     /**
@@ -186,13 +186,6 @@ class Lfnds_Donation_Model_Observer
      * @param Varien_Event_Observer $observer
      * @return void
      */
-    /**
-     * Whenever an order is saved, we check if it contains a donation and if the status change is of
-     * interest for the API. If so, we invoke the sync process.
-     *
-     * @param Varien_Event_Observer $observer
-     * @return void
-     */
     public function onOrderSaved(Varien_Event_Observer $observer)
     {
         /* @var $order Mage_Sales_Model_Order */
@@ -256,7 +249,6 @@ class Lfnds_Donation_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function limitPayments(Varien_Event_Observer $observer) {
-
         /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
         $block = $observer->getEvent()->getObject();
         $paymentCode = Mage::getSingleton('checkout/session')->getQuote()

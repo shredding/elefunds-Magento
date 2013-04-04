@@ -115,6 +115,17 @@
 			</lfnds_donation>
 		</routers>
 		<events>
+            <!-- +++ One step checkout specific events +++ -->
+            <controller_action_predispatch_onestepcheckout_index_index>
+                <observers>
+                    <limitPayments>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onPreDispatchSaveOrder</method>
+                    </limitPayments>
+                </observers>
+            </controller_action_predispatch_onestepcheckout_index_index>
+            <!-- ^^^ One step checkout specific events ^^^ -->
 
 
             <!-- +++ One page checkout specific events +++ -->
@@ -136,6 +147,9 @@
                     </addDonationToBasket>
                 </observers>
             </controller_action_predispatch_checkout_onepage_saveOrder>
+            <!-- ^^^ One page checkout specific events ^^^ -->
+
+            <!-- +++ Shared events +++ -->
             <checkout_type_onepage_save_order_after>
                 <observers>
                     <addDonationToElefundsModel>
@@ -154,9 +168,6 @@
                     </updateDonationStateAndSync>
                 </observers>
             </checkout_onepage_controller_success_action>
-            <!-- ^^^ One page checkout specific events ^^^ -->
-
-            <!-- +++ Shared events +++ -->
             <sales_quote_item_set_product>
                 <observers>
                     <noRules>
