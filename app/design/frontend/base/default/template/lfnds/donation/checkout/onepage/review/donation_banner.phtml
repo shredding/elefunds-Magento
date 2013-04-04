@@ -52,7 +52,7 @@
              * One step checkout specific JS
              */
             var elefunds = elefunds || {};
-            elefunds.excludedPaymentMethod = [ <?php implode(',', $this->getExcludedPaymentMethods()) ?>  ];
+            elefunds.excludedPaymentMethods = [ <?php implode(',', $this->getExcludedPaymentMethods()) ?>  ];
 
         }
     //]]>
