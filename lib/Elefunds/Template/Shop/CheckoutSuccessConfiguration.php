@@ -77,13 +77,13 @@ class Elefunds_Template_Shop_CheckoutSuccessConfiguration extends Elefunds_Templ
 
         $this->view->assign('availableShareServices', array(
             'facebook'      =>  array(
-                'image'     =>  'https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/default/share_on_facebook.png',
+                'image'     =>  'https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/share_on_facebook.png',
                 'width'     =>  660,
                 'height'    =>  350,
                 'title'     =>  $this->countrycode === 'de' ? 'Auf Facebook teilen' : 'Share on facebook'
             ),
             'twitter'      =>  array(
-                'image'     =>  'https://bbbf9fd0e36d5cb36b93-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/default/tweet_on_twitter.png',
+                'image'     =>  'https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/tweet_on_twitter.png',
                 'width'     =>  620,
                 'height'    =>  415,
                 'title'     =>  $this->countrycode === 'de' ? 'Auf Twitter tweeten' : 'Tweet on twitter'
