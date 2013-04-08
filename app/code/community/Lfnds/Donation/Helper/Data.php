@@ -70,6 +70,11 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $syncManager;
 
     /**
+     * @var bool
+     */
+    protected $usesOneStepCheckout;
+
+    /**
      * Configures the facade based on the plugin settings and the current locale.
      *
      * @param bool $checkoutSuccess
@@ -211,8 +216,16 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         return $this->syncManager;
     }
 
+    /**
+     * Returns the setted state of the one step checkout in the backend.
+     *
+     * @return bool
+     */
     public function isOneStepCheckoutInstalled() {
-        return TRUE;
+        if ($this->usesOneStepCheckout === NULL) {
+            $this->usesOneStepCheckout = Mage::getStoreConfig('lfnds_donation/config/uses_onestepcheckout');
+        }
+        return $this->usesOneStepCheckout;
     }
 
     /**

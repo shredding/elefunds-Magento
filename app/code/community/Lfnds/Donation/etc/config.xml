@@ -201,6 +201,7 @@
             <advanced>
                 <include_jquery>1</include_jquery>
                 <banner_width>681</banner_width>
+                <uses_onestepcheckout>0</uses_onestepcheckout>
             </advanced>
         </lfnds_donation>
     </default>
