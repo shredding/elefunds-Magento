@@ -50,19 +50,24 @@
 class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
 
     /**
-     * Controls if banner should be shown
-     *
-     * @var bool
-     */
-    protected $isActive = FALSE;
-
-    /**
      * @var Lfnds_Donation_Helper_Data $helper
      */
     protected $helper;
 
+    /**
+     * @var string
+     */
+    protected $position;
+
     public function __construct() {
         $this->helper = Mage::helper('lfnds_donation');
+    }
+
+    public function getPosition() {
+        if ($this->position === NULL) {
+            $this->position  = Mage::getStoreConfig('lfnds_donation/advanced/banner_position');
+        }
+        return $this->position;
     }
 
     /**
