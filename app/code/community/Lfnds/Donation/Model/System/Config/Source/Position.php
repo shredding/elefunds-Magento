@@ -1,7 +1,6 @@
 <?php
-
 /**
- * elefunds API PHP Library
+ * elefunds Magento Module
  *
  * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
  * All rights reserved.
@@ -34,80 +33,33 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
  */
-
-require_once dirname(__FILE__) . '/../../Configuration/DefaultConfiguration.php';
-require_once dirname(__FILE__) . '/../../View/BaseView.php';
-require_once dirname(__FILE__) . '/Hooks/ShopHooks.php';
 
 /**
- * Shop Configuration for a shop template.
+ * Retrieves available themes.
  *
- * @package    elefunds API PHP Library
- * @subpackage Template\Shop
- * @author     Christian Peters <christian@elefunds.de>
- * @copyright  2013 elefunds GmbH <hello@elefunds.de>
+ * @package    elefunds Magento Module
+ * @subpackage Model
+ * @author     Christian Peters, <christian@elefunds.de>
+ * @copyright  2012 elefunds GmbH <hello@elefunds.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
- * @since      File available since Release 1.2.0
+ * @since      File available since Release 1.0.0
  */
-class Elefunds_Template_Shop_ShopConfiguration extends Elefunds_Configuration_DefaultConfiguration {
-
-    /**
-     * @var array
-     */
-    protected $themes;
-
-    /**
-     * @var array
-     */
-    protected $colors;
-
-    /**
-     * Assigns the receivers.
-     *
-     * @return void
-     */
-    public function init() {
-
-        parent::init();
-
-        $this->setView(new Elefunds_View_BaseView());
-        $this->view->setTemplate('Shop');
-
-        //Available theme and color choices
-        $this->themes = array('light', 'dark');
-        $this->colors = array('orange', 'blue', 'green', 'purple');
-
-        //Chose your theme and color
-        $theme = $this->themes[0];
-        $color = $this->colors[0];
-
-        $this->view->addJavascriptFile('elefunds.jquery.min.js');
-
-        $this->view->registerAssignHook('skin', 'Elefunds_Template_Shop_Hooks_ShopHooks', 'chooseCssFile');
-        $this->view->assign('skin',
+class Lfnds_Donation_Model_System_Config_Source_Position
+{
+    public function toOptionArray()
+    {
+        return array(
             array(
-                'theme' =>  $theme,
-                'color' =>  $color
+                'value'     =>  'top',
+                'label'     =>  'Top'
+            ),
+            array(
+                'value'     =>  'bottom',
+                'label'     =>  'Bottom'
             )
         );
 
     }
-
-    /**
-     * @return array
-     */
-    public function getAvailableThemes() {
-        return $this->themes;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAvailableColors() {
-        return $this->colors;
-    }
-
 }

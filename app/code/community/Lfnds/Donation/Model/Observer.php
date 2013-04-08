@@ -251,10 +251,20 @@ class Lfnds_Donation_Model_Observer
     public function limitPayments(Varien_Event_Observer $observer) {
         /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
         $block = $observer->getEvent()->getObject();
-        $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
-            ->getPayment()
-            ->getMethodInstance()
-            ->getCode();
+
+        try {
+            $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
+                ->getPayment()
+                ->getMethodInstance()
+                ->getCode();
+        } catch (Exception $exception) {
+            // This exception is thrown, when the merchant uses some kind of one step checkout
+            // (where no payment has yet been set).
+            // If so, check if you have enabled the one step checkout in the settings.
+            // If it's a one step checkout that we do not support,
+            // we silently bypass the module, as the shop would crash otherwise.
+            Mage::log('We could not get a default payment and are deactivating the banner.');
+        }
 
         $excludedMethods = $this->helper->getExcludedPaymentMethods();
         if (in_array($paymentCode, $excludedMethods)) {
@@ -279,13 +289,10 @@ class Lfnds_Donation_Model_Observer
      */
     protected function getElefundsVariablesFromRequestParams(array $params) {
 
-        $path = 'lfnds_donation/config/active';
-        $isActive = Mage::getStoreConfig($path);
-
         $elefundsVariables = array();
 
 
-        if ($isActive && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
+        if ($this->helper->isActive() && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
 
             /** +++ Input Validation +++ */
 

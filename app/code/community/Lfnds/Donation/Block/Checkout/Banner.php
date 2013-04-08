@@ -50,19 +50,24 @@
 class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
 
     /**
-     * Controls if banner should be shown
-     *
-     * @var bool
-     */
-    protected $isActive = FALSE;
-
-    /**
      * @var Lfnds_Donation_Helper_Data $helper
      */
     protected $helper;
 
+    /**
+     * @var string
+     */
+    protected $position;
+
     public function __construct() {
         $this->helper = Mage::helper('lfnds_donation');
+    }
+
+    public function getPosition() {
+        if ($this->position === NULL) {
+            $this->position  = Mage::getStoreConfig('lfnds_donation/advanced/banner_position');
+        }
+        return $this->position;
     }
 
     /**
@@ -76,8 +81,6 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      */
     public function getApiTemplate() {
 
-        $this->isActive = (bool)Mage::getStoreConfig('lfnds_donation/config/active');
-
         if (!$this->helper->isOneStepCheckoutInstalled()) {
             // The event does not work with one step checkout.
             // That's because the payment methods are not configured prior to the module.
@@ -85,12 +88,12 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
         }
         $template = '';
 
-        if ($this->isActive) {
+        if ($this->helper->isActive()) {
 
             try {
                 $facade = $this->helper->getConfiguredFacade();
 
-                $banner_width = Mage::getStoreConfig('lfnds_donation/config/banner_width');
+                $banner_width = Mage::getStoreConfig('lfnds_donation/advanced/banner_width');
                 $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
                 $localeCode = Mage::app()->getLocale()->getLocaleCode();
                 $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');

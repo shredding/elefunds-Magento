@@ -59,7 +59,7 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
         $headBlock = $this->getLayout()->getBlock('head');
 
         try {
-            $includeJQuery = Mage::getStoreConfig('lfnds_donation/config/include_jquery');
+            $includeJQuery = Mage::getStoreConfig('lfnds_donation/advanced/include_jquery');
 
             $facade = $helper->getConfiguredFacade();
 

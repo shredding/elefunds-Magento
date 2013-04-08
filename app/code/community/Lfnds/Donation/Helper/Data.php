@@ -70,6 +70,16 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $syncManager;
 
     /**
+     * @var bool
+     */
+    protected $usesOneStepCheckout;
+
+    /**
+     * @var bool
+     */
+    protected $active;
+
+    /**
      * Configures the facade based on the plugin settings and the current locale.
      *
      * @param bool $checkoutSuccess
@@ -93,7 +103,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             /** @var Elefunds_Configuration_ConfigurationInterface $configuration  */
             $configuration = new $className();
 
-            $magentoConfigBasePath = 'lfnds_donation/config';
+            $magentoConfigBasePath = 'lfnds_donation/general';
             $clientId = Mage::getStoreConfig($magentoConfigBasePath . '/client_id');
             $apiKey = Mage::getStoreConfig($magentoConfigBasePath . '/api_key');
             $countryCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
@@ -211,19 +221,34 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         return $this->syncManager;
     }
 
+    /**
+     * Returns the setted state of the one step checkout in the backend.
+     *
+     * @return bool
+     */
     public function isOneStepCheckoutInstalled() {
-        return TRUE;
+        if ($this->usesOneStepCheckout === NULL) {
+            $this->usesOneStepCheckout = Mage::getStoreConfig('lfnds_donation/advanced/uses_onestepcheckout');
+        }
+        return $this->usesOneStepCheckout;
     }
 
     /**
      * @return array
      */
     public function getExcludedPaymentMethods() {
-        $path = 'lfnds_donation/config/excluded_payment_methods';
+        $path = 'lfnds_donation/advanced/excluded_payment_methods';
         $storeId = Mage::app()->getStore()->getId();
 
         $excludedMethodsAsString = Mage::getStoreConfig($path, $storeId);
         return !empty($excludedMethodsAsString) ? explode(',', $excludedMethodsAsString) : array();
+    }
+
+    public function isActive() {
+        if ($this->active === NULL) {
+            $this->active = Mage::getStoreConfig('lfnds_donation/general/active');
+        }
+        return $this->active;
     }
 
 }
