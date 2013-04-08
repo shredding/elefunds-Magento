@@ -62,8 +62,11 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
             $includeJQuery = Mage::getStoreConfig('lfnds_donation/config/include_jquery');
 
             $facade = $helper->getConfiguredFacade();
+
+            // Javascript includes
             $scriptFiles = $facade->getTemplateJavascriptFiles($includeJQuery);
-            $cssFiles = $facade->getTemplateCssFiles();
+
+
 
             if ($includeJQuery) {
                 array_unshift($scriptFiles, 'jQueryNoConflict.js');
@@ -73,8 +76,20 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
             foreach ($scriptFiles as $jsFile) {
                 $headBlock->addItem('skin_js', 'js' . DS . 'lfnds_donation' . DS . basename($jsFile));
             }
-            foreach ($cssFiles as $cssFile) {
-                $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . basename($cssFile));
+
+            if ($helper->isOneStepCheckoutInstalled()) {
+                $jsAdditional = '/elefunds_magento_onestep_additional.js';
+                $headBlock->addItem('skin_js', 'js' . DS . 'lfnds_donation' . DS . 'additional' . DS . basename($jsAdditional));
+            }
+
+            // CSS included
+            // This CSS is not used in OneStepCheckout
+            // Check layout/lfnds_donation.xml for OneStepCheckout CSS
+            if (!$helper->isOneStepCheckoutInstalled()) {
+                $cssFiles = $facade->getTemplateCssFiles();
+                foreach ($cssFiles as $cssFile) {
+                    $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . basename($cssFile));
+                }
             }
 
 
