@@ -31,8 +31,6 @@ ElefundsOneStepCheckoutIntegration.prototype.changePosition = function () {
  */
 
 var ElefundsOneStepCheckoutIntegrationChangeSum = function () {
-    console.log(OneStepCheckoutLoginPopup);
-
     this.$roundedSumNode = jQuery('#elefunds_round_sum');
     this.$currencyNode = jQuery('#elefunds_round_sum + strong');
     this.$totalAmountNode = jQuery('.onestepcheckout-totals .grand-total .price');
@@ -51,7 +49,6 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addEvents = function () {
     var that = this;
 
     jQuery(document).on('elefunds_enabled', function () {
-        console.log('triggerd');
         that.isModuleEnabled = true;
         that.activateDonationRow();
 
@@ -71,15 +68,15 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addEvents = function () {
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.changeSumValue = function () {
     if (this.isModuleEnabled) {
         var oldSumReg = this.oldSum.replace(/[^0-9]/gi, '');
-        var oldSumValue = parseFloat(oldSumReg/100);
+        var oldSumValue = parseFloat(oldSumReg / 100);
         var donationValue = parseFloat(jQuery('#elefunds_input').val());
 
         this.roundedSum = oldSumValue + donationValue;
 
-        this.$roundedSumNode.html(this.roundedSum);
+        this.$roundedSumNode.html(this.roundedSum.toFixed(2));
 
         var currency = this.$currencyNode.html();
-        jQuery('.onestepcheckout-totals .grand-total .price').html(this.roundedSum + ' ' + currency);
+        jQuery('.onestepcheckout-totals .grand-total .price').html(this.roundedSum.toFixed(2) + ' ' + currency);
         this.updateDonationRow();
     }
 };
@@ -99,20 +96,20 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateSums = function () {
      * (and everything else what is not a number)
      */
     var oldSumReg = this.oldSum.replace(/[^0-9]/gi, '');
-    var oldSumValue = parseFloat(oldSumReg/100);
+    var oldSumValue = parseFloat(oldSumReg / 100);
     var donationValue = parseFloat(jQuery('#elefunds_input').val());
 
     this.roundedSum = oldSumValue + donationValue;
 
-    this.$roundedSumNode.html(this.roundedSum);
+    this.$roundedSumNode.html(this.roundedSum.toFixed(2));
 };
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addDonationRow = function () {
     jQuery('' +
         '<tr class="elefunds_donation_row">' +
-            '<td class="title">Elefunds Donation</td>' +
-            '<td class="value">' +
-                '<span class="price">' + jQuery('#elefunds_input').val() + '</span>' +
-            '</td>' +
+        '<td class="title">Elefunds Donation</td>' +
+        '<td class="value">' +
+        '<span class="price">' + jQuery('#elefunds_input').val() + '</span>' +
+        '</td>' +
         '</tr>' +
         '').insertBefore('.grand-total');
 };
