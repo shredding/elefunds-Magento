@@ -59,6 +59,11 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addEvents = function () {
             that.changeSumValue();
         }
     });
+    jQuery('#elefunds_input').on('change', function () {
+        if (that.isModuleEnabled) {
+            that.changeSumValue();
+        }
+    });
     jQuery(document).on('elefunds_disabled', function () {
         that.deactivateDonationRow();
         that.isModuleEnabled = false;
@@ -106,7 +111,7 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateSums = function () {
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addDonationRow = function () {
     jQuery('' +
         '<tr class="elefunds_donation_row">' +
-        '<td class="title">Elefunds Donation</td>' +
+        '<td class="title">elefunds Donation</td>' +
         '<td class="value">' +
         '<span class="price">' + jQuery('#elefunds_input').val() + '</span>' +
         '</td>' +

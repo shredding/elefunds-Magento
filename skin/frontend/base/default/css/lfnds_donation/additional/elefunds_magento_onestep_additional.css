@@ -12,6 +12,15 @@
     display: block;
 }
 
+
+/*
+ * Hide sum in elefunds-container
+ * elefunds-donation is always shown in order-review
+ */
+#elefunds_round_sum_container strong {
+    display: none;
+}
+
 /*
  * ++ One Step Checkout - Row in Order-review which shows the elefunds-donation ++
  */
