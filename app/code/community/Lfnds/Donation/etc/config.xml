@@ -63,6 +63,15 @@
                     </syncDonationOnChangedState>
                 </observers>
             </sales_order_save_after>
+            <sales_convert_order_to_quote>
+                <observers>
+                    <portDonationToNewlyCreatedOrder>
+                            <type>model</type>
+                            <class>lfnds_donation/observer</class>
+                            <method>portDonationToNewlyCreatedOrder</method>
+                    </portDonationToNewlyCreatedOrder>
+                </observers>
+            </sales_convert_order_to_quote>
         </events>
     </global>
 

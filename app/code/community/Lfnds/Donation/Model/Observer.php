@@ -245,6 +245,45 @@ class Lfnds_Donation_Model_Observer
         }
     }
 
+    public function portDonationToNewlyCreatedOrder(Varien_Event_Observer $observer) {
+
+        /* @var $order Mage_Sales_Model_Order */
+        $order = $observer->getEvent()->getOrder();
+
+        /* @var Mage_Sales_Model_Quote $quote */
+        $quote = $observer->getEvent()->getQuote();
+
+        /** @var Mage_Catalog_Model_Product $elefundsProduct  */
+        $elefundsProduct = $this->helper->getVirtualProduct();
+        if ($elefundsProduct !== NULL) {
+            /** @var Mage_Sales_Model_Order_Item $item  */
+            foreach ($order->getAllItems() as $item) {
+                if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+                    $elefundsItem = $item;
+                    break;
+                }
+            }
+
+            if ($elefundsItem !== NULL) {
+                $allItems = $quote->getAllItems();
+                $quote->removeAllItems();
+                /** @var Mage_Sales_Model_Quote_Item $item  */
+                foreach ($allItems as $item) {
+                    if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+                        $elefundsProduct->setPrice($elefundsItem->getPrice());
+                        $elefundsProduct->setBasePrice($elefundsItem->getBasePrice());
+                        $quote->addProduct($elefundsProduct);
+                    } else {
+                        $quote->addItem($item);
+                    }
+                }
+                $quote->save();
+            }
+
+        }
+    }
+
+
     /**
      * @param Varien_Event_Observer $observer
      */
@@ -290,7 +329,6 @@ class Lfnds_Donation_Model_Observer
     protected function getElefundsVariablesFromRequestParams(array $params) {
 
         $elefundsVariables = array();
-
 
         if ($this->helper->isActive() && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
 

@@ -50,7 +50,7 @@
 class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
-     * @var Mage_Core_Model_Abstract
+     * @var Mage_Catalog_Model_Product
      */
     protected $virtualProduct;
 
@@ -198,7 +198,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     /**
      * Retrieves the virtual product.
      *
-     * @return Mage_Core_Model_Abstract
+     * @return Mage_Catalog_Model_Product
      */
     public function getVirtualProduct() {
         /** @var Mage_Catalog_Model_Product $productModel */
