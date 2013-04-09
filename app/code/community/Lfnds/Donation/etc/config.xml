@@ -171,11 +171,11 @@
             </checkout_onepage_controller_success_action>
             <sales_quote_item_set_product>
                 <observers>
-                    <noRules>
+                    <exclude_from_donation>
                         <type>model</type>
                         <class>lfnds_donation/observer</class>
                         <method>excludeDonationFromDiscount</method>
-                    </noRules>
+                    </exclude_from_donation>
                 </observers>
             </sales_quote_item_set_product>
             <!-- ^^^ Shared events ^^^ -->
