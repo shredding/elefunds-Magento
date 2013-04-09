@@ -29,6 +29,11 @@
     <!-- +++ One step checkout implementation +++ -->
     <onestepcheckout_index_index>
         <reference name="head">
+            <action method="addItem"><!-- this will be shown second -->
+                <type>skin_js</type>
+                <name>js/lfnds_donation/additional/elefunds_magento_onestep_patch.js</name>
+                <params><![CDATA[name="one_step_patch"]]></params>
+            </action>
             <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_onestep_additional.css</name></action>
             <block type="lfnds_donation/page_head" name="elefunds.head"/>
         </reference>

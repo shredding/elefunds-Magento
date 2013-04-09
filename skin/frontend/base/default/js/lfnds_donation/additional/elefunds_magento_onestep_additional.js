@@ -1,3 +1,5 @@
+var lfndsOneStep = {};
+
 /*
  * ++ One Step Checkout Specific JavaScript ++
  */
@@ -25,19 +27,19 @@ ElefundsOneStepCheckoutIntegration.prototype.changePosition = function () {
 
 
 /*
- * ++ Change Sum in One-Step-Checkout ++
+ * ++ Change Sum in One-Step-Checkout and control visual order-review ++
  */
-
 var ElefundsOneStepCheckoutIntegrationChangeSum = function () {
-    console.log(OneStepCheckoutLoginPopup);
-
     this.$roundedSumNode = jQuery('#elefunds_round_sum');
     this.$currencyNode = jQuery('#elefunds_round_sum + strong');
     this.$totalAmountNode = jQuery('.onestepcheckout-totals .grand-total .price');
 
+    this.roundedSum = this.$roundedSumNode.html();
+
     if (this.$roundedSumNode.length && this.$totalAmountNode.length) {
         this.oldSum = this.$totalAmountNode.html();
         this.isModuleEnabled = false;
+        this.addDonationRow();
         this.addEvents();
     }
 };
@@ -47,6 +49,7 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addEvents = function () {
 
     jQuery(document).on('elefunds_enabled', function () {
         that.isModuleEnabled = true;
+        that.activateDonationRow();
 
         that.changeSumValue();
     });
@@ -56,19 +59,60 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addEvents = function () {
         }
     });
     jQuery(document).on('elefunds_disabled', function () {
+        that.deactivateDonationRow();
         that.isModuleEnabled = false;
         jQuery('.onestepcheckout-totals .grand-total .price').html(that.oldSum);
     });
 };
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.changeSumValue = function () {
-    var roundedSum = this.$roundedSumNode.html(),
-        currency = this.$currencyNode.html();
-    jQuery('.onestepcheckout-totals .grand-total .price').html(roundedSum + ' ' + currency);
+    if (this.isModuleEnabled) {
+        this.roundedSum = this.$roundedSumNode.html();
+        var currency = this.$currencyNode.html();
+        jQuery('.onestepcheckout-totals .grand-total .price').html(this.roundedSum + ' ' + currency);
+        this.updateDonationRow();
+    }
 };
+ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateSums = function () {
+    this.oldSum = jQuery('.onestepcheckout-totals .grand-total .price').html();
 
+    if (!jQuery('.elefunds_donation_row').length) {
+        this.addDonationRow();
+    }
+    if (this.isModuleEnabled) {
+        this.activateDonationRow();
+    }
+
+    var oldSumReg = this.oldSum.replace(/[^0-9]/gi, '');
+    var oldSumValue = parseFloat(oldSumReg / 100);
+    var donationValue = parseFloat(jQuery('#elefunds_input').val());
+
+    this.roundedSum = oldSumValue + donationValue;
+
+    this.$roundedSumNode.html(this.roundedSum);
+};
+ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addDonationRow = function () {
+    jQuery('' +
+        '<tr class="elefunds_donation_row">' +
+        '<td class="title">Elefunds Donation</td>' +
+        '<td class="value">' +
+        '<span class="price">' + jQuery('#elefunds_input').val() + '</span>' +
+        '</td>' +
+        '</tr>' +
+        '').insertBefore('.grand-total');
+};
+ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateDonationRow = function () {
+    var currency = this.$currencyNode.html();
+    jQuery('.elefunds_donation_row .price').html(jQuery('#elefunds_input').val() + ' ' + currency);
+};
+ElefundsOneStepCheckoutIntegrationChangeSum.prototype.activateDonationRow = function () {
+    jQuery('.elefunds_donation_row').addClass('active');
+}
+ElefundsOneStepCheckoutIntegrationChangeSum.prototype.deactivateDonationRow = function () {
+    jQuery('.elefunds_donation_row').removeClass('active');
+}
 
 
 jQuery(document).ready(function () {
-    var instance = new ElefundsOneStepCheckoutIntegration(),
-        lfnds_changeSum = new ElefundsOneStepCheckoutIntegrationChangeSum();
+    lfndsOneStep.instance = new ElefundsOneStepCheckoutIntegration();
+    lfndsOneStep.lfnds_changeSum = new ElefundsOneStepCheckoutIntegrationChangeSum();
 });
