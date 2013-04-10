@@ -245,7 +245,12 @@ class Lfnds_Donation_Model_Observer
         }
     }
 
-    public function portDonationToNewlyCreatedOrder(Varien_Event_Observer $observer) {
+    /**
+     * Removes the Donation from cloned (reordered or edited orders) in the backend.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function removeDonationFromClonedOrderInBackend(Varien_Event_Observer $observer) {
 
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getOrder();
@@ -253,33 +258,27 @@ class Lfnds_Donation_Model_Observer
         /* @var Mage_Sales_Model_Quote $quote */
         $quote = $observer->getEvent()->getQuote();
 
-        /** @var Mage_Catalog_Model_Product $elefundsProduct  */
-        $elefundsProduct = $this->helper->getVirtualProduct();
-        if ($elefundsProduct !== NULL) {
-            /** @var Mage_Sales_Model_Order_Item $item  */
-            foreach ($order->getAllItems() as $item) {
-                if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
-                    $elefundsItem = $item;
-                    break;
+        $elefundsItem = NULL;
+        /** @var Mage_Sales_Model_Order_Item $item  */
+        foreach ($order->getAllItems() as $item) {
+            if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+                $elefundsItem = $item;
+                break;
+            }
+        }
+
+        if ($elefundsItem !== NULL) {
+            $allItems = $quote->getAllItems();
+            // Since $quote->removeItem() does not work for virtual products,
+            // we have to remove and re-add all items.
+            $quote->removeAllItems();
+            /** @var Mage_Sales_Model_Quote_Item $item  */
+            foreach ($allItems as $item) {
+                if ($item->getSku() !== Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+                    $quote->addItem($item);
                 }
             }
-
-            if ($elefundsItem !== NULL) {
-                $allItems = $quote->getAllItems();
-                $quote->removeAllItems();
-                /** @var Mage_Sales_Model_Quote_Item $item  */
-                foreach ($allItems as $item) {
-                    if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
-                        $elefundsProduct->setPrice($elefundsItem->getPrice());
-                        $elefundsProduct->setBasePrice($elefundsItem->getBasePrice());
-                        $quote->addProduct($elefundsProduct);
-                    } else {
-                        $quote->addItem($item);
-                    }
-                }
-                $quote->save();
-            }
-
+            $quote->save();
         }
     }
 

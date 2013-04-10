@@ -65,11 +65,11 @@
             </sales_order_save_after>
             <sales_convert_order_to_quote>
                 <observers>
-                    <portDonationToNewlyCreatedOrder>
+                    <removeDonationFromClonedOrder>
                             <type>model</type>
                             <class>lfnds_donation/observer</class>
-                            <method>portDonationToNewlyCreatedOrder</method>
-                    </portDonationToNewlyCreatedOrder>
+                            <method>removeDonationFromClonedOrderInBackend</method>
+                    </removeDonationFromClonedOrder>
                 </observers>
             </sales_convert_order_to_quote>
         </events>
