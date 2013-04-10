@@ -54,30 +54,43 @@
     -moz-box-shadow: 0 0 10px #ccc;
     box-shadow: 0 0 10px #ccc;
     margin-top: 30px;
-    padding: 15px;
 }
 #onestepcheckout-form #elefunds_logo {
-    margin-bottom: 10px;
+    padding: 7px;
 }
 #onestepcheckout-form #elefunds_arrow {
-    background: rgb(247, 247, 247);
-    -webkt-box-shadow: inset 0 0 12px rgb(158, 158, 158);
-    -moz-box-shadow: inset 0 0 12px rgb(158, 158, 158);
-    box-shadow: inset 0 0 12px rgb(158, 158, 158);
+    background: url(https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/arrow_bg.png) repeat-x;
     color: #444;
-    margin: 0 -15px 15px -15px;
-    padding: 6px 0 6px 15px;
+    margin: 0 0 10px 0px;
+    position: relative;
 }
 #onestepcheckout-form #elefunds_arrow #elefunds_checkbox {
     cursor: pointer;
+    left: 21px;
     margin-top: 3px;
     margin-right: 3px;
+    position: absolute;
+    top: 15px;
+    visibility: hidden;
+}
+#onestepcheckout-form #elefunds_arrow #elefunds_checkbox:checked + label {
+    background: url('https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/arrow_on.png') no-repeat;
 }
 #onestepcheckout-form #elefunds_arrow label {
+    background: url(https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/arrow_off.png) no-repeat;
     cursor: pointer;
+    color: #DDD;
+    display: block;
     font-family: 'Lucida Grande';
     font-size: 11px;
     font-weight: bold !important;
+    height: 43px;
+    padding: 6px 0 0 60px;
+}
+
+#onestepcheckout-form #elefunds_top {
+    background: url(https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/top_bar.png) repeat-x #efefef;
+    border-bottom: 1px solid rgb(219, 219, 219);
 }
 
 #onestepcheckout-form #elefunds_top > div {
@@ -97,15 +110,25 @@
 
 
 #onestepcheckout-form #elefunds_plus_minus {
-    float: right;
+    float: left;
     margin-right: 10px;
+    margin-top: 3px;
+    margin-left: 15px;
 }
 #onestepcheckout-form #elefunds_decrease img {
     visibility: hidden;
 }
 #onestepcheckout-form #elefunds_decrease {
-    background: rgb(233, 228, 228);
-    border: 1px solid rgb(221, 221, 221);
+    background: #efefef; /* Old browsers */
+    background: -moz-linear-gradient(top,  #efefef 0%, #aaaaaa 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(100%,#aaaaaa)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #efefef 0%,#aaaaaa 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #efefef 0%,#aaaaaa 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #efefef 0%,#aaaaaa 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #efefef 0%,#aaaaaa 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#aaaaaa',GradientType=0 ); /* IE6-9 */
+
+    border: 1px solid #999;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -133,8 +156,16 @@
     visibility: hidden;
 }
 #onestepcheckout-form #elefunds_increase {
-    background: rgb(233, 228, 228);
-    border: 1px solid rgb(221, 221, 221);
+    background: #fcaa6c; /* Old browsers */
+    background: -moz-linear-gradient(top,  #fcaa6c 0%, #f7842c 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcaa6c), color-stop(100%,#f7842c)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #fcaa6c 0%,#f7842c 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #fcaa6c 0%,#f7842c 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #fcaa6c 0%,#f7842c 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #fcaa6c 0%,#f7842c 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcaa6c', endColorstr='#f7842c',GradientType=0 ); /* IE6-9 */
+
+    border: 1px solid rgb(207, 102, 21);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -161,6 +192,19 @@
 
 #onestepcheckout-form #elefunds_input_container {
     float: left;
+    margin-left: 5px;
+}
+#onestepcheckout-form #elefunds_input_container #elefunds_currency {
+    background: url('https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/currency_bg.png') repeat-x;
+    border: 1px solid #7f807f;
+    -wekbit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
+    display: inline-block;
+    height: 18px;
+    padding: 4px 8px;
+    text-shadow: 0 1px 0 #c6cfd8;
+
 }
 #onestepcheckout-form #elefunds_input_container #elefunds_input {
     background: #f3f3f3; /* Old browsers */
@@ -172,62 +216,74 @@
     background: linear-gradient(to bottom,  #f3f3f3 0%,#ffffff 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 
-    border: 1px solid rgb(197, 196, 196);
+    border: 1px solid #777;
 
     -webkit-box-shadow: inset 0 0 7px rgb(175, 175, 175);
     -moz-box-shadow: inset 0 0 7px rgb(175, 175, 175);
     box-shadow: inset 0 0 7px rgb(175, 175, 175);
 
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    -webkit-border-radius: 0 2px 2px 0;
+    -moz-border-radius: 0 2px 2px 0;
+    border-radius: 0 2px 2px 0;
 
     font-size: 14px;
-    height: 20px;
-    margin-top: -3px;
+    height: 22px;
+    margin-top: -1px;
+    margin-left: -4px;
     padding: 2px 4px;
     width: 111px;
 }
 
 #onestepcheckout-form #elefunds_bottom {
-    margin-bottom: 10px;
+    margin: 0;
 }
 #onestepcheckout-form #elefunds_bottom .elefunds_receiver {
-    background: #e5e5e5; /* Old browsers */
-    background: -moz-linear-gradient(top,  #e5e5e5 0%, #ffffff 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e5e5e5), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #e5e5e5 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #e5e5e5 0%,#ffffff 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #e5e5e5 0%,#ffffff 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  #e5e5e5 0%,#ffffff 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-
+    background: url('https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/receiver_off_bg.png') repeat-x;
     border: 1px solid rgb(179, 179, 179);
+    border-left: none;
+    border-right: none;
 
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    -webkit-box-shadow: inset 0 -3px 2px -1px #bbb;
+    -moz-box-shadow: inset 0 -3px 2px -1px #bbb;
+    box-shadow: inset 0 -3px 2px -1px #bbb;
 
-    -webkit-box-shadow: 0 0 7px #aaa;
-    -moz-box-shadow: 0 0 7px #aaa;
-    box-shadow: 0 0 7px #aaa;
     cursor: pointer;
-    margin-bottom: 10px;
+    height: 41px;
+    margin: 0;
+    margin-top: -1px;
     padding: 7px;
     position: relative;
 }
 #onestepcheckout-form #elefunds_bottom .elefunds_receiver.elefunds_receiver_selected {
-    -webkit-box-shadow: inset 0 0 12px rgb(170, 170, 170);
-    -moz-box-shadow: inset 0 0 12px rgb(170, 170, 170);
-    box-shadow: inset 0 0 12px rgb(170, 170, 170);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+#onestepcheckout-form #elefunds_bottom .elefunds_receiver.elefunds_receiver_selected label {
+    background: url('https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/checkbox_on.png') 2px 11px no-repeat;
 }
 #onestepcheckout-form #elefunds_bottom .elefunds_receiver input[type="checkbox"] {
     left: 14px;
     position: absolute;
     top: 20px;
+    visibility: hidden;
 }
 #onestepcheckout-form #elefunds_bottom .elefunds_receiver label {
+    background: url(https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/checkbox_off.png) no-repeat 2px 11px;
     cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    padding: 0;
+    width: 200px;
+}
+#onestepcheckout-form #elefunds_bottom .elefunds_receiver label img {
+    position: absolute;
+    left: 35px;
+    opacity: 0.7;
+    top: 8px;
+}
+#onestepcheckout-form #elefunds_bottom .elefunds_receiver.elefunds_receiver_selected label img {
+    opacity: 1.0;
 }
 
 #onestepcheckout-form #elefunds_receipt {
@@ -241,6 +297,9 @@
 #onestepcheckout-form #elefunds_receipt label {
     float: left;
     line-height: 14px;
+}
+#onestepcheckout-form .elefunds #elefunds_round_sum_container {
+    margin: 20px 15px;
 }
 
 
