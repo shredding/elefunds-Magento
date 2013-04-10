@@ -12,6 +12,28 @@
     display: block;
 }
 
+
+/*
+ * Hide sum in elefunds-container
+ * elefunds-donation is always shown in order-review
+ */
+#elefunds_round_sum_container strong {
+    display: none;
+}
+
+/*
+ * ++ One Step Checkout - Row in Order-review which shows the elefunds-donation ++
+ */
+.elefunds_donation_row {
+    display: none;
+}
+.elefunds_donation_row.active {
+    display: table-row;
+}
+.elefunds_donation_row .title {
+    font-style: italic;
+}
+
 /*
  * Force sizes to auto
  * Not able to prevent !important here because of inline-width-styles
