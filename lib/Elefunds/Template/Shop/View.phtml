@@ -33,15 +33,17 @@
         <?php endforeach; ?>
     </div>
 
-    <div id="elefunds_round_sum_container" class="elefunds_hidden" style="width: <?php echo $view['shopWidth']; ?>px;">
+    <div id="elefunds_below_container" style="width: <?php echo $view['shopWidth']; ?>px; display: none;">
         <?php if ($view['offerDonationReceipt']): ?>
-            <div id="elefunds_receipt">
-                <input type="checkbox" name="elefunds_receipt_input" id="elefunds_receipt_input" /><label for="elefunds_receipt_input"><?php echo $view['receipt_slogan'];?></label>
-            </div>
+        <div id="elefunds_receipt">
+            <input type="checkbox" name="elefunds_receipt_checkbox" id="elefunds_receipt_checkbox" /><label for="elefunds_receipt_checkbox"><?php echo $view['receipt_slogan'];?></label>
+        </div>
         <?php endif; ?>
-        <strong><?php echo $view['roundedSumString']; ?></strong>
-        <strong id="elefunds_round_sum"><?php echo $view['roundedSum'];?></strong>
-        <strong><?php echo $view['currency']; ?></strong>
+        <div id="elefunds_round_sum_container" class="elefunds_hidden">
+            <strong><?php echo $view['roundedSumString']; ?></strong>
+            <strong id="elefunds_round_sum"><?php echo $view['roundedSum'];?></strong>
+            <strong><?php echo $view['currency']; ?></strong>
+        </div>
     </div>
 </div>
 
@@ -55,9 +57,10 @@ var elefunds = (function(parent, $) {
     var options = {
         roundSumContainer: $('#<?php echo $view["roundSumContainer"]; ?>'),
         roundSum: $('#<?php echo $view["roundSum"]; ?>'),
+        currency: '<?php echo $view["currency"]; ?>',
         decimal: '<?php echo $view["currencyDelimiter"]; ?>',
         decimalAlt: ',',
-        total: <?php echo $view['total']; ?>
+        total: <?php echo $view["total"]; ?>
     };
     
     if(options.decimal === options.decimalAlt) {
