@@ -60,6 +60,11 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $facade = array();
 
     /**
+     * @var Elefunds_Template_Shop_Helper_RequestHelper
+     */
+    protected $requestHelper;
+
+    /**
      * @var array
      */
     protected $receivers;
@@ -129,6 +134,22 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         return $this->facade[$configurationType];
+    }
+
+    /**
+     * A helper to verify the request for elefunds donations.
+     *
+     * @param array $request
+     * @return Elefunds_Template_Shop_Helper_RequestHelper
+     */
+    public function getRequestHelper(array $request = array()) {
+        if ($this->requestHelper === NULL) {
+            $helperPath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Template'
+                . DS . 'Shop' . DS . 'Helper' . DS . 'RequestHelper.php';
+            require_once $helperPath;
+            $this->requestHelper = new Elefunds_Template_Shop_Helper_RequestHelper($request);
+        }
+        return $this->requestHelper;
     }
 
 

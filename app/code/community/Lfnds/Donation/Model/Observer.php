@@ -69,9 +69,10 @@ class Lfnds_Donation_Model_Observer
     public function onPreDispatchSaveOrder(Varien_Event_Observer $observer) {
 
         $params = Mage::app()->getRequest()->getParams();
-        $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
 
-        if (count($elefundsVariables) > 0) {
+        /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
+        $requestHelper = $this->helper->getRequestHelper($params);
+        if ($requestHelper->isValidAndActive()) {
 
             /** @var Mage_Checkout_Model_Session $checkoutSession  */
             $checkoutSession = Mage::getSingleton('checkout/session');
@@ -89,8 +90,9 @@ class Lfnds_Donation_Model_Observer
                 return;
             }
 
-            $elefundsProduct->setPrice($elefundsVariables['roundup'] / 100);
-            $elefundsProduct->setBasePrice($elefundsVariables['roundup'] / 100);
+            $roundUpInCent = $requestHelper->getRoundUpInCent();
+            $elefundsProduct->setPrice($roundUpInCent);
+            $elefundsProduct->setBasePrice($roundUpInCent);
             $quote->addProduct($elefundsProduct);
         }
     }
@@ -106,14 +108,16 @@ class Lfnds_Donation_Model_Observer
     public function onSaveOrderAfter(Varien_Event_Observer $observer) {
 
         $params = Mage::app()->getRequest()->getParams();
-        $elefundsVariables = $this->getElefundsVariablesFromRequestParams($params);
 
-        if(count($elefundsVariables) > 0) {
+        /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
+        $requestHelper = $this->helper->getRequestHelper($params);
+
+        if($requestHelper->isValidAndActive()) {
 
             /* @var $order Mage_Sales_Model_Order */
             $order = $observer->getEvent()->getOrder();
 
-            if ($elefundsVariables['isReceiptRequested']) {
+            if ($requestHelper->isDonationReceiptRequested()) {
                 $billingAddress = $order->getBillingAddress();
                 $streets = $billingAddress->getStreet(); // 5.3 compliant lazy array access
                 $user = array(
@@ -132,13 +136,13 @@ class Lfnds_Donation_Model_Observer
             $donationCollection = Mage::getModel('lfnds_donation/donation')->getCollection();
             $donationCollection->addDonation(
                 $order->getIncrementId(),
-                $elefundsVariables['roundup'],
+                $requestHelper->getRoundUp(),
                 $order->getTotalDue() * 100,
-                $elefundsVariables['receiverIds'],
+                $requestHelper->getReceiverIds(),
                 $this->helper->getAvailableReceiverIds(),
                 $user,
                 $order->getBillingAddress()->getCountryId(),
-                $elefundsVariables['suggestedRoundUp'],
+                $requestHelper->getSuggestedRoundUp(),
                 Lfnds_Donation_Model_Donation::NEW_ORDER
             );
         }
@@ -320,36 +324,6 @@ class Lfnds_Donation_Model_Observer
         if ($product->getSku() == Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             $quoteItem->setNoDiscount(TRUE);
         }
-    }
-
-    /**
-     * @param array $params
-     * @return array
-     */
-    protected function getElefundsVariablesFromRequestParams(array $params) {
-
-        $elefundsVariables = array();
-
-        if ($this->helper->isActive() && isset($params['elefunds_checkbox']) && isset($params['elefunds_donation_cent']) && ctype_digit($params['elefunds_donation_cent'])) {
-
-            /** +++ Input Validation +++ */
-
-            $elefundsVariables['roundup']  = (int)$params['elefunds_donation_cent'];
-            $elefundsVariables['receiverIds'] = array_map(function($x) { return (int)$x; }, $params['elefunds_receiver']);
-
-            if (isset($params['elefunds_suggested_round_up_cent']) && ctype_digit($params['elefunds_suggested_round_up_cent'])) {
-                $elefundsVariables['suggestedRoundUp'] = (int)$params['elefunds_suggested_round_up_cent'];
-            } else {
-                $elefundsVariables['suggestedRoundUp'] = 0;
-            }
-
-            $elefundsVariables['isReceiptRequested'] = isset($params['elefunds_receipt_input']);
-
-            /** +++ Input Validation +++ */
-
-        }
-
-        return $elefundsVariables;
     }
 
 }
