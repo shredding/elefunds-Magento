@@ -211,6 +211,7 @@ class Lfnds_Donation_Model_Observer
                 $statesToBeMappedToAddingState = array(
                     Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
                     Mage_Sales_Model_Order::STATE_PROCESSING,
+                    Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW
                 );
 
                 $statesToBeMappedToCancelledState = array(
