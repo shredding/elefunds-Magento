@@ -53,7 +53,7 @@ interface Elefunds_Model_DonationInterface  {
     /**
      * Sets the foreign ID. A unique ID to identify the order or transaction.
      *
-     * @param int $foreignId
+     * @param string $foreignId
      * @throws InvalidArgumentException if type can't be casted to integer
      * @return Elefunds_Model_DonationInterface
      */
@@ -62,7 +62,7 @@ interface Elefunds_Model_DonationInterface  {
     /**
      * Returns the foreign ID. A unique ID to identify the order or transaction.
      * 
-     * @return int
+     * @return string
      */
     public function getForeignId();
 
