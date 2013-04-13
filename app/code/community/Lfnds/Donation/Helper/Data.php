@@ -147,8 +147,9 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
             $helperPath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Template'
                 . DS . 'Shop' . DS . 'Helper' . DS . 'RequestHelper.php';
             require_once $helperPath;
-            $this->requestHelper = new Elefunds_Template_Shop_Helper_RequestHelper($request);
+            $this->requestHelper = new Elefunds_Template_Shop_Helper_RequestHelper();
         }
+        $this->requestHelper->setRequest($request);
         return $this->requestHelper;
     }
 
