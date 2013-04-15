@@ -90,9 +90,9 @@ class Lfnds_Donation_Model_Observer
                 return;
             }
 
-            $roundUpInCent = $requestHelper->getRoundUpInCent();
-            $elefundsProduct->setPrice($roundUpInCent);
-            $elefundsProduct->setBasePrice($roundUpInCent);
+            $roundUpAsFloat = $requestHelper->getRoundUpAsFloat();
+            $elefundsProduct->setPrice($roundUpAsFloat);
+            $elefundsProduct->setBasePrice($roundUpAsFloat);
             $quote->addProduct($elefundsProduct);
         }
     }
