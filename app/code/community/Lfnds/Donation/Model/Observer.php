@@ -72,7 +72,7 @@ class Lfnds_Donation_Model_Observer
 
         /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
         $requestHelper = $this->helper->getRequestHelper($params);
-        if ($requestHelper->isValidAndActive()) {
+        if ($requestHelper->isActiveAndValid()) {
 
             /** @var Mage_Checkout_Model_Session $checkoutSession  */
             $checkoutSession = Mage::getSingleton('checkout/session');
@@ -112,7 +112,7 @@ class Lfnds_Donation_Model_Observer
         /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
         $requestHelper = $this->helper->getRequestHelper($params);
 
-        if($requestHelper->isValidAndActive()) {
+        if($requestHelper->isActiveAndValid()) {
 
             /* @var $order Mage_Sales_Model_Order */
             $order = $observer->getEvent()->getOrder();

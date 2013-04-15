@@ -128,10 +128,10 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateDonationRow = functi
 };
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.activateDonationRow = function () {
     jQuery('.elefunds_donation_row').addClass('active');
-}
+};
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.deactivateDonationRow = function () {
     jQuery('.elefunds_donation_row').removeClass('active');
-}
+};
 
 
 jQuery(document).ready(function () {
@@ -155,7 +155,7 @@ AjaxRequestProxy = Class.create(OriginalAjaxRequest, {
             originalCallback(transport);
             lfndsOneStep.lfnds_changeSum.updateSums();
             lfndsOneStep.lfnds_changeSum.changeSumValue();
-        }
+        };
 
         options['onSuccess'] = callbackProxy;
 

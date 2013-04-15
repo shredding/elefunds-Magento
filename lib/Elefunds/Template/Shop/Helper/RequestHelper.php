@@ -68,17 +68,30 @@ class Elefunds_Template_Shop_Helper_RequestHelper {
 
     /**
      * Checks if the given request contains the basic information for the elefunds module and checks
-     * if the module is active.
+     * if the module is active. The module is active and valid if the following parameters are set:
+     *
+     * elefunds_agree: if the module is checked
+     * elefunds_donation_cent: the donation amount in cent
+     * elefunds_receivers[]: list of receivers the donation goes to
+     * elefunds_receivers: alternative - comma separated list of receivers as a string (in case the value is read from a hidden field)
      *
      * @return bool
      */
-    public function isValidAndActive() {
+    public function isActiveAndValid() {
 
         $agreedToElefunds = isset($this->request['elefunds_agree']) && $this->request['elefunds_agree'] !== 'false';
-        $hasValidReceivers = isset($this->request['elefunds_receivers']) && $this->request(['elefunds_receivers']) > 0;
-        $hasDonation = isset($this->request['elefunds_donation_cent']) && ctype_digit($this->request['elefunds_donation_cent']);
+        $hasDonation = isset($this->request['elefunds_donation_cent']) && ctype_digit($this->request['elefunds_donation_cent']) && $this->request['elefunds_donation_cent'] > 0;
+        $hasValidReceivers = FALSE;
 
-        return $agreedToElefunds && $hasValidReceivers && $hasDonation;
+        if (isset($this->request['elefunds_receivers'])) {
+            if (is_array($this->request['elefunds_receivers'])) {
+                $hasValidReceivers = count($this->request['elefunds_receivers']) > 0;
+            } else {
+                $hasValidReceivers = $this->request['elefunds_receivers'] !== '';
+            }
+        }
+
+        return $agreedToElefunds && $hasDonation && $hasValidReceivers;
     }
 
     /**
@@ -91,12 +104,12 @@ class Elefunds_Template_Shop_Helper_RequestHelper {
     }
 
     /**
-     * Returns the roundup in cent.
+     * Returns the roundup as float.
      *
      * @return float
      */
-    public function getRoundUpInCent() {
-        return $this->getRoundUp() / 100;
+    public function getRoundUpAsFloat() {
+        return number_format($this->getRoundUp() / 100, 2);
     }
 
     /**
@@ -105,11 +118,15 @@ class Elefunds_Template_Shop_Helper_RequestHelper {
      * @return array
      */
     public function getReceiverIds() {
-        return array_map(function($x) { return (int)$x; }, explode(',', $this->request['elefunds_receivers']));
+        if (is_array($this->request['elefunds_receivers'])) {
+            return array_map(function($x) { return (int)$x; }, $this->request['elefunds_receivers']);
+        } else {
+            return array_map(function($x) { return (int)$x; }, explode(',', $this->request['elefunds_receivers']));
+        }
     }
 
     /**
-     * Returns the suggested roundup as integer.
+     * Returns the suggested roundup in Cent as integer.
      *
      * @return int
      */
@@ -126,7 +143,7 @@ class Elefunds_Template_Shop_Helper_RequestHelper {
      * @return bool
      */
     public function isDonationReceiptRequested() {
-        return isset($this->request['elefunds_receipt_input']) && $this->request['elefunds_receipt_input'] !== 'false';
+        return isset($this->request['elefunds_receipt']) && $this->request['elefunds_receipt'] !== 'false';
     }
 
 }
