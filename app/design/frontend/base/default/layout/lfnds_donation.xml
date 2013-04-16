@@ -34,9 +34,7 @@
             <block type="lfnds_donation/page_head" name="elefunds.head"/>
         </reference>
         <reference name="content">
-            <reference name="onestepcheckout.checkout">
-                <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
-            </reference>
+            <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
         </reference>
     </onestepcheckout_index_index>
     <!-- ^^^ One step checkout implementation ^^^ -->

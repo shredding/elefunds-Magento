@@ -9,7 +9,7 @@ var ElefundsOneStepCheckoutIntegration = function () {
      * Cache important DOM-Nodes as member-variables
      */
     this.$oneStepMiddleColumn = jQuery('.onestepcheckout-column-middle');
-    this.$elefundsModule = jQuery('.elefunds');
+    this.$elefundsModule = jQuery('#elefunds-form');
 
     this.init();
     this.addEvents();
@@ -21,8 +21,9 @@ ElefundsOneStepCheckoutIntegration.prototype.addEvents = function () {
 
 };
 ElefundsOneStepCheckoutIntegration.prototype.changePosition = function () {
-    this.$oneStepMiddleColumn.append(this.$elefundsModule);
-    this.$elefundsModule.fadeIn();
+    this.$oneStepMiddleColumn.append('<div class="elefunds"></div>');
+    jQuery('.elefunds').append(this.$elefundsModule);
+    this.$elefundsModule.parent().fadeIn();
 };
 
 
