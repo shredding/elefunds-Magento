@@ -142,8 +142,6 @@ lfndsModuleTop.prototype.updateDonationRow = function () {
 
 
 jQuery(document).ready(function () {
-    if (jQuery('.checkout-onepage-index').length) {
-        var lfnds = new lfndsModuleTop();
-        var lfndsBottom = new lfndsModule();
-    }
+    var lfnds = new lfndsModuleTop();
+    var lfndsBottom = new lfndsModule();
 });
