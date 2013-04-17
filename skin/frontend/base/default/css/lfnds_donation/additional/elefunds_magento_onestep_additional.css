@@ -105,6 +105,12 @@
     top: 15px;
     visibility: hidden;
 }
+/*
+ * IE8 Fix: TODO - Solution with conditional comments
+ */
+#onestepcheckout-form #elefunds_arrow #elefunds_checkbox {
+    visibility: visible\0/;
+}
 #onestepcheckout-form #elefunds_arrow #elefunds_checkbox:checked + label {
     background: url('https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/light/orange/arrow_on.png') no-repeat;
 }
@@ -146,6 +152,10 @@
     margin-right: 10px;
     margin-top: 3px;
     margin-left: 15px;
+}
+#onestepcheckout-form #elefunds_plus_minus a:link,
+#onestepcheckout-form #elefunds_plus_minus a:visited {
+    text-decoration: none;
 }
 #onestepcheckout-form #elefunds_decrease img {
     visibility: hidden;
@@ -301,6 +311,12 @@
     position: absolute;
     top: 20px;
     visibility: hidden;
+}
+/*
+ * IE8 Fix - TODO: Solution with conditional comments
+ */
+#onestepcheckout-form #elefunds_bottom .elefunds_receiver input[type="checkbox"] {
+    visibility: visible\0/;
 }
 #onestepcheckout-form #elefunds_bottom .elefunds_receiver label {
     background: url(https://0ce8ff584bf613ee6639-c1fc539e0df6af03ccc14b5020ab4161.ssl.cf1.rackcdn.com/checkbox_off.png) no-repeat 2px 11px;
