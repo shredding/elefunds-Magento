@@ -1,7 +1,7 @@
 <?php
 
 /**
- * elefunds API PHP Library 
+ * elefunds API PHP Library
  *
  * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
  * All rights reserved.
@@ -36,42 +36,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
- 
-require_once dirname(__FILE__) . '/../Template/Shop/CheckoutConfiguration.php';
+
+require_once dirname(__FILE__) . '/../../../Configuration/DefaultConfiguration.php';
 
 /**
- * Sample Configuration for the elefunds API Shop Template.
- * 
+ * Unit Test for Elefunds_Configuration_BaseConfiguration.
+ *
  * @package    elefunds API PHP Library
- * @subpackage Example
+ * @subpackage Test
  * @author     Christian Peters <christian@elefunds.de>
  * @copyright  2012 elefunds GmbH <hello@elefunds.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
  * @since      File available since Release 1.0.0
  */
-class Elefunds_Example_ShopExampleConfiguration extends Elefunds_Template_Shop_CheckoutConfiguration {
-    
-    //Insert your clientID and apiKey
-    protected $clientId = 1001;
-    protected $apiKey = 'ay3456789gg234561234';
+class Elefunds_Test_Unit_Configuration_DefaultConfigurationTest extends PHPUnit_Framework_TestCase {
 
-    protected $countrycode = 'de';
+    protected $defaultConfiguration;
 
     /**
-     * Assigns the shop width and the currency delimiter that should be used for the elefunds module.
+     * initSetsCurlDonationAndReceiver
+     *
+     * Checks if the correct model factory pattern is set are not included here.
+     *
+     * @test
      */
-    public function init() {
-        
-        parent::init();
+    public function initSetsCurlDonationAndReceiver() {
+        $this->defaultConfiguration = new Elefunds_Configuration_DefaultConfiguration();
+        $this->defaultConfiguration->init();
 
-        /** You have to assign some vars here, to calculate the view. */
-        
-        // Width of the checkout area, ie. how wide you want the plugin to be
-        $this->view->assign('shopWidth', 900);
+        $this->assertEquals('Elefunds_Model_Receiver', $this->defaultConfiguration->getReceiverClassName());
+        $this->assertEquals('Elefunds_Model_Donation', $this->defaultConfiguration->getDonationClassName());
 
-        // These are default Values, you can override this if you have another currency # $this->view->assign('currency', '€'); #
-        $this->view->assign('currencyDelimiter', '.');
     }
- 
 }
