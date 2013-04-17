@@ -90,6 +90,8 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
                 foreach ($cssFiles as $cssFile) {
                     $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . basename($cssFile));
                 }
+            } else {
+                $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . 'additional' . DS . 'elefunds_magento_onestep_additional.css');
             }
 
 

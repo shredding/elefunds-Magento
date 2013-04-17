@@ -127,7 +127,8 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.addDonationRow = function 
 };
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateDonationRow = function () {
     var currency = this.$currencyNode.html();
-    jQuery('.elefunds_donation_row .price').html(jQuery('#elefunds_input').val() + ' ' + currency);
+    var donationValue = parseFloat(jQuery('#elefunds_donation_cent').val() / 100);
+    jQuery('.elefunds_donation_row .price').html(donationValue.toFixed(2) + ' ' + currency);
 };
 ElefundsOneStepCheckoutIntegrationChangeSum.prototype.activateDonationRow = function () {
     jQuery('.elefunds_donation_row').addClass('active');

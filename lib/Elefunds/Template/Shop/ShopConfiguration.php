@@ -78,7 +78,7 @@ class Elefunds_Template_Shop_ShopConfiguration extends Elefunds_Configuration_De
 
         //Available theme and color choices
         $this->themes = array('light', 'dark');
-        $this->colors = array('orange', 'blue', 'green', 'purple');
+        $this->colors = array('orange', 'blue', 'green', 'purple', 'grey');
 
         //Chose your theme and color
         $theme = $this->themes[0];
