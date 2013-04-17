@@ -1,0 +1,218 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Lfnds_Donation>
+            <version>1.0.0</version>
+        </Lfnds_Donation>
+    </modules>
+
+    <global>
+        <models>
+            <lfnds_donation>
+                <class>Lfnds_Donation_Model</class>
+                <resourceModel>donation_mysql4</resourceModel>
+            </lfnds_donation>
+            <donation_mysql4>
+                <class>Lfnds_Donation_Model_Mysql4</class>
+                <entities>
+                    <donation>
+                        <table>lfnds_donation_donation</table>
+                    </donation>
+                    <receiver>
+                        <table>lfnds_donation_receiver</table>
+                    </receiver>
+                </entities>
+            </donation_mysql4>
+        </models>
+        
+        <blocks>
+            <lfnds_donation>
+                <class>Lfnds_Donation_Block</class>
+            </lfnds_donation>
+        </blocks>
+
+        <helpers>
+            <lfnds_donation>
+                <class>Lfnds_Donation_Helper</class>
+            </lfnds_donation>
+        </helpers>
+
+        <resources>
+            <lfnds_donation_setup>
+                <setup>
+                    <module>Lfnds_Donation</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+                <use>default_setup</use>
+            </lfnds_donation_setup>
+
+            <lfnds_donation_write>
+                <use>default_write</use>
+            </lfnds_donation_write>
+            <lfnds_donation_read>
+                <use>default_read</use>
+            </lfnds_donation_read>
+        </resources>
+        <events>
+            <sales_order_save_after>
+                <observers>
+                    <syncDonationOnChangedState>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onOrderSaved</method>
+                    </syncDonationOnChangedState>
+                </observers>
+            </sales_order_save_after>
+            <sales_convert_order_to_quote>
+                <observers>
+                    <removeDonationFromClonedOrder>
+                            <type>model</type>
+                            <class>lfnds_donation/observer</class>
+                            <method>removeDonationFromClonedOrderInBackend</method>
+                    </removeDonationFromClonedOrder>
+                </observers>
+            </sales_convert_order_to_quote>
+        </events>
+    </global>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <Lfnds_Donation>
+                    <files>
+                        <default>Lfnds_Donation.csv</default>
+                    </files>
+                </Lfnds_Donation>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <lfnds_donation>
+                    <file>lfnds_donation.xml</file>
+                </lfnds_donation>
+            </updates>
+        </layout>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <lfnds_donation>
+                                            <title>Elefunds</title>
+                                        </lfnds_donation>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+	<frontend>
+		<routers>
+			<lfnds_donation>
+				<use>standard</use>
+				<args>
+					<module>Lfnds_Donation</module>
+					<frontName>elefunds</frontName>
+				</args>
+			</lfnds_donation>
+		</routers>
+		<events>
+
+            <!-- +++ One step checkout specific events +++ -->
+            <controller_action_predispatch_onestepcheckout_index_index>
+                <observers>
+                    <limitPayments>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onPreDispatchSaveOrder</method>
+                    </limitPayments>
+                </observers>
+            </controller_action_predispatch_onestepcheckout_index_index>
+            <!-- ^^^ One step checkout specific events ^^^ -->
+
+
+            <!-- +++ One page checkout specific events +++ -->
+            <elefunds_checkout_review_before_enable>
+                <observers>
+                    <limitPayments>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>limitPayments</method>
+                    </limitPayments>
+                </observers>
+            </elefunds_checkout_review_before_enable>
+            <controller_action_predispatch_checkout_onepage_saveOrder>
+                <observers>
+                    <addDonationToBasket>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onPreDispatchSaveOrder</method>
+                    </addDonationToBasket>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_saveOrder>
+            <!-- ^^^ One page checkout specific events ^^^ -->
+
+            <!-- +++ Shared events +++ -->
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <addDonationToElefundsModel>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onSaveOrderAfter</method>
+                    </addDonationToElefundsModel>
+                </observers>
+            </checkout_type_onepage_save_order_after>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <updateDonationStateAndSync>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>onOrderFinished</method>
+                    </updateDonationStateAndSync>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <sales_quote_item_set_product>
+                <observers>
+                    <exclude_from_donation>
+                        <type>model</type>
+                        <class>lfnds_donation/observer</class>
+                        <method>excludeDonationFromDiscount</method>
+                    </exclude_from_donation>
+                </observers>
+            </sales_quote_item_set_product>
+            <!-- ^^^ Shared events ^^^ -->
+
+        </events>
+
+		<layout>
+			<updates>
+				<lfnds_donation>
+					<file>lfnds_donation.xml</file>
+				</lfnds_donation>
+			</updates>
+		</layout>
+	</frontend>
+	
+	<default>
+        <lfnds_donation>
+            <general>
+                <active>0</active>
+                <theme>light</theme>
+                <color>orange</color>
+            </general>
+            <advanced>
+                <include_jquery>1</include_jquery>
+                <banner_width>681</banner_width>
+                <banner_position>bottom</banner_position>
+                <uses_onestepcheckout>0</uses_onestepcheckout>
+            </advanced>
+        </lfnds_donation>
+    </default>
+</config>

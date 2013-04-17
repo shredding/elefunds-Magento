@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <lfnds_donation translate="label" module="lfnds_donation">
+            <label>Elefunds</label>
+            <sort_order>2888000</sort_order>
+        </lfnds_donation>
+    </tabs>
+    <sections>
+        <lfnds_donation translate="label" module="lfnds_donation">
+            <label>Donation</label>
+            <tab>lfnds_donation</tab>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label comment">
+                    <label>General</label>
+                    <comment>Welcome to elefunds!</comment>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                            <comment>Activate / deactivate the elefunds module.</comment>
+                        </active>
+                        <client_id translate="label">
+                            <label>Client Id</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>30</sort_order>
+                        </client_id>
+                        <api_key translate="label">
+                            <label>Api Key</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>40</sort_order>
+                        </api_key>
+                        <theme translate="label comment">
+                            <label>Theme</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>lfnds_donation/system_config_source_theme</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>50</sort_order>
+                            <comment>Select a base theme for the elefunds donation module.</comment>
+                        </theme>
+                        <color translate="label comment">
+                            <label>Color</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>lfnds_donation/system_config_source_color</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>60</sort_order>
+                            <comment>Select a color for the elefunds donation module.</comment>
+                        </color>
+                    </fields>
+                </general>
+                <advanced translate="label">
+                    <label>Advanced</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <banner_width translate="label comment">
+                            <label>Banner width</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                            <comment>The modul width in pixel. Adjust this number if the modul does not fit perfectly in your checkout.</comment>
+                        </banner_width>
+                        <banner_position translate="label comment">
+                            <label>Banner position</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>lfnds_donation/system_config_source_position</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                            <comment>Choose where to position the module relative to the article listing.</comment>
+                        </banner_position>
+                        <include_jquery translate="label">
+                            <label>Include jQuery</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>30</sort_order>
+                            <comment>Load jQuery in the frontend, if it's not already loaded.</comment>
+                        </include_jquery>
+                        <uses_onestepcheckout translate="label comment">
+                            <label>Uses one step checkout?</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>40</sort_order>
+                            <comment>Set to yes, if your shop uses the module from onestepcheckout.com.</comment>
+                        </uses_onestepcheckout>
+                        <excluded_payment_methods translate="label comment">
+                            <label>Excluded payment methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>lfnds_donation/system_config_source_payment</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>50</sort_order>
+                            <comment>Elefunds won't be displayed in the selected payment methods.</comment>
+                            <can_be_empty>1</can_be_empty>
+                        </excluded_payment_methods>
+                    </fields>
+                </advanced>
+            </groups>
+        </lfnds_donation>
+    </sections>
+</config>

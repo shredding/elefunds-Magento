@@ -1,0 +1,9 @@
+/*
+ * Fix for Onepage-Checkout
+ * Adds Border to Elefunds-Module to fit in default-styling of onepage-checkout
+ */
+#elefunds {
+    border-style: solid;
+    border-width: 0 1px;
+    border-color: #D9DDE3;
+}

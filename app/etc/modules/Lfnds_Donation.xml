@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!-- Shows the Elefunds module in the module list,
+     configure basic module-options -->
+<config>
+	<modules>
+		<Lfnds_Donation>
+			<active>true</active>
+			<codePool>community</codePool>
+		</Lfnds_Donation>
+	</modules>
+</config>
