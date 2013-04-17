@@ -1,4 +1,39 @@
 /*
+ * ++ One Step Checkout Success (Social-Media-Share) Specific Styling ++
+ */
+#elefunds_share {
+    width: 450px;
+    padding: 20px 20px 10px;
+    background: #f4f4f4;
+    border: 4px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+}
+#elefunds_share > a {
+    text-decoration: none;
+}
+#elefunds_share h3 {
+    font-weight: bold;
+    color: #222;
+    margin: 0;
+}
+#elefunds_share p {
+    font-size: 14px;
+    color: #666;
+    margin: 20px 0 10px;
+    padding: 10px 10px 20px;
+}
+#elefunds_share span {
+    font-style: normal;
+    font-size: 11px;
+    line-height: 21px;
+    margin-top: 6px;
+    vertical-align: top;
+    display: block;
+}
+
+
+/*
  * ++ One Step Checkout Specific Styling ++
  */
 
@@ -145,9 +180,10 @@
     font-size: 18px;
     font-weight: bold;
     left: 6px;
+    line-height: 18px;
     position: absolute;
     text-shadow: 0px 0px 2px #aaa;
-    top: -5px;
+    top: -1px;
 }
 #onestepcheckout-form #elefunds_increase img {
     visibility: hidden;
@@ -182,9 +218,10 @@
     font-size: 18px;
     font-weight: bold;
     left: 4px;
+    line-height: 18px;
     position: absolute;
     text-shadow: 0px 0px 2px #aaa;
-    top: -3px;
+    top: 1px;
 }
 
 #onestepcheckout-form #elefunds_input_container {
@@ -197,7 +234,7 @@
     -wekbit-border-radius: 3px 0 0 3px;
     -moz-border-radius: 3px 0 0 3px;
     border-radius: 3px 0 0 3px;
-    display: inline-block;
+    float: left;
     height: 18px;
     padding: 4px 8px;
     text-shadow: 0 1px 0 #c6cfd8;
@@ -224,8 +261,8 @@
     border-radius: 0 2px 2px 0;
 
     font-size: 14px;
+    float: left;
     height: 22px;
-    margin-top: -1px;
     margin-left: -4px;
     padding: 2px 4px;
     width: 111px;
