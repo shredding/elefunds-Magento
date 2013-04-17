@@ -276,7 +276,17 @@ class Lfnds_Donation_Model_Observer
             $allItems = $quote->getAllItems();
             // Since $quote->removeItem() does not work for virtual products,
             // we have to remove and re-add all items.
-            $quote->removeAllItems();
+            // @todo: removeAllItems was implemented in 1.6, we have reimplemented here for 1.5
+            // @todo: can be exchanged with $quote->removeAllItems() if we no longer support 1.5
+            foreach ($quote->getItemsCollection() as $itemId => $item) {
+                if (is_null($item->getId())) {
+                    $quote->getItemsCollection()->removeItemByKey($itemId);
+                } else {
+                    $item->isDeleted(true);
+                }
+            }
+
+
             /** @var Mage_Sales_Model_Quote_Item $item  */
             foreach ($allItems as $item) {
                 if ($item->getSku() !== Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
