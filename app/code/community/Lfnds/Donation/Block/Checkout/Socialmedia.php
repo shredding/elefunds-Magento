@@ -73,7 +73,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
     }
 
     /**
-     * Checks wether a donation exists in the actual order.
+     * Checks whether a donation exists in the actual order.
      *
      * @return bool
      */
