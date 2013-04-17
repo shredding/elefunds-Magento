@@ -435,6 +435,9 @@
     height: 0;
     width: 0;
 }
+#tiptip_arrow {
+    border-right-color: rgb(85, 85, 85);
+}
 
 #tiptip_holder.tip_top #tiptip_arrow_inner {
     margin-top: -7px;

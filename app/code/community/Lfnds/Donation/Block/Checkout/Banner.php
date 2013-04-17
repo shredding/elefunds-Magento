@@ -85,6 +85,8 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
             // The event does not work with one step checkout.
             // That's because the payment methods are not configured prior to the module.
             Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
+        } else {
+            $this->helper->getConfiguredFacade()->getConfiguration()->getView()->assign('toolTipPosition', 'right');
         }
         $template = '';
 
