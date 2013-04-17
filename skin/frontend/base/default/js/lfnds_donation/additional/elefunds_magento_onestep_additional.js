@@ -33,6 +33,7 @@ ElefundsOneStepCheckoutIntegration.prototype.changePosition = function () {
 var ElefundsOneStepCheckoutIntegrationChangeSum = function () {
     this.$roundedSumNode = jQuery('#elefunds_round_sum');
     this.$currencyNode = jQuery('#elefunds_round_sum + strong');
+
     this.$totalAmountNode = jQuery('.onestepcheckout-totals .grand-total .price');
 
     this.roundedSum = this.$roundedSumNode.html();
@@ -74,7 +75,8 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.changeSumValue = function 
     if (this.isModuleEnabled) {
         var oldSumReg = this.oldSum.replace(/[^0-9]/gi, '');
         var oldSumValue = parseFloat(oldSumReg / 100);
-        var donationValue = parseFloat(jQuery('#elefunds_input').val());
+        var donationValue = parseFloat(jQuery('#elefunds_donation_cent').val() / 100);
+        console.log(donationValue);
 
         this.roundedSum = oldSumValue + donationValue;
 
@@ -102,7 +104,7 @@ ElefundsOneStepCheckoutIntegrationChangeSum.prototype.updateSums = function () {
      */
     var oldSumReg = this.oldSum.replace(/[^0-9]/gi, '');
     var oldSumValue = parseFloat(oldSumReg / 100);
-    var donationValue = parseFloat(jQuery('#elefunds_input').val());
+    var donationValue = parseFloat(jQuery('#elefunds_donation_cent').val() / 100);
 
     this.roundedSum = oldSumValue + donationValue;
 
