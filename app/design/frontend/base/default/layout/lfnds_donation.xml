@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--
+    Defines when to call specific Blocks (from Block/..)
+ -->
+<layout version="0.1.0">
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_additional.css</name></action>
+            <block type="lfnds_donation/page_head" name="elefunds.head"/>
+            <action method="addItem"><type>skin_js</type><name>js/lfnds_donation/additional/elefunds_magento_onepage_additional.js</name></action>
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_review>
+        <reference name="checkout.onepage.review.info.items.before">
+            <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner_before" as="elefunds.banner_before" template="lfnds/donation/checkout/onepage/review/donation_banner_before.phtml" />
+        </reference>
+        <reference name="checkout.onepage.review.info.items.after">
+            <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner_after" as="elefunds.banner_after" template="lfnds/donation/checkout/onepage/review/donation_banner_after.phtml" />
+        </reference>
+    </checkout_onepage_review>
+
+    <checkout_onepage_success>
+        <!-- head was added by code, so it will be loaded only if a donation was done! -->
+        <reference name="content">
+            <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" after="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
+        </reference>
+    </checkout_onepage_success>
+
+    <!-- +++ One step checkout implementation +++ -->
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_onestep_additional.css</name></action>
+            <block type="lfnds_donation/page_head" name="elefunds.head"/>
+        </reference>
+        <reference name="content">
+            <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
+        </reference>
+    </onestepcheckout_index_index>
+    <!-- ^^^ One step checkout implementation ^^^ -->
+
+    <!-- +++ Elefunds billing changes +++ -->
+    <sales_email_order_items>
+        <reference name="additional.product.info">
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
+        </reference>
+    </sales_email_order_items>
+
+    <sales_email_order_invoice_items>
+        <reference name="additional.product.info">
+            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
+        </reference>
+    </sales_email_order_invoice_items>
+
+    <sales_email_order_shipment_items>
+        <reference name="additional.product.info">
+            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
+        </reference>
+    </sales_email_order_shipment_items>
+
+    <sales_email_order_creditmemo_items>
+        <reference name="additional.product.info">
+            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
+        </reference>
+    </sales_email_order_creditmemo_items>
+    <!-- ^^^ Elefunds billing changes ^^^ -->
+</layout>

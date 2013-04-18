@@ -1,0 +1,63 @@
+<?php 
+    $html = $this->getApiTemplate();
+    if (!empty($html)):
+        $html = '<div id="elefunds-form">' . $html . '</div>';
+        echo $html;
+?>    
+    <script type="text/javascript">
+    //<![CDATA[
+
+        // Review is only defined in one page checkout
+        if (typeof Review !== 'undefined') {
+
+            /*
+             * One page checkout specific JS
+             */
+
+            var ElefundsForm = Class.create();
+            ElefundsForm.prototype = {
+                initialize: function(form) {
+                    this.form = form;
+                }
+            }
+
+            eleForm = new ElefundsForm($('elefunds-form'));
+
+            Review.prototype.save = function(){
+                if (checkout.loadWaiting!=false) return;
+                checkout.setLoadWaiting('review');
+                var params = Form.serialize(payment.form);
+                if (this.agreementsForm) {
+                    params += '&'+Form.serialize(this.agreementsForm);
+                }
+                if (eleForm.form) {
+                    params += '&'+Form.serialize(eleForm.form);
+                }
+
+                params.save = true;
+                var request = new Ajax.Request(
+                    this.saveUrl,
+                    {
+                        method:'post',
+                        parameters:params,
+                        onComplete: this.onComplete,
+                        onSuccess: this.onSave,
+                        onFailure: checkout.ajaxFailure.bind(checkout)
+                    }
+                );
+            };
+        } else {
+
+            /*
+             * One step checkout specific JS
+             */
+            var elefunds = elefunds || {};
+            elefunds.excludedPaymentMethods = [ <?php implode(',', $this->getExcludedPaymentMethods()) ?>  ];
+
+        }
+    //]]>
+    </script>
+<?php 
+    endif;
+?>
+
