@@ -97,6 +97,8 @@ class Elefunds_Template_Shop_ShopConfiguration extends Elefunds_Configuration_De
     }
 
     /**
+     * Get the available theme options
+     *
      * @return array
      */
     public function getAvailableThemes() {
@@ -104,6 +106,8 @@ class Elefunds_Template_Shop_ShopConfiguration extends Elefunds_Configuration_De
     }
 
     /**
+     * Get the available color options
+     *
      * @return array
      */
     public function getAvailableColors() {
