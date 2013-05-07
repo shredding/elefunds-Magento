@@ -62,6 +62,11 @@ class Elefunds_Template_Shop_Helper_RequestHelper {
         $this->request = $request;
     }
 
+    /**
+     * Set the API request
+     *
+     * @param array $request
+     */
     public function setRequest(array $request) {
         $this->request = $request;
     }
