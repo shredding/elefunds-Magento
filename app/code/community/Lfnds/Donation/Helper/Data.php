@@ -266,11 +266,21 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
         return !empty($excludedMethodsAsString) ? explode(',', $excludedMethodsAsString) : array();
     }
 
+    /**
+     * @return bool
+     */
     public function isActive() {
         if ($this->active === NULL) {
             $this->active = Mage::getStoreConfig('lfnds_donation/general/active');
         }
         return $this->active;
+    }
+
+    /**
+     * Deactivates the module.
+     */
+    public function deactivate() {
+        $this->active = FALSE;
     }
 
 }

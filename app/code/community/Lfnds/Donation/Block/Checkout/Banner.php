@@ -131,11 +131,11 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      * @return bool
      */
     public function canShowBanner() {
-        return $this->isActive;
+        return $this->helper->isActive();
     }
 
     public function deactivateBanner() {
-        $this->isActive = FALSE;
+        $this->helper->deactivate();
     }
     
     
