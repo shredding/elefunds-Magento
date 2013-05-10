@@ -196,14 +196,15 @@ class Lfnds_Donation_Manager_SyncManager
         /** @var Donation $donationModel */
         foreach ($donationModels as $donationModel) {
 
-            $donation = $this->facade->createDonation()
-                ->setForeignId($donationModel->getForeignId())
-                ->setAmount($donationModel->getAmount())
-                ->setSuggestedAmount($donationModel->getSuggestedAmount())
-                ->setGrandTotal($donationModel->getGrandTotal())
-                ->setReceiverIds($donationModel->getReceiverIds())
-                ->setAvailableReceiverIds($donationModel->getAvailableReceiverIds())
-                ->setTime($donationModel->getTime());
+                $donation = $this->facade->createDonation()
+                    ->setForeignId($donationModel->getForeignId())
+                    ->setAmount($donationModel->getAmount())
+                    ->setSuggestedAmount($donationModel->getSuggestedAmount())
+                    ->setGrandTotal($donationModel->getGrandTotal())
+                    ->setReceiverIds($donationModel->getReceiverIds())
+                    ->setAvailableReceiverIds($donationModel->getAvailableReceiverIds())
+                    ->setTime($donationModel->getTime());
+
 
             try {
                 $donation->setDonator(
@@ -215,7 +216,7 @@ class Lfnds_Donation_Manager_SyncManager
                     $donationModel->getDonatorCity(),
                     $donationModel->getDonatorCountrycode()
                 );
-            } catch(InvalidArgumentException $exception) {
+            } catch (InvalidArgumentException $exception) {
                 // It's always easier to ask for forgiveness, than for permission.
             }
 
