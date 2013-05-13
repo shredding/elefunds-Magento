@@ -210,7 +210,7 @@ class Lfnds_Donation_Model_Observer
 
             // Some donations change the state of the donation, so we have to check if the donation is valid.
             $isValid = !in_array(NULL, array($donation->getForeignId(), $donation->getAmount(), $donation->getReceiverIds()));
-            if ($isValid) {
+            if (!$isValid) {
                 return;
             }
 
