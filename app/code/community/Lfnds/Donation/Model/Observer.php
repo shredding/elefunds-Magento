@@ -207,6 +207,13 @@ class Lfnds_Donation_Model_Observer
         $donation->loadByAttribute('foreign_id', $order->getIncrementId());
 
         if ($donation !== NULL) {
+
+            // Some donations change the state of the donation, so we have to check if the donation is valid.
+            $isValid = !in_array(NULL, array($donation->getForeignId(), $donation->getAmount(), $donation->getReceiverIds()));
+            if (!$isValid) {
+                return;
+            }
+
             $stateHasChanged = $newState !== $oldState;
 
             if ($stateHasChanged) {
