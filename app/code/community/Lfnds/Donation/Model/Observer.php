@@ -169,7 +169,12 @@ class Lfnds_Donation_Model_Observer
         /** @var Mage_Sales_Model_Quote_Item $elefundsProduct  */
         $elefundsProduct = $this->helper->getVirtualProduct();
 
-        if ($elefundsProduct !== NULL || $order->getItemByQuoteItemId($elefundsProduct->getQuoteId()) !== NULL) {
+        if ($elefundsProduct === NULL) {
+            Mage::log('Elefunds object not found on store!');
+            return;
+        }
+
+        if ($order->getItemByQuoteItemId($elefundsProduct->getQuoteId()) !== NULL) {
 
             $donation = Mage::getModel('lfnds_donation/donation');
             $donation->loadByAttribute('foreign_id', $order->getIncrementId());
@@ -246,7 +251,7 @@ class Lfnds_Donation_Model_Observer
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION;
                 }
 
-                if ($stateToBySyncedToTheApi > Lfnds_Donation_Model_Donation::NEW_ORDER) {
+                    if ($stateToBySyncedToTheApi > Lfnds_Donation_Model_Donation::NEW_ORDER) {
                     if ($donation->getState() !== $stateToBySyncedToTheApi) {
                         $donation->setState($stateToBySyncedToTheApi);
                         $donation->save();
