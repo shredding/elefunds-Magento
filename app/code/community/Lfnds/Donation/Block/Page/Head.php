@@ -64,9 +64,7 @@ class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
             $facade = $helper->getConfiguredFacade();
 
             // Javascript includes
-            $scriptFiles = $facade->getTemplateJavascriptFiles($includeJQuery);
-
-
+            $scriptFiles = $facade->getTemplateJavascriptFiles();
 
             if ($includeJQuery) {
                 array_unshift($scriptFiles, 'jQueryNoConflict.js');

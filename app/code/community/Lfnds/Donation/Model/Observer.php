@@ -294,7 +294,7 @@ class Lfnds_Donation_Model_Observer
                 if (is_null($item->getId())) {
                     $quote->getItemsCollection()->removeItemByKey($itemId);
                 } else {
-                    $item->isDeleted(true);
+                    $item->isDeleted(TRUE);
                 }
             }
 
@@ -343,7 +343,7 @@ class Lfnds_Donation_Model_Observer
     public function excludeDonationFromDiscount(Varien_Event_Observer $observer){
         $quoteItem = $observer->getQuoteItem();
         $product = $observer->getProduct();
-        if ($product->getSku() == Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+        if ($product->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             $quoteItem->setNoDiscount(TRUE);
         }
     }
