@@ -108,7 +108,7 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
                            ->getView()
                               ->assign('shopWidth', $banner_width)
                               ->assign('currencyDelimiter', $symbols['decimal'])
-                              ->assign('total', $total * 100)
+                              ->assign('total', round($total * 100))
                               ->assign('receivers', $receivers);
 
                     $template = $facade->renderTemplate();
