@@ -99,7 +99,7 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
                 $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
                 $localeCode = Mage::app()->getLocale()->getLocaleCode();
                 $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
-
+                
                 $receivers = $this->helper->getReceivers();
 
                 if (count($receivers) >= 3) {
@@ -137,6 +137,6 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
     public function deactivateBanner() {
         $this->helper->deactivate();
     }
-
-
+    
+    
 }
