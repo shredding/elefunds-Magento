@@ -109,7 +109,7 @@ if (!$donationProduct) {
             ->setStatus(Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
             ->setTaxClassId(0)
             ->setCreatedAt(strtotime('now'))
-            ->setWebsiteIds(array($websiteId, 1))
+            ->setWebsiteIds(array_unique(array($websiteId, 1)))
             ->setStockData(array(
                 'manage_stock' => 0,
                 'use_config_manage_stock'=> 0,
