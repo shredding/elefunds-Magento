@@ -70,11 +70,13 @@ class CheckoutConfiguration extends ShopConfiguration {
         // Refer to the documentation for further information.
         $this->view->assign('offerDonationReceipt', TRUE);
 
+        $this->view->assign('countryCode', $this->getCountrycode());
+        $this->view->assign('clientId', $this->getClientId());
+
         // Defaults, you can opt to override this if you like.
         $this->view->assign('currency', '€');
         $this->view->assign('currencyDelimiter', '.');
-        $this->view->assign('toolTipPosition', 'top');
-        $this->view->assign('clientId', $this->getClientId());
+        $this->view->assign('orientation', 'horizontal');
 
         // Available theme and color choices
         $this->themes = array('light', 'dark');

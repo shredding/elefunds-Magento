@@ -86,8 +86,25 @@ class CheckoutConfigurationTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertSame($assigns['currency'], '€');
         $this->assertSame($assigns['currencyDelimiter'], '.');
-        $this->assertSame($assigns['toolTipPosition'], 'top');
+        $this->assertSame($assigns['orientation'], 'horizontal');
 
+    }
+
+    /**
+     * clientIdAndCountryCodeAreAssigned
+     *
+     * @test
+     */
+    public function clientIdAndCountryCodeAreAssigned() {
+        $config = new CheckoutConfiguration();
+        $config->setClientId(1234);
+        $config->setCountrycode('de');
+        $config->init();
+
+        $assigns = $config->getView()->getAssignments();
+
+        $this->assertSame($assigns['clientId'], 1234);
+        $this->assertSame($assigns['countryCode'], 'de');
     }
 
 

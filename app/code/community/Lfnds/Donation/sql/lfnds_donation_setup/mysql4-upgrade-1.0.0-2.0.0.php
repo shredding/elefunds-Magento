@@ -51,4 +51,5 @@
 /**
  * @var $this Mage_Core_Model_Resource_Setup
  */
-$this->run("DROP TABLE IF EXISTS $installer->getTable('lfnds_donation/receiver')");
+$receiverTable = $this->getTable('lfnds_donation_receiver');
+$this->run("DROP TABLE IF EXISTS $receiverTable");
