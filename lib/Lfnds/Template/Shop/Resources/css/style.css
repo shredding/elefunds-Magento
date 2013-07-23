@@ -1,0 +1,1778 @@
+/**
+  * Mixins are useful to avoid retyping browser-prefixes and crossbrowser-hacks
+  * Please note:
+  * In LESS it is (different to SASS) not possible to pass strings to a mixin out of the box
+  * This is useful to be able to pass a various number of parameters to one mixin
+  * fe. .border-radius(2px 2px) - .border-radius(5px 10px 2px)
+  * There is a solution, which makes mixins look a bit weird sometimes, but trust us
+  *
+  * Please check the supported browsers, to be sure to support your devices
+  *
+  * @author: roland@elefunds.de (Roland Luckenhuber)
+  */
+/*------------------------------------*\
+  Border-Radius - Cross-Browser
+  Use like this:
+  .rounded(2px 20px);
+  .rounded(2px 20px 10px);
+  .rounded(2px);
+
+  Supported: IE9+, Chrome4.0+, FF3.0+, Safari3.1+, Opera10.5+
+\*------------------------------------*/
+/*------------------------------------*\
+  Box-Shadow - Cross-Browser
+
+  Supported: IE9+, Chrome4.0+, FF3.5+, Safari3.1+, Opera10.5+
+\*------------------------------------*/
+/*------------------------------------*\
+  Transition - Cross-Browser
+
+  Supported: IE10+, Chrome4.0+, FF4.0+, Safari3.1+, Opera10.5+
+\*------------------------------------*/
+/*------------------------------------*\
+  Transform - Cross-Browser
+
+  *Working draft*
+  Supported: IE9+, Chrome25+, FF19+, Safari5.1+, Opera12+
+\*------------------------------------*/
+/*------------------------------------*\
+  Linear-Gradients - Cross-Browser
+
+  Supported: IE6+, Chrome4+, FF3.6+, Safari4.0+, Opera11.10+
+\*------------------------------------*/
+/*------------------------------------*\
+  Clearfix
+  Use this to clear floats in a clean way,
+  - without overflow: hidden
+  - cross-browser
+\*------------------------------------*/
+.clearfix {
+  zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.jumpingBall {
+  margin-left: 50%;
+  margin-top: 13px;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.jumpingBall .wBall {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  opacity: 0;
+  -moz-transform: rotate(225deg);
+  -moz-animation: orbit 5.5s infinite;
+  -webkit-transform: rotate(225deg);
+  -webkit-animation: orbit 5.5s infinite;
+  -ms-transform: rotate(225deg);
+  -ms-animation: orbit 5.5s infinite;
+  -o-transform: rotate(225deg);
+  -o-animation: orbit 5.5s infinite;
+  transform: rotate(225deg);
+  animation: orbit 5.5s infinite;
+}
+.jumpingBall .wBall .wInnerBall {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #000000;
+  left: 0px;
+  top: 0px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.jumpingBall #wBall_1 {
+  -moz-animation-delay: 1.2s;
+  -webkit-animation-delay: 1.2s;
+  -ms-animation-delay: 1.2s;
+  -o-animation-delay: 1.2s;
+  animation-delay: 1.2s;
+}
+.jumpingBall #wBall_2 {
+  -moz-animation-delay: 0.24s;
+  -webkit-animation-delay: 0.24s;
+  -ms-animation-delay: 0.24s;
+  -o-animation-delay: 0.24s;
+  animation-delay: 0.24s;
+}
+.jumpingBall #wBall_3 {
+  -moz-animation-delay: 0.48s;
+  -webkit-animation-delay: 0.48s;
+  -ms-animation-delay: 0.48s;
+  -o-animation-delay: 0.48s;
+  animation-delay: 0.48s;
+}
+.jumpingBall #wBall_4 {
+  -moz-animation-delay: 0.72s;
+  -webkit-animation-delay: 0.72s;
+  -ms-animation-delay: 0.72s;
+  -o-animation-delay: 0.72s;
+  animation-delay: 0.72s;
+}
+.jumpingBall #wBall_5 {
+  -moz-animation-delay: 0.96s;
+  -webkit-animation-delay: 0.96s;
+  -ms-animation-delay: 0.96s;
+  -o-animation-delay: 0.96s;
+  animation-delay: 0.96s;
+}
+@-moz-keyframes orbit {
+  0% {
+    opacity: 1;
+    z-index: 99;
+    -moz-transform: rotate(180deg);
+    -moz-animation-timing-function: ease-out;
+  }
+  7% {
+    opacity: 1;
+    -moz-transform: rotate(300deg);
+    -moz-animation-timing-function: linear;
+    -moz-origin: 0%;
+  }
+  30% {
+    opacity: 1;
+    -moz-transform: rotate(410deg);
+    -moz-animation-timing-function: ease-in-out;
+    -moz-origin: 7%;
+  }
+  39% {
+    opacity: 1;
+    -moz-transform: rotate(645deg);
+    -moz-animation-timing-function: linear;
+    -moz-origin: 30%;
+  }
+  70% {
+    opacity: 1;
+    -moz-transform: rotate(770deg);
+    -moz-animation-timing-function: ease-out;
+    -moz-origin: 39%;
+  }
+  75% {
+    opacity: 1;
+    -moz-transform: rotate(900deg);
+    -moz-animation-timing-function: ease-out;
+    -moz-origin: 70%;
+  }
+  76% {
+    opacity: 0;
+    -moz-transform: rotate(900deg);
+  }
+  100% {
+    opacity: 0;
+    -moz-transform: rotate(900deg);
+  }
+}
+@-webkit-keyframes orbit {
+  0% {
+    opacity: 1;
+    z-index: 99;
+    -webkit-transform: rotate(180deg);
+    -webkit-animation-timing-function: ease-out;
+  }
+  7% {
+    opacity: 1;
+    -webkit-transform: rotate(300deg);
+    -webkit-animation-timing-function: linear;
+    -webkit-origin: 0%;
+  }
+  30% {
+    opacity: 1;
+    -webkit-transform: rotate(410deg);
+    -webkit-animation-timing-function: ease-in-out;
+    -webkit-origin: 7%;
+  }
+  39% {
+    opacity: 1;
+    -webkit-transform: rotate(645deg);
+    -webkit-animation-timing-function: linear;
+    -webkit-origin: 30%;
+  }
+  70% {
+    opacity: 1;
+    -webkit-transform: rotate(770deg);
+    -webkit-animation-timing-function: ease-out;
+    -webkit-origin: 39%;
+  }
+  75% {
+    opacity: 1;
+    -webkit-transform: rotate(900deg);
+    -webkit-animation-timing-function: ease-out;
+    -webkit-origin: 70%;
+  }
+  76% {
+    opacity: 0;
+    -webkit-transform: rotate(900deg);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(900deg);
+  }
+}
+@-ms-keyframes orbit {
+  0% {
+    opacity: 1;
+    z-index: 99;
+    -ms-transform: rotate(180deg);
+    -ms-animation-timing-function: ease-out;
+  }
+  7% {
+    opacity: 1;
+    -ms-transform: rotate(300deg);
+    -ms-animation-timing-function: linear;
+    -ms-origin: 0%;
+  }
+  30% {
+    opacity: 1;
+    -ms-transform: rotate(410deg);
+    -ms-animation-timing-function: ease-in-out;
+    -ms-origin: 7%;
+  }
+  39% {
+    opacity: 1;
+    -ms-transform: rotate(645deg);
+    -ms-animation-timing-function: linear;
+    -ms-origin: 30%;
+  }
+  70% {
+    opacity: 1;
+    -ms-transform: rotate(770deg);
+    -ms-animation-timing-function: ease-out;
+    -ms-origin: 39%;
+  }
+  75% {
+    opacity: 1;
+    -ms-transform: rotate(900deg);
+    -ms-animation-timing-function: ease-out;
+    -ms-origin: 70%;
+  }
+  76% {
+    opacity: 0;
+    -ms-transform: rotate(900deg);
+  }
+  100% {
+    opacity: 0;
+    -ms-transform: rotate(900deg);
+  }
+}
+@-o-keyframes orbit {
+  0% {
+    opacity: 1;
+    z-index: 99;
+    -o-transform: rotate(180deg);
+    -o-animation-timing-function: ease-out;
+  }
+  7% {
+    opacity: 1;
+    -o-transform: rotate(300deg);
+    -o-animation-timing-function: linear;
+    -o-origin: 0%;
+  }
+  30% {
+    opacity: 1;
+    -o-transform: rotate(410deg);
+    -o-animation-timing-function: ease-in-out;
+    -o-origin: 7%;
+  }
+  39% {
+    opacity: 1;
+    -o-transform: rotate(645deg);
+    -o-animation-timing-function: linear;
+    -o-origin: 30%;
+  }
+  70% {
+    opacity: 1;
+    -o-transform: rotate(770deg);
+    -o-animation-timing-function: ease-out;
+    -o-origin: 39%;
+  }
+  75% {
+    opacity: 1;
+    -o-transform: rotate(900deg);
+    -o-animation-timing-function: ease-out;
+    -o-origin: 70%;
+  }
+  76% {
+    opacity: 0;
+    -o-transform: rotate(900deg);
+  }
+  100% {
+    opacity: 0;
+    -o-transform: rotate(900deg);
+  }
+}
+@keyframes orbit {
+  0% {
+    opacity: 1;
+    z-index: 99;
+    transform: rotate(180deg);
+    animation-timing-function: ease-out;
+  }
+  7% {
+    opacity: 1;
+    transform: rotate(300deg);
+    animation-timing-function: linear;
+    origin: 0%;
+  }
+  30% {
+    opacity: 1;
+    transform: rotate(410deg);
+    animation-timing-function: ease-in-out;
+    origin: 7%;
+  }
+  39% {
+    opacity: 1;
+    transform: rotate(645deg);
+    animation-timing-function: linear;
+    origin: 30%;
+  }
+  70% {
+    opacity: 1;
+    transform: rotate(770deg);
+    animation-timing-function: ease-out;
+    origin: 39%;
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(900deg);
+    animation-timing-function: ease-out;
+    origin: 70%;
+  }
+  76% {
+    opacity: 0;
+    transform: rotate(900deg);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(900deg);
+  }
+}
+/**
+ * QUnit v1.11.0 - A JavaScript Unit Testing Framework
+ *
+ * http://qunitjs.com
+ *
+ * Copyright 2012 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+/** Font Family and Sizes */
+#qunit-tests,
+#qunit-header,
+#qunit-banner,
+#qunit-testrunner-toolbar,
+#qunit-userAgent,
+#qunit-testresult {
+  font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+}
+#qunit-testrunner-toolbar,
+#qunit-userAgent,
+#qunit-testresult,
+#qunit-tests li {
+  font-size: small;
+}
+#qunit-tests {
+  font-size: smaller;
+}
+/** Resets */
+#qunit-tests,
+#qunit-header,
+#qunit-banner,
+#qunit-userAgent,
+#qunit-testresult,
+#qunit-modulefilter {
+  margin: 0;
+  padding: 0;
+}
+/** Header */
+#qunit-header {
+  padding: 0.5em 0 0.5em 1em;
+  color: #FFF;
+  background-color: #5A5A5A;
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+}
+#qunit-header a {
+  text-decoration: none;
+  color: #FFF;
+}
+#qunit-header a:hover,
+#qunit-header a:focus {
+  color: #fff;
+}
+#qunit-testrunner-toolbar label {
+  display: inline-block;
+  padding: 0 .5em 0 .1em;
+}
+#qunit-banner {
+  height: 5px;
+}
+#qunit-testrunner-toolbar {
+  padding: 0.5em 0 0.5em 2em;
+  color: #2C2C2C;
+  background-color: #eee;
+  overflow: hidden;
+}
+#qunit-userAgent {
+  padding: 0.5em 0 0.5em 2.5em;
+  background-color: #707070;
+  color: #fff;
+  text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+}
+#qunit-modulefilter-container {
+  float: right;
+}
+/** Tests: Pass/Fail */
+#qunit-tests {
+  list-style-position: inside;
+}
+#qunit-tests li {
+  padding: 0.4em 0.5em 0.4em 2.5em;
+  border-bottom: 1px solid #fff;
+  list-style-position: inside;
+}
+#qunit-tests.hidepass li.pass,
+#qunit-tests.hidepass li.running {
+  display: none;
+}
+#qunit-tests li strong {
+  cursor: pointer;
+}
+#qunit-tests li a {
+  padding: 0.5em;
+  color: #39393A;
+  text-decoration: none;
+}
+#qunit-tests li a:hover,
+#qunit-tests li a:focus {
+  color: #000;
+}
+#qunit-tests li .runtime {
+  float: right;
+  font-size: smaller;
+}
+.qunit-assert-list {
+  margin-top: 0.5em;
+  padding: 0.5em;
+  background-color: #fff;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+.qunit-collapsed {
+  display: none;
+}
+#qunit-tests table {
+  border-collapse: collapse;
+  margin-top: .2em;
+}
+#qunit-tests th {
+  text-align: right;
+  vertical-align: top;
+  padding: 0 .5em 0 0;
+}
+#qunit-tests td {
+  vertical-align: top;
+}
+#qunit-tests pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+#qunit-tests del {
+  background-color: #e0f2be;
+  color: #374e0c;
+  text-decoration: none;
+}
+#qunit-tests ins {
+  background-color: #ffcaca;
+  color: #500;
+  text-decoration: none;
+}
+/*** Test Counts */
+#qunit-tests b.counts {
+  color: black;
+}
+#qunit-tests b.passed {
+  color: #5E740B;
+}
+#qunit-tests b.failed {
+  color: #710909;
+}
+#qunit-tests li li {
+  padding: 5px;
+  background-color: #fff;
+  border-bottom: none;
+  list-style-position: inside;
+}
+/*** Passing Styles */
+#qunit-tests li li.pass {
+  color: #616568;
+  background-color: #ECECEC;
+  border-left: 10px solid #C6E746;
+}
+#qunit-tests .pass {
+  color: #616568;
+  background-color: #ECECEC;
+}
+#qunit-tests .pass .test-name {
+  color: #3A3A3A;
+}
+#qunit-tests .pass .test-actual,
+#qunit-tests .pass .test-expected {
+  color: #999999;
+}
+#qunit-banner.qunit-pass {
+  background-color: #F3A93A;
+}
+/*** Failing Styles */
+#qunit-tests li li.fail {
+  color: #710909;
+  background-color: #fff;
+  border-left: 10px solid #EE5757;
+  white-space: pre;
+}
+#qunit-tests > li:last-child {
+  border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+}
+#qunit-tests .fail {
+  color: #000000;
+  background-color: #EE5757;
+}
+#qunit-tests .fail .test-name,
+#qunit-tests .fail .module-name {
+  color: #000000;
+}
+#qunit-tests .fail .test-actual {
+  color: #EE5757;
+}
+#qunit-tests .fail .test-expected {
+  color: green;
+}
+#qunit-banner.qunit-fail {
+  background-color: #EE5757;
+}
+/** Result */
+#qunit-testresult {
+  padding: 0.5em 0.5em 0.5em 2.5em;
+  color: #616568;
+  background-color: #ECECEC;
+  border-bottom: 1px solid white;
+}
+#qunit-testresult .module-name {
+  font-weight: bold;
+}
+/** Fixture */
+#qunit-fixture {
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+  width: 1000px;
+  height: 1000px;
+}
+/**
+  * All styles related to the elefunds-module
+  *
+  * Important: Please don't change anything in this file
+  * For adjustments use adjustments.less
+  *
+  * @author: roland@elefunds.de (Roland Luckenhuber)
+  */
+/*------------------------------------*\
+  The elefunds-module
+  All the styles first are for the horizontal orientated view and will be overwritten later in this file
+  (search for .vertical)
+\*------------------------------------*/
+#elefunds-module {
+  zoom: 1;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid #888;
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', sans-serif;
+  font-size: 13px;
+  min-width: 710px;
+  width: 710px;
+  /*------------------------------------*\
+    Changes, made when module is active
+  \*------------------------------------*/
+
+  /*------------------------------------*\
+    SectionTop - Includes the activate-section, increase/decrease buttons, donation-input
+  \*------------------------------------*/
+
+  /* end section-top */
+
+  /*------------------------------------*\
+    SectionMiddle - The receiver-buttons
+  \*------------------------------------*/
+
+  /* end section-middle */
+
+  /*------------------------------------*\
+    SectionBottom - Donation receipt and new-sum-field
+  \*------------------------------------*/
+
+  /* end section-bottom  */
+
+  /*------------------------------------*\
+    Changes, only made when module is shown in vertical orientation
+  \*------------------------------------*/
+
+  /*------------------------------------*\
+    Changes, when the sum is hidden
+  \*------------------------------------*/
+
+}
+#elefunds-module:before,
+#elefunds-module:after {
+  content: "";
+  display: table;
+}
+#elefunds-module:after {
+  clear: both;
+}
+#elefunds-module.active .section-top .region-activate-module .region-check:before {
+  height: 55px;
+}
+#elefunds-module.active .section-bottom {
+  height: 50px;
+}
+#elefunds-module .section-top {
+  zoom: 1;
+  background: #555;
+  border-bottom: 1px solid #525252;
+  height: 50px;
+  position: relative;
+}
+#elefunds-module .section-top:before,
+#elefunds-module .section-top:after {
+  content: "";
+  display: table;
+}
+#elefunds-module .section-top:after {
+  clear: both;
+}
+#elefunds-module .section-top .region-logo {
+  background-size: 100px;
+  float: left;
+  height: 25px;
+  margin: 12px 7% 0 12px;
+  position: relative;
+  width: 100px;
+}
+#elefunds-module .section-top .region-logo .elefunds-tooltip {
+  background: #FFF;
+  left: 120px;
+  opacity: 0.0;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: 230px;
+  z-index: 200;
+}
+#elefunds-module .section-top .region-logo .elefunds-tooltip h2 {
+  background: #666;
+  color: #FFF;
+  margin: 0;
+  padding: 8px 0;
+}
+#elefunds-module .section-top .region-logo .elefunds-tooltip p {
+  margin: 0;
+  padding: 10px;
+}
+#elefunds-module .section-top .region-logo .elefunds-tooltip:before {
+  content: "";
+  border-style: solid;
+  border-color: transparent #666 transparent transparent;
+  border-width: 7px;
+  height: 0;
+  left: -15px;
+  position: absolute;
+  top: 7px;
+  width: 0;
+}
+#elefunds-module .section-top .region-logo:hover .elefunds-tooltip {
+  left: 140px;
+  opacity: 1.0;
+  top: 0;
+  visibility: visible;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  transition-delay: 0.5s;
+}
+#elefunds-module .section-top .region-logo #elefundsLogo {
+  cursor: pointer;
+  height: 25px;
+  width: 100px;
+}
+#elefunds-module .section-top .region-logo #elefundsLogo .elephantIcon {
+  fill: #FFF;
+}
+#elefunds-module .section-top .region-logo #elefundsLogo .logoText {
+  fill: #FFF;
+}
+#elefunds-module .section-top .region-activate-module {
+  background: #26b588;
+  cursor: pointer;
+  float: left;
+  height: 50px;
+  position: absolute;
+  right: 220px;
+  top: 0;
+}
+#elefunds-module .section-top .region-activate-module .region-check {
+  float: left;
+  height: 50px;
+  position: relative;
+}
+#elefunds-module .section-top .region-activate-module .region-check .checkmark.checkmark-white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGNsYXNzPSJjaGVja21hcmstbGFyZ2UiIHhtbG5zPSJodHRwOi8
+              vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OT
+              kveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMThweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Q
+              m94PSIwIDAgMTQuODkxIDEzLjA5NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTQuODkx
+              IDEzLjA5NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CiAgICAgICAgICAgICAgICAgICAgICAgIDx
+              wYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik01LjYwOSwxMy4wOTRDOS4yNjYsNi4zMTIsMTIuNzM0LD
+              IuMjUsMTQuODkxLDAuNTYyYzAtMC4xNTYtMC4xNTYtMC40MzgtMC4zNDQtMC41NjJjLTQuMDMxL
+              DIuMDk0LTcuMTI1LDUuMTg4LTkuOTM4LDguNzgxCiAgICAgICAgICAgICAgICAgICAgICAgIAlD
+              My4xNzIsOC4xNTYsMS45MjIsNy4xMzYsMS4wNDcsNi4xMzZDMC42NzIsNi4zMjMsMC4xODgsNi4
+              5ODQsMCw3LjUxNkMwLjkyMiw5LjAzMSwzLjA3OCwxMS4yODEsNS42MDksMTMuMDk0eiIvPgogIC
+              AgICAgICAgICAgICAgICAgICAgICA8L3N2Zz4=);
+}
+#elefunds-module .section-top .region-activate-module .region-check .checkmark.checkmark-large {
+  width: 18px;
+  height: 16px;
+}
+#elefunds-module .section-top .region-activate-module .region-check:before {
+  content: "";
+  height: 0;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 50px;
+}
+#elefunds-module .section-top .region-activate-module .region-check .checkbox-wrapper {
+  background: #EEE;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  height: 15px;
+  margin: 15px;
+  position: relative;
+  width: 15px;
+}
+#elefunds-module .section-top .region-activate-module .region-check .checkbox-wrapper input {
+  visibility: hidden;
+}
+#elefunds-module .section-top .region-activate-module .region-checklabel {
+  float: left;
+  height: 50px;
+  margin-left: 7px;
+  padding: 0 10px 0 2px;
+}
+#elefunds-module .section-top .region-activate-module .region-checklabel label {
+  color: #333;
+  cursor: pointer;
+  display: block;
+  line-height: 15px;
+  margin-top: 7px;
+  font-size: 12px;
+  width: 193px;
+}
+#elefunds-module .section-top .region-donation-value {
+  float: right;
+  height: 50px;
+  margin-right: 10px;
+}
+#elefunds-module .section-top .region-donation-value .region-buttons {
+  float: left;
+  height: 50px;
+  margin-right: 20px;
+}
+#elefunds-module .section-top .region-donation-value .region-buttons .button-decrease {
+  background: #ffffff;
+  border: 1px solid #E9E9E9;
+  cursor: pointer;
+  float: left;
+  font-weight: bold;
+  height: 19px;
+  margin-top: 13px;
+  margin-right: 5px;
+  padding: 1px 0 0 5px;
+  width: 15px;
+}
+#elefunds-module .section-top .region-donation-value .region-buttons .button-decrease:active {
+  -webkit-box-shadow: 0 0 10px #b3b3b3, inset 0 0 3px #000000;
+  -moz-box-shadow: 0 0 10px #b3b3b3, inset 0 0 3px #000000;
+  box-shadow: 0 0 10px #b3b3b3, inset 0 0 3px #000000;
+  border: 1px solid #666;
+}
+#elefunds-module .section-top .region-donation-value .region-buttons .button-increase {
+  background: #ffba89;
+  border: 1px solid #DB8B4C;
+  cursor: pointer;
+  color: #FFF;
+  float: left;
+  font-weight: bold;
+  height: 19px;
+  margin-top: 13px;
+  padding: 1px 0 0 5px;
+  width: 15px;
+}
+#elefunds-module .section-top .region-donation-value .region-buttons .button-increase:active {
+  -webkit-box-shadow: 0 0 10px #b3b3b3, inset 0 0 3px #000000;
+  -moz-box-shadow: 0 0 10px #b3b3b3, inset 0 0 3px #000000;
+  box-shadow: 0 0 10px #b3b3b3, inset 0 0 3px #000000;
+  border: 1px solid #666;
+}
+#elefunds-module .section-top .region-donation-value .region-input {
+  float: left;
+  height: 50px;
+}
+#elefunds-module .section-top .region-donation-value .region-input .donation-currency {
+  color: #FFF;
+  font-size: 16px;
+  font-weight: bold;
+  float: left;
+  margin-top: 10px;
+  padding: 5px 8px;
+}
+#elefunds-module .section-top .region-donation-value .region-input input.donation-input-full {
+  background: #fff;
+  border: 1px solid #757575;
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+  color: #6a6a6a;
+  float: left;
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  height: 22px;
+  line-height: 22px;
+  margin-top: 10px;
+  padding: 4px 0 4px 7px;
+  text-align: right;
+  width: 32px;
+}
+#elefunds-module .section-top .region-donation-value .region-input input.donation-input-full:focus {
+  border-top-color: #888;
+  border-bottom-color: #888;
+  outline: none;
+}
+#elefunds-module .section-top .region-donation-value .region-input .currency-delimiter {
+  background: #FFF;
+  border-top: 1px solid #757575;
+  border-bottom: 1px solid #757575;
+  color: #6a6a6a;
+  float: left;
+  font-size: 18px;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 10px;
+  padding: 0 1px 0 0;
+  width: 5px;
+}
+#elefunds-module .section-top .region-donation-value .region-input input.donation-input-small {
+  background: #FFF;
+  border: 1px solid #757575;
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  color: #6a6a6a;
+  float: left;
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  height: 22px;
+  line-height: 22px;
+  margin-top: 10px;
+  padding: 4px 12px 4px 0;
+  text-align: left;
+  width: 24px;
+}
+#elefunds-module .section-top .region-donation-value .region-input input.donation-input-small:focus {
+  border-top-color: #888;
+  border-bottom-color: #888;
+  outline: none;
+}
+#elefunds-module .section-middle ul {
+  zoom: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#elefunds-module .section-middle ul:before,
+#elefunds-module .section-middle ul:after {
+  content: "";
+  display: table;
+}
+#elefunds-module .section-middle ul:after {
+  clear: both;
+}
+#elefunds-module .section-middle ul li {
+  background: #FFF;
+  cursor: pointer;
+  float: left;
+  height: 50px;
+  padding: 4px 0;
+  position: relative;
+  width: 33.3333%;
+  -webkit-perspective: 600px;
+  z-index: 99;
+}
+#elefunds-module .section-middle ul li.loading-indicator {
+  height: 50px;
+  padding: 4px 0;
+  position: relative;
+  width: 100%;
+}
+#elefunds-module .section-middle ul li:after {
+  background: #A7A7A7;
+  content: "";
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1px;
+}
+#elefunds-module .section-middle ul li .checkbox-wrapper {
+  background: #EEE;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0);
+  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0);
+  cursor: pointer;
+  float: left;
+  height: 15px;
+  margin: 15px;
+  position: relative;
+  width: 15px;
+}
+#elefunds-module .section-middle ul li .checkbox-wrapper input {
+  visibility: hidden;
+}
+#elefunds-module .section-middle ul li label {
+  background-size: 140px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  cursor: pointer;
+  display: block;
+  float: left;
+  height: 50px;
+  left: 27%;
+  overflow: hidden;
+  opacity: 0.3;
+  position: absolute;
+  text-indent: -9999px;
+  top: 9px;
+  width: 175px;
+  -moz-transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+#elefunds-module .section-middle ul li.active .checkmark.checkmark-black {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTQuODkxcHgiIGhlaWdodD0iMTMuMDk0cHgiIHZpZXdCb3g9IjAgMCAxNC44OTEgMTMuMDk0IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxNC44OTEgMTMuMDk0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGQ9Ik01LjYwOSwxMy4wOTRDOS4yNjYsNi4zMTIsMTIuNzM0LDIuMjUsMTQuODkxLDAuNTYyYzAtMC4xNTYtMC4xNTYtMC40MzgtMC4zNDQtMC41NjJjLTQuMDMxLDIuMDk0LTcuMTI1LDUuMTg4LTkuOTM4LDguNzgxDQoJQzMuMTcyLDguMTU2LDEuOTIyLDcuMTM2LDEuMDQ3LDYuMTM2QzAuNjcyLDYuMzIzLDAuMTg4LDYuOTg0LDAsNy41MTZDMC45MjIsOS4wMzEsMy4wNzgsMTEuMjgxLDUuNjA5LDEzLjA5NHoiLz4NCjwvc3ZnPg0K);
+}
+#elefunds-module .section-middle ul li.active .checkmark.checkmark-medium {
+  width: 14px;
+  height: 13px;
+}
+#elefunds-module .section-middle ul li.active label {
+  opacity: 1.0;
+}
+#elefunds-module .section-middle ul li:last-child:after {
+  display: none;
+}
+#elefunds-module .section-bottom {
+  background: #555;
+  height: 0;
+  overflow: hidden;
+  -moz-transition: height 0.5s;
+  -webkit-transition: height 0.5s;
+  -o-transition: height 0.5s;
+  transition: height 0.5s;
+}
+#elefunds-module .section-bottom .donation-receipt {
+  background: none;
+  color: #FFF;
+  cursor: pointer;
+  float: left;
+  font-size: 12px;
+  margin: 8px 0 0;
+  padding: 7px 0 10px 45px;
+  position: relative;
+}
+#elefunds-module .section-bottom .donation-receipt.active .checkbox-wrapper:after {
+  color: #666;
+  content: "✓";
+  font-size: 24px;
+  font-weight: normal;
+  left: 0;
+  position: absolute;
+  top: -9px;
+}
+#elefunds-module .section-bottom .donation-receipt .checkbox-wrapper {
+  background: #EEE;
+  border: 1px solid #888;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 5px #616161;
+  -moz-box-shadow: inset 0 0 5px #616161;
+  box-shadow: inset 0 0 5px #616161;
+  cursor: pointer;
+  height: 15px;
+  left: 14px;
+  position: absolute;
+  top: 7px;
+  width: 15px;
+}
+#elefunds-module .section-bottom .donation-receipt .checkbox-wrapper input {
+  visibility: hidden;
+}
+#elefunds-module .section-bottom .region-sum {
+  color: #444;
+  float: right;
+  height: 36px;
+  padding: 11px 11px 0 0;
+}
+#elefunds-module .section-bottom .region-sum .round-sum-text {
+  color: #FFF;
+}
+#elefunds-module .section-bottom .region-sum .sum {
+  background: #FFF;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  display: inline-block;
+  padding: 6px;
+}
+#elefunds-module.vertical {
+  min-width: 250px;
+  width: 250px;
+}
+#elefunds-module.vertical.active .section-bottom {
+  height: 110px;
+}
+#elefunds-module.vertical .section-top {
+  height: auto;
+}
+#elefunds-module.vertical .section-top .region-logo {
+  float: none;
+}
+#elefunds-module.vertical .section-top .region-activate-module {
+  float: none;
+  margin-top: 13px;
+  width: 100%;
+}
+#elefunds-module.vertical .section-top .region-donation-value {
+  float: none;
+  margin-right: 0;
+  padding: 5px 0 2px 15px;
+}
+#elefunds-module.vertical .section-middle ul li {
+  float: none;
+  width: 100%;
+}
+#elefunds-module.vertical .section-middle ul li:after {
+  background: #A7A7A7;
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: auto;
+  top: auto;
+  width: 100%;
+}
+#elefunds-module.vertical .section-bottom {
+  zoom: 1;
+  height: 0;
+}
+#elefunds-module.vertical .section-bottom:before,
+#elefunds-module.vertical .section-bottom:after {
+  content: "";
+  display: table;
+}
+#elefunds-module.vertical .section-bottom:after {
+  clear: both;
+}
+#elefunds-module.vertical .section-bottom .donation-receipt {
+  background: #ffffff;
+  /* Old browsers */
+
+  background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 47%, #ffffff 100%);
+  /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(47%, #e5e5e5), color-stop(100%, #ffffff));
+  /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(top, #ffffff 0%, #e5e5e5 47%, #ffffff 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #ffffff 0%, #e5e5e5 47%, #ffffff 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(top, #ffffff 0%, #e5e5e5 47%, #ffffff 100%);
+  /* IE10+ */
+
+  background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 47%, #ffffff 100%);
+  /* W3C */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
+  /* IE6-9 */
+
+  color: #333;
+  margin-top: 15px;
+}
+#elefunds-module.hideSum .section-bottom .region-sum {
+  display: none;
+}
+/*------------------------------------*\
+  Tooltips for the receivers
+\*------------------------------------*/
+#elefunds-module .section-middle li .receiver-tooltip {
+  background: #FFF;
+  left: 12%;
+  opacity: 0.0;
+  position: absolute;
+  top: 50%;
+  visibility: hidden;
+  width: 230px;
+  z-index: 99;
+}
+#elefunds-module .section-middle li .receiver-tooltip h2 {
+  background: #666;
+  color: #FFF;
+  margin: 0;
+  padding: 8px 0;
+}
+#elefunds-module .section-middle li .receiver-tooltip p {
+  margin: 0;
+  padding: 10px;
+}
+#elefunds-module .section-middle li .receiver-tooltip:before {
+  content: "";
+  border-style: solid;
+  border-color: transparent transparent #666;
+  border-width: 7px;
+  height: 0;
+  left: 46%;
+  position: absolute;
+  top: -15px;
+  width: 0;
+}
+#elefunds-module .section-middle li:hover .receiver-tooltip {
+  opacity: 1.0;
+  top: 95%;
+  visibility: visible;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  transition-delay: 0.5s;
+}
+#elefunds-module.vertical .section-middle li .receiver-tooltip {
+  left: 102%;
+  top: 0;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -o-transform: none;
+  transform: none;
+}
+#elefunds-module.vertical .section-middle li .receiver-tooltip:before {
+  border-color: transparent #666 transparent transparent;
+  left: -20px;
+  top: 25px;
+}
+#elefunds-module.tooltips3D .section-middle li .receiver-tooltip {
+  -webkit-transform: rotateX(20deg);
+  -moz-transform: rotateX(20deg);
+  -o-transform: rotateX(20deg);
+  transform: rotateX(20deg);
+}
+#elefunds-module.tooltips3D .section-middle li:hover .receiver-tooltip {
+  -webkit-transform: rotateX(37deg);
+  -moz-transform: rotateX(37deg);
+  -o-transform: rotateX(37deg);
+  transform: rotateX(37deg);
+}
+/**
+  * All adjustments which can be easily made on the elefunds-module
+  *
+  * In this file you can check the already shown examples,
+  * to create your own color-theme
+  *
+  * @author: roland@elefunds.de (Roland Luckenhuber)
+  */
+/*------------------------------------*\
+  Themes
+  * For generating gradients, use http://www.colorzilla.com/gradient-editor/ for cross-browser-gradients
+  * Try to avoid images wherever possible
+\*------------------------------------*/
+#elefunds-module {
+  /*------------------------------------*\
+    elefunds-theme
+  \*------------------------------------*/
+
+}
+#elefunds-module.elefunds {
+  border-color: #f8f7f7;
+}
+#elefunds-module.elefunds .region-logo {
+  /* Style the SVG-elefunds-Logo
+         To find out, which properties you can use for SVG, check
+         http://www.w3.org/TR/SVG/styling.html
+
+         Please don't forget, that SVG won't work for IE8--,
+         so provide a fallback, if you need it.
+      */
+
+}
+#elefunds-module.elefunds .region-logo #elefundsLogo .elephantIcon {
+  fill: #333;
+  -webkit-transition: fill 0.3s;
+}
+#elefunds-module.elefunds .region-logo #elefundsLogo .logoText {
+  fill: #333;
+  -webkit-transition: fill 0.3s;
+}
+#elefunds-module.elefunds .region-logo #elefundsLogo:hover .elephantIcon {
+  fill: #444;
+}
+#elefunds-module.elefunds .region-logo #elefundsLogo:hover .logoText {
+  fill: #444;
+}
+#elefunds-module.elefunds .region-logo .elefunds-tooltip {
+  border: 1px solid #333;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+#elefunds-module.elefunds .region-logo .elefunds-tooltip h2 {
+  background: #333;
+  color: #f5f5f5;
+  font-size: 14px;
+  text-align: center;
+}
+#elefunds-module.elefunds .region-logo .elefunds-tooltip p {
+  margin: 0;
+  padding: 10px;
+  font-size: 10px;
+  background: #f5f5f5;
+  color: #333;
+}
+#elefunds-module.elefunds .region-logo .elefunds-tooltip:before {
+  border-color: transparent #333 transparent transparent;
+}
+#elefunds-module.elefunds .section-top {
+  background: #edecec;
+  border-color: #e0dfdf;
+}
+#elefunds-module.elefunds .section-top .region-activate-module {
+  background: #00efa2;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px 0px #26b588;
+  -moz-box-shadow: 0 1px 1px 0px #26b588;
+  box-shadow: 0 1px 1px 0px #26b588;
+  height: 40px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+#elefunds-module.elefunds .section-top .region-activate-module .region-check {
+  height: 40px;
+}
+#elefunds-module.elefunds .section-top .region-activate-module .region-check:before {
+  width: 263px;
+}
+#elefunds-module.elefunds .section-top .region-activate-module .checkbox-wrapper {
+  margin-top: 12px;
+  background: rgba(0, 0, 0, 0.2);
+}
+#elefunds-module.elefunds .section-top .region-activate-module .checkbox-wrapper:after {
+  color: #FFF;
+}
+#elefunds-module.elefunds .section-top .region-activate-module .checkbox-wrapper .checkmark {
+  position: absolute;
+  top: -3px;
+  left: 2px;
+  display: none;
+}
+#elefunds-module.elefunds .section-top .region-activate-module .region-checklabel {
+  margin-left: 0;
+}
+#elefunds-module.elefunds .section-top .region-activate-module .region-checklabel label {
+  color: #FFF;
+  margin-top: 5px;
+}
+#elefunds-module.elefunds .section-top .region-donation-value .region-buttons .button-decrease {
+  background: #d5d5d5;
+  border-color: #d5d5d5;
+  border-radius: 3px 0 0 3px;
+  -webkit-box-shadow: 0 1px 0 0px #b3b3b3;
+  -moz-box-shadow: 0 1px 0 0px #b3b3b3;
+  box-shadow: 0 1px 0 0px #b3b3b3;
+  color: #FFF;
+  margin-right: 0;
+}
+#elefunds-module.elefunds .section-top .region-donation-value .region-buttons .button-decrease:active {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  margin-top: 14px;
+}
+#elefunds-module.elefunds .section-top .region-donation-value .region-buttons .button-increase {
+  background: #00efa2;
+  border-color: #00efa2;
+  border-radius: 0 3px 3px 0;
+  -webkit-box-shadow: 0 1px 0 0px #26b588;
+  -moz-box-shadow: 0 1px 0 0px #26b588;
+  box-shadow: 0 1px 0 0px #26b588;
+}
+#elefunds-module.elefunds .section-top .region-donation-value .region-buttons .button-increase:active {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  margin-top: 14px;
+}
+#elefunds-module.elefunds .section-top .region-donation-value .region-input .donation-currency {
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 0;
+  color: #6a6a6a;
+}
+#elefunds-module.elefunds .section-top .region-donation-value .region-input input.donation-input-full,
+#elefunds-module.elefunds .section-top .region-donation-value .region-input .currency-delimiter,
+#elefunds-module.elefunds .section-top .region-donation-value .region-input input.donation-input-small {
+  background: #d5d5d5;
+  border: #d5d5d5;
+  -webkit-box-shadow: 0 3px 1px -2px #999999 inset;
+  -moz-box-shadow: 0 3px 1px -2px #999999 inset;
+  box-shadow: 0 3px 1px -2px #999999 inset;
+}
+#elefunds-module.elefunds.active .section-top .region-activate-module {
+  margin-top: 6px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+#elefunds-module.elefunds.active .section-top .region-activate-module .checkbox-wrapper {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+#elefunds-module.elefunds.active .section-top .region-activate-module .checkmark {
+  display: block;
+}
+#elefunds-module.elefunds.active .section-top .region-input .donation-currency {
+  color: #333;
+}
+#elefunds-module.elefunds.active .section-top .region-input input.donation-input-full,
+#elefunds-module.elefunds.active .section-top .region-input .currency-delimiter,
+#elefunds-module.elefunds.active .section-top .region-input input.donation-input-small {
+  color: #333;
+}
+#elefunds-module.elefunds .section-middle ul {
+  background: #f5f5f5;
+}
+#elefunds-module.elefunds .section-middle ul li {
+  background: #f5f5f5;
+}
+#elefunds-module.elefunds .section-middle ul li:after {
+  height: 75%;
+  top: 7px;
+}
+#elefunds-module.elefunds .section-middle ul li .checkbox-wrapper {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+  background: #dfdfdf;
+}
+#elefunds-module.elefunds .section-middle ul li .checkbox-wrapper .checkmark {
+  position: absolute;
+  top: -1px;
+  left: 3px;
+  display: none;
+}
+#elefunds-module.elefunds .section-middle ul li .checkbox-wrapper:after {
+  color: #000;
+}
+#elefunds-module.elefunds .section-middle ul li.active .checkmark {
+  display: block;
+}
+#elefunds-module.elefunds .section-bottom {
+  background: #EDECEC;
+}
+#elefunds-module.elefunds .section-bottom .donation-receipt {
+  color: #555;
+}
+#elefunds-module.elefunds .section-bottom .donation-receipt .checkbox-wrapper {
+  border: 1px solid #AFAFAF;
+  -webkit-box-shadow: inset 0 0 5px #949494;
+  -moz-box-shadow: inset 0 0 5px #949494;
+  box-shadow: inset 0 0 5px #949494;
+}
+#elefunds-module.elefunds .section-bottom .region-sum .round-sum-text {
+  color: #555;
+}
+#elefunds-module .section-middle li .receiver-tooltip {
+  border: 1px solid #333;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+#elefunds-module .section-middle li .receiver-tooltip h2 {
+  background: #333;
+  color: #f5f5f5;
+  font-size: 14px;
+  text-align: center;
+}
+#elefunds-module .section-middle li .receiver-tooltip p {
+  margin: 0;
+  padding: 10px;
+  font-size: 10px;
+  background: #f5f5f5;
+  color: #333;
+}
+#elefunds-module .section-middle li .receiver-tooltip:before {
+  border-color: transparent transparent #333;
+}
+/**
+ * All adjustments which can be easily made on the elefunds-module
+ *
+ * In this file you can check the already shown examples,
+ * to create your own dimensions
+ *
+ * @author: roland@elefunds.de (Roland Luckenhuber)
+ */
+/*------------------------------------*\
+  Sizes
+\*------------------------------------*/
+#elefunds-module.flexible {
+  width: auto;
+}
+#elefunds-module.large {
+  width: 900px;
+}
+#elefunds-module.medium {
+  width: 750px;
+}
+#elefunds-module.small {
+  width: 710px;
+}
+#elefunds-module.vertical.flexible {
+  width: auto;
+}
+#elefunds-module.vertical.large {
+  width: 270px;
+}
+#elefunds-module.vertical.medium {
+  width: 270px;
+}
+#elefunds-module.vertical.small {
+  width: 270px;
+}
+#donation-row {
+  zoom: 1;
+  background: #7f7f7f;
+  /* Old browsers */
+
+  background: -moz-linear-gradient(top, #7f7f7f 0%, #4f4f4f 100%);
+  /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7f7f7f), color-stop(100%, #4f4f4f));
+  /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(top, #7f7f7f 0%, #4f4f4f 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #7f7f7f 0%, #4f4f4f 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(top, #7f7f7f 0%, #4f4f4f 100%);
+  /* IE10+ */
+
+  background: linear-gradient(to bottom, #7f7f7f 0%, #4f4f4f 100%);
+  /* W3C */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7f7f7f', endColorstr='#4f4f4f', GradientType=0);
+  /* IE6-9 */
+
+  -webkit-box-shadow: 0 0 3px #333333;
+  -moz-box-shadow: 0 0 3px #333333;
+  box-shadow: 0 0 3px #333333;
+  color: #FFF;
+  font-family: 'Lucida grande', sans-serif;
+  margin: 25px 0;
+  padding-left: 30px;
+}
+#donation-row:before,
+#donation-row:after {
+  content: "";
+  display: table;
+}
+#donation-row:after {
+  clear: both;
+}
+#donation-row .donation-label {
+  border-right: 1px solid #eee;
+  float: left;
+  padding: 10px 0 10px 0;
+  width: 200px;
+}
+#donation-row .donation-value {
+  float: left;
+  padding: 10px 0 10px 0;
+  margin-left: 30px;
+}
+.configurator {
+  background: #5A5A5A;
+  border: 1px solid #4D4D4D;
+  zoom: 1;
+  font-family: 'Lucida Grande';
+  margin-bottom: 30px;
+  position: relative;
+}
+.configurator:before,
+.configurator:after {
+  content: "";
+  display: table;
+}
+.configurator:after {
+  clear: both;
+}
+.configurator .elefunds-logo {
+  background: url(../image/elefunds_logo2x.png) 0 0 no-repeat;
+  background-size: cover;
+  height: 24px;
+  margin: 4px 10px;
+  position: absolute;
+  width: 118px;
+}
+.configurator > ul {
+  zoom: 1;
+  float: left;
+  font-size: 13px;
+  list-style: none;
+  margin: 0;
+  margin-left: 115px;
+  padding: 0;
+}
+.configurator > ul:before,
+.configurator > ul:after {
+  content: "";
+  display: table;
+}
+.configurator > ul:after {
+  clear: both;
+}
+.configurator > ul > li {
+  border-right: 1px solid #DADADA;
+  color: #FFF;
+  cursor: pointer;
+  float: left;
+  font-weight: bold;
+  padding: 10px;
+  position: relative;
+}
+.configurator > ul > li > ul {
+  background: #FFF;
+  border-style: solid;
+  border-color: #AAA;
+  border-width: 0 1px 1px 1px;
+  display: none;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 37px;
+  width: 100%;
+  z-index: 999;
+}
+.configurator > ul > li > ul > li {
+  color: #000;
+  padding: 5px;
+}
+.configurator > ul > li > ul > li:hover {
+  background: #eee;
+}
+.configurator > ul > li:hover ul {
+  display: block;
+}
+.configurator .slogan {
+  color: #FFF;
+  float: left;
+  font-weight: bold;
+  font-size: 12px;
+  margin-left: 150px;
+  margin-top: 16px;
+}
+.slider {
+  width: 420px;
+}
+.slider > .dragger {
+  background: #ff8132;
+  /* Old browsers */
+
+  background: -moz-linear-gradient(top, #ff8132 0%, #ffba89 100%);
+  /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff8132), color-stop(100%, #ffba89));
+  /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(top, #ff8132 0%, #ffba89 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #ff8132 0%, #ffba89 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(top, #ff8132 0%, #ffba89 100%);
+  /* IE10+ */
+
+  background: linear-gradient(to bottom, #ff8132 0%, #ffba89 100%);
+  /* W3C */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8132', endColorstr='#ffba89', GradientType=0);
+  /* IE6-9 */
+
+  -webkit-box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid #FFB977;
+  width: 16px;
+  height: 16px;
+}
+.slider > .dragger:hover {
+  background: -webkit-linear-gradient(top, #ffbc44, #ffbc44);
+}
+.slider > .track,
+.slider > .highlight-track {
+  background: #ccc;
+  background: -webkit-linear-gradient(top, #ffffff, #ffffff);
+  background: -moz-linear-gradient(top, #ffffff, #ffffff);
+  background: linear-gradient(top, #ffffff, #ffffff);
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  border: 1px solid #E0E0E0;
+  height: 19px;
+  /* Hack width */
+
+  margin-left: -10px;
+  padding-right: 20px;
+}
+.slider > .highlight-track {
+  background-color: #8DCA09;
+  background: -webkit-linear-gradient(top, #8dca09, #72a307);
+  background: -moz-linear-gradient(top, #8dca09, #72a307);
+  background: linear-gradient(top, #8dca09, #72a307);
+  border-color: #496805;
+}
+.slider-volume {
+  width: 300px;
+}
+.slider-volume > .dragger {
+  width: 16px;
+  height: 16px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  -moz-box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.5), 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.5), 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.5), 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #c5c5c5;
+  background: -moz-linear-gradient(90deg, #b4b4b4 20%, #e6e6e6 50%, #b4b4b4 80%);
+  background: -webkit-radial-gradient(50% 0%, 12% 50%, #ffffff 0%, rgba(255, 255, 255, 0) 100%), -webkit-radial-gradient(50% 100%, 12% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100%), -webkit-radial-gradient(50% 50%, 200% 50%, #e6e6e6 5%, #d9d9d9 30%, #999999 100%);
+}
+.slider-volume > .track,
+.slider-volume > .highlight-track {
+  height: 11px;
+  background: #787878;
+  background: -moz-linear-gradient(top, #787878, #a2a2a2);
+  background: -webkit-linear-gradient(top, #787878, #a2a2a2);
+  background: linear-gradient(top, #787878, #a2a2a2);
+  -moz-box-shadow: inset 0 2px 5px 1px rgba(0, 0, 0, 0.15), 0 1px 0px 0px rgba(230, 230, 230, 0.9), inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 0 2px 5px 1px rgba(0, 0, 0, 0.15), 0 1px 0px 0px rgba(230, 230, 230, 0.9), inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 5px 1px rgba(0, 0, 0, 0.15), 0 1px 0px 0px rgba(230, 230, 230, 0.9), inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.slider-volume > .highlight-track {
+  background-color: #c5c5c5;
+  background: -moz-linear-gradient(top, #c5c5c5, #a2a2a2);
+  background: -webkit-linear-gradient(top, #c5c5c5, #a2a2a2);
+  background: linear-gradient(top, #c5c5c5, #a2a2a2);
+}
+#elefunds-share-module {
+  font-family: 'Lucida Grande', sans-serif;
+}
+#elefunds-share-module h1 {
+  color: #AAA;
+  font-size: 20px;
+  font-weight: normal;
+}
+#elefunds-share-module h2 {
+  color: #000;
+  font-size: 13px;
+  font-weight: normal;
+}
+#elefunds-share-module ul {
+  zoom: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#elefunds-share-module ul:before,
+#elefunds-share-module ul:after {
+  content: "";
+  display: table;
+}
+#elefunds-share-module ul:after {
+  clear: both;
+}
+#elefunds-share-module ul li {
+  float: left;
+  padding: 5px;
+}
+#elefunds-share-module .caption {
+  font-size: 13px;
+}
