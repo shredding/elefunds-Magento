@@ -5,9 +5,11 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
-            <action method="setText"><text><![CDATA[<script src="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.js"></script>]]></text></action>
-            <action method="setText"><text><![CDATA[<link href="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.css">]]></text></action>
-            <block type="lfnds_donation/page_head" name="elefunds.head"/>
+            <block type="core/text" name="elefunds.checkout.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.js"></script><link href="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.css">]]></text>
+                </action>
+            </block>
         </reference>
     </checkout_onepage_index>
 
@@ -21,7 +23,13 @@
     </checkout_onepage_review>
 
     <checkout_onepage_success>
-        <!-- head was added by code, so it will be loaded only if a donation was done! -->
+        <reference name="head">
+            <block type="core/text" name="elefunds.success.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.js"></script><link href="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.css">]]></text>
+                </action>
+            </block>
+        </reference>
         <reference name="content">
             <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" after="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
         </reference>
@@ -30,8 +38,11 @@
     <!-- +++ One step checkout implementation +++ -->
     <onestepcheckout_index_index>
         <reference name="head">
-            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_onestep_additional.css</name></action>
-            <block type="lfnds_donation/page_head" name="elefunds.head"/>
+            <block type="core/text" name="elefunds.onestep.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.js"></script><link href="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.css">]]></text>
+                </action>
+            </block>
         </reference>
         <reference name="content">
             <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />

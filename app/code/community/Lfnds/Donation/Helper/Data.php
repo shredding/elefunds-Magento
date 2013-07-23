@@ -36,8 +36,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 use Lfnds\Facade;
-use Lfnds\Configuration\ConfigurationInterface;
 use Lfnds\Template\Shop\Helper\RequestHelper;
+use Lfnds\Template\Shop\CheckoutConfiguration;
+use Lfnds\Template\Shop\CheckoutSuccessConfiguration;
 
 /**
  * General helper function to access and configure the SDK in magento
@@ -86,36 +87,31 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * Configures the facade based on the plugin settings and the current locale.
      *
      * @param bool $checkoutSuccess
-     * @param bool $autoFetchReceivers
      * @return Facade
      */
-    public function getConfiguredFacade($checkoutSuccess = FALSE, $autoFetchReceivers = TRUE) {
+    public function getConfiguredFacade($checkoutSuccess = FALSE) {
         $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
 
         if (!isset($this->facade[$configurationType])) {
 
-            $configPath = Mage::getBaseDir('lib') . '/Lfnds/Template/Shop/' . $configurationType . '/Configuration.php';
-            $facadePath = Mage::getBaseDir('lib') . '/Lfnds/' . DS . 'Facade.php';
-
-            $className = $configurationType.'Configuration';
-
-            require_once($facadePath);
-            require_once($configPath);
-
-            /** @var ConfigurationInterface $configuration  */
-            $configuration = new $className();
             $magentoConfigBasePath = 'lfnds_donation/general';
 
-            if ($configurationType === 'Checkout') {
+            if ($checkoutSuccess) {
+                require_once(Mage::getBaseDir('lib') . '/Lfnds/Template/Shop/CheckoutSuccessConfiguration.php');
+                $configuration = new CheckoutSuccessConfiguration();
+            } else {
+                require_once(Mage::getBaseDir('lib') . '/Lfnds/Template/Shop/CheckoutConfiguration.php');
                 $clientId = Mage::getStoreConfig($magentoConfigBasePath . '/client_id');
                 $apiKey = Mage::getStoreConfig($magentoConfigBasePath . '/api_key');
                 $countryCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
 
+                $configuration = new CheckoutConfiguration();
                 $configuration->setClientId($clientId)
-                    ->setApiKey($apiKey)
-                    ->setCountrycode($countryCode);
+                               ->setApiKey($apiKey)
+                               ->setCountrycode($countryCode);
             }
 
+            require_once(Mage::getBaseDir('lib') . '/Lfnds/Facade.php');
             $facade = new Facade($configuration);
 
             if ($configurationType === 'Checkout') {
@@ -126,7 +122,6 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                     // If color is not a valid hexcode, we fallback to default.
                     $color = '#E1540F';
                 }
-
 
                 $facade->getConfiguration()->getView()->assign(
                     'skin',

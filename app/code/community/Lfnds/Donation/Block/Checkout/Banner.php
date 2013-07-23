@@ -127,6 +127,5 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
     public function deactivateBanner() {
         $this->helper->deactivate();
     }
-    
-    
+
 }
