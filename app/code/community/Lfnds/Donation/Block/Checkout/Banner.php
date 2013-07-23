@@ -86,37 +86,27 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
             // That's because the payment methods are not configured prior to the module.
             Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
         } else {
-            $this->helper->getConfiguredFacade()->getConfiguration()->getView()->assign('toolTipPosition', 'right');
+            $this->helper->getConfiguredFacade()->getConfiguration()->getView()->assign('orientation', 'vertical');
         }
+
         $template = '';
 
         if ($this->helper->isActive()) {
 
-            try {
-                $facade = $this->helper->getConfiguredFacade();
+            $facade = $this->helper->getConfiguredFacade();
 
-                $banner_width = Mage::getStoreConfig('lfnds_donation/advanced/banner_width');
-                $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-                $localeCode = Mage::app()->getLocale()->getLocaleCode();
-                $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
-                
-                $receivers = $this->helper->getReceivers();
+            $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
+            $localeCode = Mage::app()->getLocale()->getLocaleCode();
+            $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
 
-                if (count($receivers) >= 3) {
 
-                    $facade->getConfiguration()
-                           ->getView()
-                              ->assign('shopWidth', $banner_width)
-                              ->assign('currencyDelimiter', $symbols['decimal'])
-                              ->assign('total', round($total * 100))
-                              ->assign('receivers', $receivers);
+            $facade->getConfiguration()
+                       ->getView()
+                             ->assign('currencyDelimiter', $symbols['decimal'])
+                             ->assign('total', round($total * 100));
 
-                    $template = $facade->renderTemplate();
 
-                }
-            } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
-                Mage::logException($exception);
-            }
+             $template = $facade->renderTemplate();
         }
         return $template;
     }

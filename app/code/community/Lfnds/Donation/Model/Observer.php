@@ -36,6 +36,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+use Lfnds\Template\Shop\Helper\RequestHelper;
+
 /**
  * Watches for events that are interacting with the elefunds module.
  *
@@ -68,10 +70,8 @@ class Lfnds_Donation_Model_Observer
      */
     public function onPreDispatchSaveOrder(Varien_Event_Observer $observer) {
 
-        $params = Mage::app()->getRequest()->getParams();
-
-        /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
-        $requestHelper = $this->helper->getRequestHelper($params);
+        /** @var RequestHelper $requestHelper  */
+        $requestHelper = $this->helper->getRequestHelper();
         if ($requestHelper->isActiveAndValid()) {
 
             /** @var Mage_Checkout_Model_Session $checkoutSession  */
@@ -107,10 +107,8 @@ class Lfnds_Donation_Model_Observer
      */
     public function onSaveOrderAfter(Varien_Event_Observer $observer) {
 
-        $params = Mage::app()->getRequest()->getParams();
-
-        /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
-        $requestHelper = $this->helper->getRequestHelper($params);
+        /** @var RequestHelper $requestHelper  */
+        $requestHelper = $this->helper->getRequestHelper();
 
         if($requestHelper->isActiveAndValid()) {
 
@@ -317,6 +315,7 @@ class Lfnds_Donation_Model_Observer
         /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
         $block = $observer->getEvent()->getObject();
 
+        $paymentCode = NULL;
         try {
             $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
                 ->getPayment()

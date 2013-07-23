@@ -37,8 +37,6 @@
  */
 
 /**
- * General helper function to access and configure the SDK in magento
- *
  * @package    elefunds Magento Module
  * @subpackage Block
  * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>, Christian Peters <christian@elefunds.de>
@@ -49,53 +47,4 @@
  */
 class Lfnds_Donation_Block_Page_Head extends Mage_Core_Block_Template {
 
-    /**
-     * Gets CSS- and Javascript-files from the Elefunds Facade and adds them to the head block
-     */
-    protected function _prepareLayout() {
-
-        /** @var Lfnds_Donation_Helper_Data $helper */
-        $helper = Mage::helper('lfnds_donation');
-        $headBlock = $this->getLayout()->getBlock('head');
-
-        try {
-            $includeJQuery = Mage::getStoreConfig('lfnds_donation/advanced/include_jquery');
-
-            $facade = $helper->getConfiguredFacade();
-
-            // Javascript includes
-            $scriptFiles = $facade->getTemplateJavascriptFiles();
-
-            if ($includeJQuery) {
-                array_unshift($scriptFiles, 'jQueryNoConflict.js');
-                array_unshift($scriptFiles, 'jquery-1.9.1.min.js');
-            }
-
-            foreach ($scriptFiles as $jsFile) {
-                $headBlock->addItem('skin_js', 'js' . DS . 'lfnds_donation' . DS . basename($jsFile));
-            }
-
-            if ($helper->isOneStepCheckoutInstalled()) {
-                $jsAdditional = '/elefunds_magento_onestep_additional.js';
-                $headBlock->addItem('skin_js', 'js' . DS . 'lfnds_donation' . DS . 'additional' . DS . basename($jsAdditional));
-            }
-
-            // CSS included
-            // This CSS is not used in OneStepCheckout
-            // Check layout/lfnds_donation.xml for OneStepCheckout CSS
-            if (!$helper->isOneStepCheckoutInstalled()) {
-                $cssFiles = $facade->getTemplateCssFiles();
-                foreach ($cssFiles as $cssFile) {
-                    $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . basename($cssFile));
-                }
-            } else {
-                $headBlock->addCss('css' . DS . 'lfnds_donation' . DS . 'additional' . DS . 'elefunds_magento_onestep_additional.css');
-            }
-
-
-        } catch (Exception $exception) {
-            Mage::logException($exception);
-        }
-        parent::_prepareLayout();
-    }
 }

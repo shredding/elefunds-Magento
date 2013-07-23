@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Lfnds_Donation>
-            <version>1.0.0</version>
+            <version>2.0.0</version>
         </Lfnds_Donation>
     </modules>
 
@@ -18,9 +18,6 @@
                     <donation>
                         <table>lfnds_donation_donation</table>
                     </donation>
-                    <receiver>
-                        <table>lfnds_donation_receiver</table>
-                    </receiver>
                 </entities>
             </donation_mysql4>
         </models>
@@ -205,11 +202,10 @@
             <general>
                 <active>0</active>
                 <theme>light</theme>
-                <color>orange</color>
+                <color>#E1540F</color>
             </general>
             <advanced>
                 <include_jquery>1</include_jquery>
-                <banner_width>681</banner_width>
                 <banner_position>bottom</banner_position>
                 <uses_onestepcheckout>0</uses_onestepcheckout>
             </advanced>

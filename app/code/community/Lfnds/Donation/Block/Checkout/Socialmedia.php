@@ -34,6 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+use Lfnds\Facade;
 
 /**
  * General helper function to access and configure the SDK in magento
@@ -63,7 +64,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
     }
 
     /**
-     * Adds the elefunds page head to the layout.
+     * Adds the elefunds page head to the layout (we share the same js / css)
      */
     protected function _prepareLayout() {
         $headBlock = $this->getLayout()->createBlock('lfnds_donation/page_head', 'elefunds.head');
@@ -73,73 +74,35 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
     }
 
     /**
-     * Checks whether a donation exists in the actual order.
-     *
-     * @return bool
-     */
-    public function existDonation() {
-        $virtualProduct = $this->helper->getVirtualProduct();
-        if (!$virtualProduct) {
-            Mage::log('Unable to retrieve virtual product for elefunds.');
-        } else {
-            if ($this->getOrder() !== NULL  && $this->getOrder()->getItemsCollection()->getItemByColumnValue('product_id', $virtualProduct->getId())) {
-                return TRUE;
-            }
-        }
-        return FALSE;
-    }
-
-    /**
-     * Retrieves the current order.
-     *
-     * @return Mage_Sales_Model_Order
-     */
-    public function getOrder() {
-        if (!$this->order) {
-            $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-            if ($orderId) {
-                $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-                $this->order = $order;
-                if (!$order->getId()) {
-                    $this->order = NULL;
-                }
-            }
-        }
-        return $this->order;
-    }
-
-    /**
      * Renders the social media template or returns an empty string if we do have nothing to show.
      *
      * @return string
      */
     public function renderSocialMedia() {
-        $order = $this->getOrder();
 
-        /** @var Elefunds_Facade $facade  */
+        /** @var Facade $facade  */
         $facade = $this->helper->getConfiguredFacade(TRUE);
 
         $donationItem = Mage::getModel('lfnds_donation/donation');
+
+        $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+        $order = NULL;
+        if ($orderId) {
+            $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+            if (!$order->getId()) {
+                $order = NULL;
+            }
+        }
+
         /** @var Lfnds_Donation_Model_Donation $donationItem */
         $donationItem->loadByAttribute('foreign_id', $order->getIncrementId());
 
+        $template = '';
         if ($donationItem->getId()) {
-            $receivers = $this->helper->getReceivers();
-
-            $receiverIds = $donationItem->getReceiverIds();
-            $receiversArray = array();
-            foreach ($receivers as $receiver) {
-                if (in_array($receiver->getId(TRUE), $receiverIds)) {
-                    $receiversArray[$receiver->getId(TRUE)] = $receiver->getName();
-                }
-            }
-
             $facade->getConfiguration()->getView()->assign('foreignId', $donationItem->getForeignId());
-            $facade->getConfiguration()->getView()->assign('receivers', $receiversArray);
-
-            return $facade->renderTemplate('CheckoutSuccess');
+            $template = $facade->renderTemplate('CheckoutSuccess');
         }
 
-        return '';
+        return $template;
     }
 }

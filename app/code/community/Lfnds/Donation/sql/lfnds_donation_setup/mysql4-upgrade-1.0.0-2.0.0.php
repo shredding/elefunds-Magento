@@ -1,8 +1,9 @@
 <?php
+
 /**
  * elefunds Magento Module
  *
- * Copyright (c) 2012, elefunds GmbH <hello@elefunds.de>.
+ * Copyright (c) 2013, elefunds GmbH <hello@elefunds.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,70 +37,18 @@
  */
 
 /**
- * Elefunds Receiver Model
+ * Upgrade script for 2.0
  *
  * @package    elefunds Magento Module
- * @subpackage Model
- * @author     Raul Armando Salamanca Gonzalez <raul.salamanca@gmx.de>
+ * @subpackage sql
+ * @author     Christian Peters <christian@elefunds.de>
  * @copyright  2012 elefunds GmbH <hello@elefunds.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.elefunds.de
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 2.0.0
  */
-class Lfnds_Donation_Model_Receiver extends Mage_Core_Model_Abstract
-{
-    protected $_eventPrefix = 'elefunds_receiver';
 
-    /**
-     * We want to have the receiver model interchangeable with the SDK receivers.
-     * Since getID is reserved, we provide an additional parameter that selectively
-     * bypasses this behaviour.
-     *
-     * @param bool $bypassInternalIdentifier
-     * @return int
-     */
-    public function getId($bypassInternalIdentifier = FALSE) {
-        if ($bypassInternalIdentifier) {
-            return $this->getReceiverId();
-        } else {
-            return parent::getId();
-        }
-    }
-
-    /**
-     * This methods just fakes the SDK signature to make calls interchangeable.
-     *
-     * @param string $direction
-     * @param string $size
-     * @return string
-     */
-    public function getImage($direction, $size) {
-        return parent::getImage();
-    }
-
-    /**
-     * Timestamp wrapper for time.
-     *
-     * @param DateTime $time
-     * @return $this
-     */
-    public function setValid(DateTime $time) {
-        parent::setValid($time->format('Y-m-d H:i:s'));
-        return $this;
-    }
-
-    /**
-     * Timestamp wrapper for time.
-     *
-     * @return DateTime
-     */
-    public function getValid() {
-        return Datetime::createFromFormat('Y-m-d H:i:s', parent::getValid(), new DateTimeZone('UTC'));
-    }
-
-    protected function _construct()
-    {
-        $this->_init('lfnds_donation/receiver');
-    }
-
-}
+/**
+ * @var $this Mage_Core_Model_Resource_Setup
+ */
+$this->run("DROP TABLE IF EXISTS $installer->getTable('lfnds_donation/receiver')");
