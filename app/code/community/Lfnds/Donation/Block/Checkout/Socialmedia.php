@@ -90,7 +90,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
         $template = '';
         if ($donationItem->getId()) {
             $facade->getConfiguration()->getView()->assign('foreignId', $donationItem->getForeignId());
-            $template = $facade->renderTemplate('CheckoutSuccess');
+            $template = $facade->renderTemplate();
         }
 
         return $template;

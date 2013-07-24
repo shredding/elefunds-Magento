@@ -57,6 +57,18 @@ require_once __DIR__ . '/../../../../FacadeInterface.php';
  */
 class CheckoutConfigurationTest extends \PHPUnit_Framework_TestCase {
 
+
+    /**
+     * Tests if the correct renderer is set.
+     *
+     * @test
+     */
+    public function setsRenderer() {
+        $config = new CheckoutConfiguration();
+        $config->init();
+        $this->assertSame('Checkout.phtml', $config->getView()->getRenderFile());
+    }
+
     /**
      * donationReceiptIsOfferedByDefault
      *

@@ -106,9 +106,9 @@ class RequestHelper {
     }
 
     /**
-     * Returns the roundup as float.
+     * Returns the roundup as floated string (two decimal)
      *
-     * @return float
+     * @return string
      */
     public function getRoundUpAsFloatedString() {
         return number_format($this->getRoundUp() / 100, 2);
@@ -121,6 +121,36 @@ class RequestHelper {
      */
     public function getReceiverIds() {
         return $this->receivers;
+    }
+
+    public function getAvailableReceiverIds() {
+        return $this->validatedReceivers(TRUE);
+    }
+
+    /**
+     * Returns the receivers as comma separated string (WWF, Ärzte ohne Grenzen, SOS Kinderdörfer).
+     *
+     * This method should not break things, as the module works internally with ids. However, if you need them for
+     * informational purposes, they are available here.
+     *
+     * If the receivers are not available for some reason, an empty string is returned.
+     *
+     * @return string
+     */
+    public function getReceiversAsString() {
+        $receiversAsString = '';
+        if (!isset($this->request['elefunds_receiver_names'])) {
+            return $receiversAsString;
+        }
+
+        if (is_array($this->request['elefunds_receiver_names'])) {
+            $receiversAsString = implode(', ', $this->request['elefunds_receiver_names']);
+        } else {
+            // We have to add a space, that's why we have to remap the values:
+            $receiversAsString = implode(', ', explode(',', $this->request['elefunds_receiver_names']));
+        }
+
+        return $receiversAsString;
     }
 
     /**
@@ -167,20 +197,25 @@ class RequestHelper {
      * The returned array is empty if not exist or if not all receivers are valid. We're very strict here,
      * if a part of the array does not match, we invalidate the entire request.
      *
+     * If you set validateAvailable to TRUE, the elefunds_available_receivers is validated.
+     *
+     * @param bool $validateAvailable
      * @return array
      */
-    protected function validatedReceivers() {
-        if (!isset($this->request['elefunds_receivers'])) {
+    protected function validatedReceivers($validateAvailable = FALSE) {
+
+        $receivers = $validateAvailable ? 'elefunds_available_receivers' : 'elefunds_receivers';
+        if (!isset($this->request[$receivers])) {
             return array();
         }
 
-        if (is_array($this->request['elefunds_receivers'])) {
-            $integerIds = array_map(function($x) { return (int)$x; }, $this->request['elefunds_receivers']);
+        if (is_array($this->request[$receivers])) {
+            $integerIds = array_map(function($x) { return (int)$x; }, $this->request[$receivers]);
         } else {
-            $integerIds = array_map(function($x) { return (int)$x; }, explode(',', $this->request['elefunds_receivers']));
+            $integerIds = array_map(function($x) { return (int)$x; }, explode(',', $this->request[$receivers]));
         }
 
-        $filtered = array_filter($integerIds, function($x) { return $x > 0; });
+        $filtered = array_unique(array_filter($integerIds, function($x) { return $x > 0; }));
         if (count($filtered) !== count($integerIds)) {
             return array();
         };

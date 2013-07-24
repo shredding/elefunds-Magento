@@ -38,8 +38,6 @@
 
 namespace Lfnds\Template\Shop;
 
-use Lfnds\Model\ReceiverInterface;
-
 require_once __DIR__ . '/ShopConfiguration.php';
 require_once __DIR__ . '/../../View/BaseView.php';
 
@@ -62,6 +60,7 @@ class CheckoutConfiguration extends ShopConfiguration {
     public function init() {
 
         parent::init();
+        $this->view->setRenderFile('Checkout.phtml');
 
         $this->view->assignMultiple(
             array(

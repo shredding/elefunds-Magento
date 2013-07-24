@@ -53,13 +53,13 @@ use InvalidArgumentException;
  * @since      File available since Release 1.0.0
  */
 interface DonationInterface  {
-    
+
     /**
      * Sets the foreign ID. A unique ID to identify the order or transaction.
      *
-     * @param int $foreignId
-     * @throws InvalidArgumentException if type can't be casted to integer
-     * @return $this
+     * @param string $foreignId
+     * @throws InvalidArgumentException if preg match turns out to be not a valid foreignID
+     * @return DonationInterface
      */
     public function setForeignId($foreignId);
     

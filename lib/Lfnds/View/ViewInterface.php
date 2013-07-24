@@ -71,6 +71,24 @@ interface ViewInterface {
      * @return string
      */
     public function getTemplate();
+
+    /**
+     * Sets the file to be rendered with the applied view information.
+     * The path must be relative to the template.
+     *
+     * E.g. 'View.phtml' or 'views/sample.php'.
+     *
+     * @param string $file
+     * @return ViewInterface
+     */
+    public function setRenderFile($file);
+
+    /**
+     * Returns the file to be rendered.
+     *
+     * @return string
+     */
+    public function getRenderFile();
     
     /**
      * Returns all javascript files that are required for this plugin to work in their correct order.
@@ -165,12 +183,9 @@ interface ViewInterface {
     /**
      * Renders the given output.
      *
-     * @param string $templateName name of the template to render
-     * @param bool $givenTemplateNameIsAbsolutePathWithFullyQualifiedFilename
-     *
      * @return string the rendered HTML
      */
-    public function render($templateName = 'View', $givenTemplateNameIsAbsolutePathWithFullyQualifiedFilename = FALSE);
+    public function render();
     
      /**
      * Add your css file with it's pure file name (e.g. 'styles.css') and save it

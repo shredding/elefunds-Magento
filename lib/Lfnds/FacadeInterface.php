@@ -159,12 +159,10 @@ interface FacadeInterface {
     /**
      * Renders the template.
      *
-     * @param string $templateName
-     * @param bool $givenTemplateNameIsAbsolutePath
      * @throws ElefundsException
      * @return string The rendered HTML Snippet
      */
-    public function renderTemplate($templateName = 'View', $givenTemplateNameIsAbsolutePath = FALSE);
+    public function renderTemplate();
 
     /**
      * Returns the CSS Files required by the template.

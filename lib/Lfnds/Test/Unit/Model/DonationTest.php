@@ -370,6 +370,11 @@ class DonationTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($donator['city'], 'Berlin');
         $this->assertSame($donator['countryCode'], 'de');
 
+        // Should work for digit-only string as zip as well:
+        $this->donation->setDonator('hello@elefunds.de', 'Christian', 'Peters', 'Schönhauser Allee 124', '10243', 'Berlin', 'de');
+        $donator = $this->donation->getDonatorInformation();
+        $this->assertSame($donator['zip'], 10243);
+
     }
 
     /**

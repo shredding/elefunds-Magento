@@ -57,10 +57,11 @@ require_once __DIR__ . '/../../../../../Template/Shop/Helper/RequestHelper.php';
 class RequestHelperTest extends \PHPUnit_Framework_TestCase {
 
     /**
+     * missingRequestWillFallbackToPostSuperglobal
+     *
      * @test
      */
     public function missingRequestWillFallbackToPostSuperglobal() {
-
         $_POST['addedValue'] = TRUE;
         $helper = new RequestHelper();
 
@@ -76,11 +77,11 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * aggreedToElefundsAGivenDonationAndValidReceiversLeadsToActiveAndValidRequest
+     * agreedToElefundsAGivenDonationAndValidReceiversLeadsToActiveAndValidRequest
      *
      * @test
      */
-    public function aggreedToElefundsAGivenDonationAndValidReceiversLeadsToActiveAndValidRequest() {
+    public function agreedToElefundsAGivenDonationAndValidReceiversLeadsToActiveAndValidRequest() {
 
         $request = [
             'elefunds_agree'            => 'true',
@@ -93,15 +94,28 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertTrue($helper->isActiveAndValid());
 
-        // Test with csv as receivers:
-        $request['elefunds_receivers'] = '1,2,3';
-        $helper->setRequest($request);
-        $this->assertTrue($helper->isActiveAndValid());
-
         // Test with int as donation:
         $request['elefunds_donation_cent'] = 100;
-        $helper->setRequest($request);
+        $helper = new RequestHelper($request);
         $this->assertTrue($helper->isActiveAndValid());
+    }
+
+    /**
+     * failsIfReceiversAreGivenAsCSV
+     *
+     * @test
+     */
+    public function receiverCanBeGivenAsCSV() {
+        // Test with csv as receivers:
+        $request = [
+            'elefunds_agree'            => 'true',
+            'elefunds_donation_cent'    => '100',
+            'elefunds_receivers'        => '1,2,3'
+
+        ];
+        $helper = new RequestHelper($request);
+        $this->assertTrue($helper->isActiveAndValid());
+
     }
 
     /**
@@ -138,12 +152,11 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($helper->isActiveAndValid());
 
         $request['elefunds_donation_cent'] = '0';
-        $helper->setRequest($request);
+        $helper = new RequestHelper($request);
         $this->assertFalse($helper->isActiveAndValid());
 
-        $helper = new RequestHelper($request);
         $request['elefunds_donation_cent'] = array();
-        $helper->setRequest($request);
+        $helper = new RequestHelper($request);
         $this->assertFalse($helper->isActiveAndValid());
 
     }
@@ -165,14 +178,90 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($helper->isActiveAndValid());
 
         $request['elefunds_receivers'] = '0,2,3';
-        $helper->setRequest($request);
+        $helper = new RequestHelper($request);
         $this->assertFalse($helper->isActiveAndValid());
+
+        $request['elefunds_receivers'] = array(4, 'Not a number');
+        $helper = new RequestHelper($request);
+        $this->assertFalse($helper->isActiveAndValid());
+    }
+
+    /**
+     * isActiveAndValidRequestFailsIfElefundsReceiversIsNotAnArrayOfPositiveInts
+     *
+     * @test
+     */
+    public function isActiveAndValidRequestFailsIfElefundsReceiversIsDoubled() {
+        $request = [
+            'elefunds_agree'            => 'true',
+            'elefunds_donation_cent'    => '100',
+            'elefunds_receivers'        => [1,1,3]
+
+        ];
 
         $helper = new RequestHelper($request);
-        $request['elefunds_receivers'] = array(4, 'Not a number');
-        $helper->setRequest($request);
         $this->assertFalse($helper->isActiveAndValid());
+    }
 
+    /**
+     * getAvailableReceiversReturnsAllAvailableReceivers
+     *
+     * @test
+     */
+    public function getAvailableReceiversReturnsAllAvailableReceivers() {
+        $helper = new RequestHelper(array('elefunds_available_receivers' => '1,2,3'));
+        $this->assertSame(array(1,2,3), $helper->getAvailableReceiverIds());
+
+        // Array should be possible as well
+        $helper = new RequestHelper(array('elefunds_available_receivers' => [1,2,3]));
+        $this->assertSame(array(1,2,3), $helper->getAvailableReceiverIds());
+    }
+
+    /**
+     * getAvailableReceiversReturnsEmptyArrayIfValidationFails
+     *
+     * @test
+     */
+    public function getAvailableReceiversReturnsEmptyArrayIfValidationFails() {
+        $helper = new RequestHelper(array('elefunds_available_receivers' => '1,fail,2'));
+        $this->assertEmpty($helper->getAvailableReceiverIds());
+
+        $helper = new RequestHelper(array('elefunds_available_receivers' => [1, -1, 2]));
+        $this->assertEmpty($helper->getAvailableReceiverIds());
+
+        $helper = new RequestHelper(array('elefunds_available_receivers' => [1, 1, 2]));
+        $this->assertEmpty($helper->getAvailableReceiverIds());
+
+        $helper = new RequestHelper(array('elefunds_available_receivers' => NULL));
+        $this->assertEmpty($helper->getAvailableReceiverIds());
+
+        $helper = new RequestHelper(array());
+        $this->assertEmpty($helper->getAvailableReceiverIds());
+    }
+
+    /**
+     * getReceiversAsStringReturnsEmptyStringIfReceiverStringsAreNotSet
+     *
+     * @test
+     */
+    public function getReceiversAsStringReturnsEmptyStringIfReceiverStringsAreNotSet() {
+        $helper = new RequestHelper(array());
+        $this->assertSame('', $helper->getReceiversAsString());
+    }
+
+    /**
+     * getReceiversAsStringAcceptsCSVValues
+     *
+     * @test
+     */
+    public function getReceiversAsStringAcceptsCSVValues() {
+        $helper = new RequestHelper(array('elefunds_receiver_names' => 'a,b,c'));
+        $this->assertSame('a, b, c', $helper->getReceiversAsString());
+    }
+
+    public function getReceiversAsStringReturnsCSV() {
+        $helper = new RequestHelper(array('a', 'b', 'c'));
+        $this->assertSame('a, b, c', $helper->getReceiversAsString());
     }
 
     /**
@@ -192,13 +281,13 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
      */
     public function getRoundupAsFloatDoesAValidRounding() {
         $helper = new RequestHelper(['elefunds_donation_cent'    => '100']);
-        $this->assertSame('1.00', $helper->getRoundUpAsFloat());
+        $this->assertSame('1.00', $helper->getRoundUpAsFloatedString());
 
         $helper = new RequestHelper(['elefunds_donation_cent'    => '13294']);
-        $this->assertSame('132.94', $helper->getRoundUpAsFloat());
+        $this->assertSame('132.94', $helper->getRoundUpAsFloatedString());
 
         $helper = new RequestHelper(['elefunds_donation_cent'    => '32']);
-        $this->assertSame('0.32', $helper->getRoundUpAsFloat());
+        $this->assertSame('0.32', $helper->getRoundUpAsFloatedString());
 
     }
 
@@ -220,14 +309,13 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
     public function suggestedRoundUpReturnsZeroIfIsNotConvertableToPositiveInt() {
         $helper = new RequestHelper(['elefunds_suggested_round_up_cent' => '-100']);
         $this->assertSame(0, $helper->getSuggestedRoundUp());
-
-        $helper->setRequest(['elefunds_suggested_round_up_cent' => 'NAN']);
+        $helper = new RequestHelper(['elefunds_suggested_round_up_cent' => 'NAN']);
         $this->assertSame(0, $helper->getSuggestedRoundUp());
 
-        $helper->setRequest(['elefunds_suggested_round_up_cent' => 0]);
+        $helper = new RequestHelper(['elefunds_suggested_round_up_cent' => 0]);
         $this->assertSame(0, $helper->getSuggestedRoundUp());
 
-        $helper->setRequest(['elefunds_suggested_round_up_cent' => array()]);
+        $helper = new RequestHelper(['elefunds_suggested_round_up_cent' => array()]);
         $this->assertSame(0, $helper->getSuggestedRoundUp());
     }
 
@@ -249,7 +337,7 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
     public function isDonationReceiptRequestedReturnsFalsefKeyIsFalseOrNotSet() {
         $helper = new RequestHelper(['elefunds_receipt' => 'false']);
         $this->assertFalse($helper->isDonationReceiptRequested());
-        $helper->setRequest(array());
+        $helper = new RequestHelper(array());
         $this->assertFalse($helper->isDonationReceiptRequested());
     }
 }

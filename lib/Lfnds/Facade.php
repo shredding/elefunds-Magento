@@ -299,12 +299,10 @@ class Facade implements FacadeInterface {
      /**
       * Renders the template.
       *
-      * @param string $templateName
-      * @param bool $givenTemplateNameIsAbsolutePath
       * @throws ElefundsException
       * @return string The rendered HTML Snippet
       */
-      public function renderTemplate($templateName = 'View', $givenTemplateNameIsAbsolutePath = FALSE) {
+      public function renderTemplate() {
 
           $view = $this->getConfiguration()->getView();
 
@@ -312,7 +310,7 @@ class Facade implements FacadeInterface {
               throw new ElefundsException('There is no template set in your configuration file. Please refer to the documentation or use one of the sample templates.', 1348051662593);
           }
 
-          return $view->render($templateName, $givenTemplateNameIsAbsolutePath);
+          return $view->render();
       }
 
       /**

@@ -224,7 +224,8 @@ class BaseViewTest extends PHPUnit_Framework_TestCase {
    public function renderCalculatesTheCorrectPathToViewPhtmlAndChecksForExistance() {
               
        try {
-           $this->view->render('Test');
+           $this->view->setRenderFile('Test.phtml');
+           $this->view->render();
        } catch (ElefundsException $exception) {
            $additionalInformation = $exception->getAdditionalInformation();
        }
@@ -233,21 +234,5 @@ class BaseViewTest extends PHPUnit_Framework_TestCase {
        $this->assertSame(TRUE, $filepathExtractDoesMatch);
            
    }
-
-    /**
-     * renderTakesFullpathIfFlagIsSet
-     *
-     * @test
-     */
-    public function renderTakesFullpathIfFlagIsSet() {
-        try {
-            $this->view->render('FullyQualifiedGiven', TRUE);
-        } catch (ElefundsException $exception) {
-            $additionalInformation = $exception->getAdditionalInformation();
-        }
-
-        $filepathExtractDoesMatch = strpos($additionalInformation['filepath'], 'FullyQualifiedGiven') !== FALSE;
-        $this->assertSame(TRUE, $filepathExtractDoesMatch);
-    }
 
 }

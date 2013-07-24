@@ -69,6 +69,13 @@ class BaseView implements ViewInterface {
      * @var string
      */
     protected $template;
+
+    /**
+     * The file to be rendered with the applied information of this view.
+     *
+     * @var string
+     */
+    protected $renderer;
     
     /**
      * @var array
@@ -260,19 +267,12 @@ class BaseView implements ViewInterface {
     /**
      * Renders the given output.
      *
-     * @param string $templateName name of the template to render
-     * @param bool $givenTemplateNameIsAbsolutePathWithFullyQualifiedFilename
      * @throws ElefundsException
-     *
-     * @return string the rendered HTML
+     * @return string
      */
-    public function render($templateName = 'View', $givenTemplateNameIsAbsolutePathWithFullyQualifiedFilename = FALSE) {
+    public function render() {
 
-        if ($givenTemplateNameIsAbsolutePathWithFullyQualifiedFilename) {
-            $filepath = $templateName;
-        } else {
-            $filepath = __DIR__ . '/../Template/' . $this->template . '/' . $templateName . '.phtml';
-        }
+        $filepath = __DIR__ . '/../Template/' . $this->template . '/' . $this->renderer;
 
         if (file_exists($filepath)) {
 
@@ -372,5 +372,28 @@ class BaseView implements ViewInterface {
             $this->addJavascriptFile($file);
         }
     }
-     
+
+    /**
+     * Sets the file to be rendered with the applied view information.
+     * The path must be relative to the template.
+     *
+     * E.g. 'View.phtml' or 'views/sample.php'.
+     *
+     * @param string $file
+     * @return ViewInterface
+     */
+    public function setRenderFile($file)
+    {
+        $this->renderer = $file;
+    }
+
+    /**
+     * Returns the file to be rendered.
+     *
+     * @return string
+     */
+    public function getRenderFile()
+    {
+        return $this->renderer;
+    }
 }

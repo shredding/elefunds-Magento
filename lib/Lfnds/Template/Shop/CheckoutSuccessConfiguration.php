@@ -61,6 +61,7 @@ class CheckoutSuccessConfiguration extends ShopConfiguration {
     public function init() {
 
         parent::init();
+        $this->view->setRenderFile('CheckoutSuccess.phtml');
         $this->view->assign('view', 'socialMediaShare');
     }
 }

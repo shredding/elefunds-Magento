@@ -138,14 +138,14 @@ class Donation implements DonationInterface {
      * Sets the foreign ID. A unique ID to identify the order or transaction.
      *
      * @param string $foreignId
-     * @throws InvalidArgumentException if type can't be casted to integer
+     * @throws InvalidArgumentException if preg match turns out to be not a valid foreignID
      * @return DonationInterface
      */
     public function setForeignId($foreignId) {
         if (preg_match('/^[A-Za-z0-9_+\-#:.,äüöÄÜÖß]*$/', $foreignId)) {
             $this->foreignId = (string)$foreignId;
         } else {
-            throw new InvalidArgumentException('Given foreignId was not of of a type that can be casted to integer.', 1347557226);
+            throw new InvalidArgumentException('Given foreignId was not valid.', 1347557226);
         }
 
         return $this;
@@ -354,7 +354,7 @@ class Donation implements DonationInterface {
      * @param string $firstName
      * @param string $lastName
      * @param string $streetAddress
-     * @param int $zip
+     * @param int|string $zip (if string, than digit only)
      * @param string $city
      * @param string $countryCode two digit country code; if not given, the code from your settings will be used
      *
@@ -363,15 +363,15 @@ class Donation implements DonationInterface {
      */
     public function setDonator($email, $firstName, $lastName, $streetAddress, $zip, $city, $countryCode = NULL) {
         $validMail = filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE;
-
-        if ($validMail && is_string($firstName) && is_string($lastName) && is_string($streetAddress) && is_int($zip) && is_string($city)) {
+        $validZip = is_int($zip) || ctype_digit($zip);
+        if ($validMail && $validZip && is_string($firstName) && is_string($lastName) && is_string($streetAddress) && is_string($city)) {
 
             $this->donator = array(
                 'email'             =>  $email,
                 'firstName'         =>  $firstName,
                 'lastName'          =>  $lastName,
                 'streetAddress'     =>  $streetAddress,
-                'zip'               =>  $zip,
+                'zip'               =>  (int)$zip,
                 'city'              =>  $city,
             );
 
