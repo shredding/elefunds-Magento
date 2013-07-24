@@ -95,7 +95,7 @@ class CheckoutConfigurationTest extends \PHPUnit_Framework_TestCase {
      *
      * @test
      */
-    public function clientIdAndCountryCodeAreAssigned() {
+    public function clientIdViewAndCountryCodeAreAssigned() {
         $config = new CheckoutConfiguration();
         $config->setClientId(1234);
         $config->setCountrycode('de');
@@ -105,6 +105,7 @@ class CheckoutConfigurationTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertSame($assigns['clientId'], 1234);
         $this->assertSame($assigns['countryCode'], 'de');
+        $this->assertSame($assigns['view'], 'module');
     }
 
 

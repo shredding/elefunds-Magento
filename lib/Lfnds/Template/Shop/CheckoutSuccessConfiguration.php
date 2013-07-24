@@ -56,12 +56,11 @@ require_once __DIR__ . '/../../View/BaseView.php';
 class CheckoutSuccessConfiguration extends ShopConfiguration {
 
     /**
-     * The checkout success configuration has no default values, but in order for it to work,
-     * you have to assign a foreign id, preferably in your own extending class, or via
-     * $facade->getConfiguration->getView()->assign('foreignId', '12345');
-     *
-     * In an extending class, it should look like this:
-     * $this->view->assign('foreignId', $foreignId);
+     * @return void
      */
+    public function init() {
 
+        parent::init();
+        $this->view->assign('view', 'socialMediaShare');
+    }
 }

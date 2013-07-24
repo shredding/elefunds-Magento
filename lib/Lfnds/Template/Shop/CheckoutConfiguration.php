@@ -57,26 +57,27 @@ require_once __DIR__ . '/../../View/BaseView.php';
 class CheckoutConfiguration extends ShopConfiguration {
 
     /**
-     * Assigns the receivers.
-     *
      * @return void
      */
     public function init() {
 
         parent::init();
 
-        // If set to FALSE, no donation receipt if offered.
-        // If TRUE you have to adjust T&Cs and send back donator information
-        // Refer to the documentation for further information.
-        $this->view->assign('offerDonationReceipt', TRUE);
-
-        $this->view->assign('countryCode', $this->getCountrycode());
-        $this->view->assign('clientId', $this->getClientId());
-
-        // Defaults, you can opt to override this if you like.
-        $this->view->assign('currency', '€');
-        $this->view->assign('currencyDelimiter', '.');
-        $this->view->assign('orientation', 'horizontal');
+        $this->view->assignMultiple(
+            array(
+                'clientId'              => $this->getClientId(),
+                'countryCode'           => $this->getCountrycode(),
+                'view'                  => 'module',
+                // If set to FALSE, no donation receipt if offered.
+                // If TRUE you have to adjust T&Cs and send back donator information
+                // Refer to the documentation for further information.
+                'offerDonationReceipt'  => TRUE,
+                // Defaults, you can opt to override this if you like.
+                'currency'              => '€',
+                'currencyDelimiter'     => '.',
+                'orientation'           => 'horizontal',
+            )
+        );
 
         // Available theme and color choices
         $this->themes = array('light', 'dark');
