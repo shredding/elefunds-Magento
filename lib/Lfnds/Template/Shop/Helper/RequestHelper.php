@@ -110,7 +110,7 @@ class RequestHelper {
      *
      * @return float
      */
-    public function getRoundUpAsFloat() {
+    public function getRoundUpAsFloatedString() {
         return number_format($this->getRoundUp() / 100, 2);
     }
 

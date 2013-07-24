@@ -90,7 +90,7 @@ class Lfnds_Donation_Model_Observer
                 return;
             }
 
-            $roundUpAsFloat = $requestHelper->getRoundUpAsFloat();
+            $roundUpAsFloat = $requestHelper->getRoundUpAsFloatedString();
             $elefundsProduct->setPrice($roundUpAsFloat);
             $elefundsProduct->setBasePrice($roundUpAsFloat);
             $quote->addProduct($elefundsProduct);
