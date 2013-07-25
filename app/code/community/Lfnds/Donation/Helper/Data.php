@@ -118,10 +118,24 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                 $theme = Mage::getStoreConfig($magentoConfigBasePath . '/theme');
                 $color = Mage::getStoreConfig($magentoConfigBasePath . '/color');
 
+                $localeCode = Mage::app()->getLocale()->getLocaleCode();
+                $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
+
                 if (preg_match('~^#(?:[0-9a-fA-F]{3}){1,2}$~', $color) !== 1) {
                     // If color is not a valid hexcode, we fallback to default.
                     $color = '#E1540F';
                 }
+                $facade->getConfiguration()->getView()->assignMultiple(
+                    array(
+                        'skin' => array(
+                            'theme' =>  $theme,
+                            'color' =>  $color
+                        ),
+                        'currencyDelimiter' => $symbols['decimal'],
+                        'formSelector' => '.additional_footer form',
+                        'totalSelector' => '#aggregation .totalamount strong'
+                    )
+                );
 
                 $facade->getConfiguration()->getView()->assign(
                     'skin',

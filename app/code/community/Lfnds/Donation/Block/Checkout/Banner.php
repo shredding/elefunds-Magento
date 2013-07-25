@@ -81,30 +81,24 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
      */
     public function getApiTemplate() {
 
+        $facade = $this->helper->getConfiguredFacade();
+
         if (!$this->helper->isOneStepCheckoutInstalled()) {
             // The event does not work with one step checkout.
             // That's because the payment methods are not configured prior to the module.
             Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
         } else {
-            $this->helper->getConfiguredFacade()->getConfiguration()->getView()->assign('orientation', 'vertical');
+            $facade->getConfiguration()->getView()->assign('orientation', 'vertical');
         }
 
         $template = '';
 
         if ($this->helper->isActive()) {
 
-            $facade = $this->helper->getConfiguredFacade();
-
             $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-            $localeCode = Mage::app()->getLocale()->getLocaleCode();
-            $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
-
-
             $facade->getConfiguration()
                        ->getView()
-                             ->assign('currencyDelimiter', $symbols['decimal'])
                              ->assign('total', round($total * 100));
-
 
              $template = $facade->renderTemplate();
         }
