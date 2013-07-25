@@ -340,13 +340,12 @@ class Lfnds_Donation_Model_Observer
     /**
      * @param Varien_Event_Observer $observer
      */
-    public function excludeDonationFromDiscount(Varien_Event_Observer $observer){
+    public function excludeDonationFromDiscount(Varien_Event_Observer $observer) {
         $quoteItem = $observer->getQuoteItem();
         $product = $observer->getProduct();
-        if ($product->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+        if (strtolower($product->getSku()) === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             $quoteItem->setNoDiscount(TRUE);
         }
     }
-
 }
 
