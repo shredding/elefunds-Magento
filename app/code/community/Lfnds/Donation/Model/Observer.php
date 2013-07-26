@@ -276,7 +276,7 @@ class Lfnds_Donation_Model_Observer
         $elefundsItem = NULL;
         /** @var Mage_Sales_Model_Order_Item $item  */
         foreach ($order->getAllItems() as $item) {
-            if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+            if (strtolower($item->getSku()) === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
                 $elefundsItem = $item;
                 break;
             }
@@ -299,7 +299,7 @@ class Lfnds_Donation_Model_Observer
 
             /** @var Mage_Sales_Model_Quote_Item $item  */
             foreach ($allItems as $item) {
-                if ($item->getSku() !== Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+                if (strtolower($item->getSku()) !== Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
                     $quote->addItem($item);
                 }
             }
@@ -342,7 +342,7 @@ class Lfnds_Donation_Model_Observer
     public function excludeDonationFromDiscount(Varien_Event_Observer $observer){
         $quoteItem = $observer->getQuoteItem();
         $product = $observer->getProduct();
-        if ($product->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+        if (strtolower($product->getSku()) === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             $quoteItem->setNoDiscount(TRUE);
         }
     }
