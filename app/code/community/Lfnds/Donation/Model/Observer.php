@@ -345,7 +345,7 @@ class Lfnds_Donation_Model_Observer
         $product = $observer->getProduct();
         if (strtolower($product->getSku()) === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             $quoteItem->setNoDiscount(TRUE);
+            $quoteItem->setDiscountCalculationPrice(0);
         }
     }
 }
-
