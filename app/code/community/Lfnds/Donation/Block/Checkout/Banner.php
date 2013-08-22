@@ -71,15 +71,13 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
     }
 
     /**
-     * Returns the API Template.
-     *
-     * If we cannot display the Template, we return an empty string.
+     * Returns the API JSON.
      *
      * Used and shown in /design/frontend/base/default/template/lfnds/donation/checkout/onepage/review/donation_banner.phtml
      *
      * @return string The rendered HTML Snippet
      */
-    public function getApiTemplate() {
+    public function getJson() {
 
         $facade = $this->helper->getConfiguredFacade();
 
@@ -91,18 +89,14 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
             $facade->getConfiguration()->getView()->assign('orientation', 'vertical');
         }
 
-        $template = '';
 
-        if ($this->helper->isActive()) {
+        $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
+        $facade->getConfiguration()
+                   ->getView()
+                         ->assign('sumExcludingDonation', round($total * 100));
 
-            $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-            $facade->getConfiguration()
-                       ->getView()
-                             ->assign('total', round($total * 100));
-
-             $template = $facade->renderTemplate();
-        }
-        return $template;
+        $assigns = $facade->getConfiguration()->getView()->getAssignments();
+        return json_encode($assigns);
     }
 
     public function getExcludedPaymentMethods() {

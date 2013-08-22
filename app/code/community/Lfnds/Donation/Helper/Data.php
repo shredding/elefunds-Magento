@@ -132,8 +132,11 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                             'color' =>  $color
                         ),
                         'currencyDelimiter' => $symbols['decimal'],
-                        'formSelector' => '.additional_footer form',
-                        'totalSelector' => '#aggregation .totalamount strong'
+                        'formSelector'      => '#donation-form',
+                        'totalSelector'     => '#checkout-review-table tfoot tr.last .price',
+                        'rowContainer'      => '#checkout-review-table tfoot tr.first + tr',
+                        'rowLabel'          => 'td:first-child',
+                        'rowValue'          => 'td.last'
                     )
                 );
 
@@ -197,10 +200,14 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return bool
      */
     public function isOneStepCheckoutInstalled() {
+        return FALSE;
+
+        /**  +++ Disabled for 2.0.0 +++ *
         if ($this->usesOneStepCheckout === NULL) {
             $this->usesOneStepCheckout = Mage::getStoreConfig('lfnds_donation/advanced/uses_onestepcheckout');
         }
         return $this->usesOneStepCheckout;
+         *  ^^^ Disabled for 2.0.0 ^^^ */
     }
 
     /**
