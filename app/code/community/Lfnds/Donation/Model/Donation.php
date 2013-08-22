@@ -109,7 +109,7 @@ class Lfnds_Donation_Model_Donation extends Mage_Core_Model_Abstract
      * @return array
      */
     public function getReceiverIds() {
-        return array_map(function($x) { return (int)$x;}, explode(',',parent::getReceiverIds()));
+        return array_map(function($x) { return (int)$x;}, explode(',', parent::getReceiverIds()));
     }
 
     /**
@@ -130,7 +130,7 @@ class Lfnds_Donation_Model_Donation extends Mage_Core_Model_Abstract
      * @return array
      */
     public function getAvailableReceiverIds() {
-        return array_map(function($x) { return (int)$x;}, explode(',',parent::getAvailableReceiverIds()));
+        return array_map(function($x) { return (int)$x;}, explode(',', parent::getAvailableReceiverIds()));
     }
 
 

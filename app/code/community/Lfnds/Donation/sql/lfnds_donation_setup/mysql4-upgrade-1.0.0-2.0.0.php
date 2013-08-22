@@ -53,3 +53,6 @@
  */
 $receiverTable = $this->getTable('lfnds_donation_receiver');
 $this->run("DROP TABLE IF EXISTS $receiverTable");
+
+$donationTable = $this->getTable('lfnds_donation_donation');
+$this->run("ALTER TABLE $donationTable MODIFY COLUMN donator_zip VARCHAR(12)");
