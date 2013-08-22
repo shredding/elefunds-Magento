@@ -42,6 +42,7 @@ namespace Lfnds\Model;
 use Lfnds\Exception\ElefundsException;
 
 require_once 'ReceiverInterface.php';
+require_once 'DonationInterface.php';
 
 /**
  * Elefunds Model Factory

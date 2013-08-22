@@ -55,6 +55,8 @@ require_once __DIR__ . '/../../View/BaseView.php';
 class CheckoutConfiguration extends ShopConfiguration {
 
     /**
+     * Define the checkout variables for the shop template.
+     *
      * @return void
      */
     public function init() {
@@ -73,8 +75,7 @@ class CheckoutConfiguration extends ShopConfiguration {
                 'offerDonationReceipt'  => TRUE,
                 // Defaults, you can opt to override this if you like.
                 'currency'              => '€',
-                'currencyDelimiter'     => '.',
-                'orientation'           => 'horizontal',
+                'currencyDelimiter'     => ','
             )
         );
 
@@ -83,23 +84,30 @@ class CheckoutConfiguration extends ShopConfiguration {
 
         // Chose your theme and color
         $theme = $this->themes[0];
-        $color = '#E1540F';
+        $color = '#00efa2';
 
         $this->view->assign('skin',
             array(
                 'theme' =>  $theme,
-                'color' =>  $color
+                'color' =>  $color,
+                // Receiver logo orientation
+                'orientation' => 'horizontal'
             )
         );
 
         // To implement this template in a shop, you have to add the following
         // (preferably in your own extending class, or via $facade->getConfiguration->getView()->assign()):
         // $this->view->assign('formSelector', '#css .selector .of .form');
+        // $this->view->assign('totalSelector', '#css .selector .of .total');
+        // $this->view->assign('rowLabel', '#css .selector .of .row .label');
+        // $this->view->assign('rowValue', '#css .selector .of .row .value');
 
     }
 
 
     /**
+     * Return the available theme choices.
+     *
      * @return array
      */
     public function getAvailableThemes() {

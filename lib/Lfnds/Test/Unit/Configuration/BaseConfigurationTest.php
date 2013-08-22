@@ -68,6 +68,8 @@ class BaseConfigurationTest extends PHPUnit_Framework_TestCase
     protected $baseConfiguration;
 
     /**
+     * setApiUrlTrimsSlashesFromUrlIfExists
+     *
      * @test
      */
     public function setApiUrlTrimsSlashesFromUrlIfExists()

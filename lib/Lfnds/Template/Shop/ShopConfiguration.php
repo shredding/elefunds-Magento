@@ -76,8 +76,8 @@ class ShopConfiguration extends DefaultConfiguration {
         $this->setView(new BaseView());
         $this->view->setTemplate('Shop');
 
-        $this->view->addJavascriptFile('http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.js');
-        $this->view->addCssFile('http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.css');
+        $this->view->addJavascriptFile('https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js');
+        $this->view->addCssFile('https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css');
 
     }
 

@@ -97,8 +97,8 @@ class CheckoutConfigurationTest extends \PHPUnit_Framework_TestCase {
         $assigns = $config->getView()->getAssignments();
 
         $this->assertSame($assigns['currency'], '€');
-        $this->assertSame($assigns['currencyDelimiter'], '.');
-        $this->assertSame($assigns['orientation'], 'horizontal');
+        $this->assertSame($assigns['currencyDelimiter'], ',');
+        $this->assertSame($assigns['skin']['orientation'], 'horizontal');
 
     }
 
@@ -148,7 +148,7 @@ class CheckoutConfigurationTest extends \PHPUnit_Framework_TestCase {
         $color = $config->getView()->getAssignments()['skin']['color'];
 
         $this->assertSame('light', $theme);
-        $this->assertSame('#E1540F', $color);
+        $this->assertSame('#00efa2', $color);
 
     }
 

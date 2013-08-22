@@ -177,28 +177,6 @@ class Facade implements FacadeInterface {
           }
       }
 
-     /**
-      * Maps a DonationInterface to a JSON ready array.
-      *
-      * @param Model\DonationInterface $donation
-      * @throws Exception\ElefundsException
-      * @return array
-      */
-      protected function mapDonationToArray(DonationInterface $donation) {
-
-          if ($donation->getForeignId() === NULL || $donation->getTime() === NULL || $donation->getAmount() === NULL || $donation->getReceiverIds() === NULL || $donation->getAvailableReceiverIds() === NULL) {
-              throw new ElefundsException('Given donation does not contain all information needed to be send to the API.', 1347975987321);
-          }
-
-          $donationAsArray = $donation->toArray();
-
-          if (isset($donationAsArray['donator']) && !isset($donationAsArray['donator']['countryCode'])) {
-              $donationAsArray['donator']['countryCode'] = $this->getConfiguration()->getCountrycode();
-          }
-
-          return $donationAsArray;
-      }
-
       /**
        * Returns the configuration instance.
        *
@@ -226,26 +204,36 @@ class Facade implements FacadeInterface {
        *
        * This is just a wrapper for the cancelDonations method.
        *
-       * @param int $donationId
+       * @param mixed $donation either a foreignId (string) or instance of \Lfnds\Model\DonationInterface
        * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
        * @return string Message returned from the API
        */
-      public function cancelDonation($donationId) {
-          return $this->cancelDonations(array($donationId));
+      public function cancelDonation($donation) {
+          return $this->cancelDonations(array($donation));
       }
 
       /**
        * Cancels an array of donation from the API.
        *
-       * @param array $donationIds with ids
+       * The API requires only the foreignID, so the array must contain foreignIds or donations
+       * (a mixture is possible as well).
+       *
+       * @param array $donations
        *
        * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
        * @return string Message returned from the API
        */
-      public function cancelDonations(array $donationIds) {
+      public function cancelDonations(array $donations) {
 
-          if (count($donationIds) > 0) {
-              $donationIds = array_filter($donationIds, create_function('$donationIds', 'return (string)$donationIds;'));
+          if (count($donations) > 0) {
+              $donationIds = array_map(function($donation) {
+                  if (is_a($donation, 'Lfnds\Model\DonationInterface')) {
+                      /** @var \Lfnds\Model\DonationInterface $donation*/
+                      return $donation->getForeignId();
+                  } else {
+                      return (string)$donation;
+                  }
+              }, $donations);
 
               $donationIdsString = implode(',', $donationIds);
 
@@ -263,26 +251,35 @@ class Facade implements FacadeInterface {
      *
      * This is just a wrapper for the completeDonations method.
      *
-     * @param int $donationId
+     * @param mixed $donation either a foreignId (string) or instance of \Lfnds\Model\DonationInterface
      * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string Message returned from the API
      */
-    public function completeDonation($donationId) {
-        return $this->completeDonations(array($donationId));
+    public function completeDonation($donation) {
+        return $this->completeDonations(array($donation));
     }
 
     /**
      * Completes an array of Donations in the API.
      *
-     * @param array $donationIds with ids
+     * The API requires only the foreignID, so the array must contain foreignIds or donations
+     * (a mixture is possible as well).
      *
-     * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @param array $donations
+     *
      * @return string Message returned from the API
      */
-    public function completeDonations(array $donationIds) {
+    public function completeDonations(array $donations) {
 
-        if (count($donationIds) > 0) {
-            $donationIds = array_filter($donationIds, create_function('$donationIds', 'return (string)$donationIds;'));
+        if (count($donations) > 0) {
+            $donationIds = array_map(function($donation) {
+                if (is_a($donation, 'Lfnds\Model\DonationInterface')) {
+                    /** @var \Lfnds\Model\DonationInterface $donation*/
+                    return $donation->getForeignId();
+                } else {
+                    return (string)$donation;
+                }
+            }, $donations);
 
             $donationIdsString = implode(',', $donationIds);
 
@@ -370,6 +367,29 @@ class Facade implements FacadeInterface {
             $tagStrings .= sprintf('<script type="text/javascript" src="%s"></script>', $jsFile);
         }
         return $tagStrings;
+    }
+
+
+    /**
+     * Maps a DonationInterface to a JSON ready array.
+     *
+     * @param Model\DonationInterface $donation
+     * @throws Exception\ElefundsException
+     * @return array
+     */
+    protected function mapDonationToArray(DonationInterface $donation) {
+
+        if ($donation->getForeignId() === NULL || $donation->getTime() === NULL || $donation->getAmount() === NULL || $donation->getReceiverIds() === NULL || $donation->getAvailableReceiverIds() === NULL) {
+            throw new ElefundsException('Given donation does not contain all information needed to be send to the API.', 1347975987321);
+        }
+
+        $donationAsArray = $donation->toArray();
+
+        if (isset($donationAsArray['donator']) && !isset($donationAsArray['donator']['countryCode'])) {
+            $donationAsArray['donator']['countryCode'] = $this->getConfiguration()->getCountrycode();
+        }
+
+        return $donationAsArray;
     }
 
 }

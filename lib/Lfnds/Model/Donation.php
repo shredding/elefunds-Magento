@@ -371,7 +371,7 @@ class Donation implements DonationInterface {
                 'firstName'         =>  $firstName,
                 'lastName'          =>  $lastName,
                 'streetAddress'     =>  $streetAddress,
-                'zip'               =>  (int)$zip,
+                'zip'               =>  (string)$zip,
                 'city'              =>  $city,
             );
 

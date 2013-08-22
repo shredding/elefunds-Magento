@@ -123,6 +123,11 @@ class RequestHelper {
         return $this->receivers;
     }
 
+    /**
+     * Returns the receivers that were available during the checkout.
+     *
+     * @return array
+     */
     public function getAvailableReceiverIds() {
         return $this->validatedReceivers(TRUE);
     }
@@ -175,6 +180,8 @@ class RequestHelper {
     }
 
     /**
+     * Returns true if the requestKey is positive.
+     *
      * @param string $requestKey
      * @return bool
      */

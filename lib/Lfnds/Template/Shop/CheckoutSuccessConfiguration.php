@@ -56,6 +56,8 @@ require_once __DIR__ . '/../../View/BaseView.php';
 class CheckoutSuccessConfiguration extends ShopConfiguration {
 
     /**
+     * Define the checkout success variables for the shop template.
+     *
      * @return void
      */
     public function init() {

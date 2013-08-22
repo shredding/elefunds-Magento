@@ -69,7 +69,7 @@ class CheckoutSuccessConfigurationTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * moduleIsDefined
+     * Checks if the social media share module is assigned to the view.
      *
      * @test
      */

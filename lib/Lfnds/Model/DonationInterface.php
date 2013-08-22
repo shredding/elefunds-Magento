@@ -196,7 +196,7 @@ interface DonationInterface  {
      * @param string $firstName
      * @param string $lastName
      * @param string $streetAddress
-     * @param int $zip
+     * @param int|string $zip (if string, than digit only)
      * @param string $city
      * @param string $countryCode two digit country code; if not given, the code from your settings will be used
      *

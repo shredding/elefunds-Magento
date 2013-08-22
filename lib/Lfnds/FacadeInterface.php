@@ -110,22 +110,22 @@ interface FacadeInterface {
      *
      * This is just a wrapper for the cancelDonations method.
      *
-     * @param int $donationId
+     * @param mixed $donation either a foreignId (string) or instance of \Lfnds\Model\DonationInterface
      * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string Message returned from the API
      */
-    public function cancelDonation($donationId);
+    public function cancelDonation($donation);
 
     /**
      * Completes a single Donation in the API.
      *
      * This is just a wrapper for the completeDonations method.
      *
-     * @param int $donationId
+     * @param mixed $donation either a foreignId (string) or instance of \Lfnds\Model\DonationInterface
      * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string Message returned from the API
      */
-    public function completeDonation($donationId);
+    public function completeDonation($donation);
 
     /**
      * Sends an array of donations to the API.
@@ -139,22 +139,27 @@ interface FacadeInterface {
     /**
      * Cancels an array of donation from the API.
      *
-     * @param array $donationIds with ids
+     * The API requires only the foreignID, so the array must contain foreignIds or donations
+     * (a mixture is possible as well).
+     *
+     * @param array $donations
      *
      * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
      * @return string Message returned from the API
      */
-    public function cancelDonations(array $donationIds);
+    public function cancelDonations(array $donations);
 
     /**
      * Completes an array of Donations in the API.
      *
-     * @param array $donationIds with ids
+     * The API requires only the foreignID, so the array must contain foreignIds or donations
+     * (a mixture is possible as well).
      *
-     * @throws ElefundsCommunicationException if connection or authentication fails or retrieved http code is not 200
+     * @param array $donations
+     *
      * @return string Message returned from the API
      */
-    public function completeDonations(array $donationIds);
+    public function completeDonations(array $donations);
 
     /**
      * Renders the template.

@@ -259,6 +259,11 @@ class RequestHelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame('a, b, c', $helper->getReceiversAsString());
     }
 
+    /**
+     * getReceiversAsStringReturnsCSV
+     *
+     * @test
+     */
     public function getReceiversAsStringReturnsCSV() {
         $helper = new RequestHelper(array('a', 'b', 'c'));
         $this->assertSame('a, b, c', $helper->getReceiversAsString());

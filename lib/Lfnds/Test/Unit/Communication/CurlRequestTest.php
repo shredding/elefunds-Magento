@@ -64,6 +64,9 @@ class CurlRequestTest extends \PHPUnit_Framework_TestCase {
      */
     private $curl;
 
+    /**
+     * Set up the curl request tests.
+     */
     public function setUp() {
         global $curlMockResponses;
         $curlMockResponses = [
@@ -75,6 +78,8 @@ class CurlRequestTest extends \PHPUnit_Framework_TestCase {
 
 
     /**
+     * Throws an exception if curl is not installed.
+     *
      * @test
      * @expectedException \Lfnds\Exception\ElefundsException
      */

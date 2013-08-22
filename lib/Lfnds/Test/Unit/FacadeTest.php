@@ -162,6 +162,45 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * cancelDonationAcceptsDonationInstance
+     *
+     * @test
+     */
+    public function cancelDonationAcceptsDonationInstance() {
+        $configuration = $this->getMock('Lfnds\Configuration\ConfigurationInterface');
+
+        $configuration->expects($this->once())
+            ->method('getApiUrl')
+            ->will($this->returnValue('https://api.elefunds.de'));
+
+        $configuration->expects($this->once())
+            ->method('getClientId')
+            ->will($this->returnValue(1234));
+
+        $configuration->expects($this->once())
+            ->method('getHashedKey')
+            ->will($this->returnValue('3382a100edcb335c6af4efc1d5fb37b4ec264553'));
+
+        $rest = $this->getMock('Lfnds\Communication\RestInterface');
+
+        $rest->expects($this->once())
+            ->method('delete')
+            ->with($this->equalTo('https://api.elefunds.de/donations/1234/?clientId=1234&hashedKey=3382a100edcb335c6af4efc1d5fb37b4ec264553'))
+            ->will($this->returnValue(json_encode(array('message' => 'Works like a charm!'))));
+
+        $configuration->expects($this->once())
+            ->method('getRestImplementation')
+            ->will($this->returnValue($rest));
+
+
+        $this->facade->setConfiguration($configuration);
+
+        $result = $this->facade->cancelDonation(1234);
+        $this->assertSame('Works like a charm!', $result);
+    }
+
+
+    /**
      * completeDonationCalculatesCorrectApiUrl
      *
      * @test
@@ -185,7 +224,7 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 
         $rest->expects($this->once())
             ->method('put')
-            ->with($this->equalTo('https://api.elefunds.de/donations/1234/?clientId=1234&hashedKey=3382a100edcb335c6af4efc1d5fb37b4ec264553'))
+            ->with($this->equalTo('https://api.elefunds.de/donations/AB1234/?clientId=1234&hashedKey=3382a100edcb335c6af4efc1d5fb37b4ec264553'))
             ->will($this->returnValue(json_encode(array('message' => 'Works like a charm!'))));
 
         $configuration->expects($this->once())
@@ -195,7 +234,45 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 
         $this->facade->setConfiguration($configuration);
 
-        $result = $this->facade->completeDonation(1234);
+        $result = $this->facade->completeDonation("AB1234");
+        $this->assertSame('Works like a charm!', $result);
+    }
+
+    /**
+     * completeDonationAcceptsDonationInstance
+     *
+     * @test
+     */
+    public function completeDonationAcceptsDonationInstance() {
+        $configuration = $this->getMock('Lfnds\Configuration\ConfigurationInterface');
+
+        $configuration->expects($this->once())
+            ->method('getApiUrl')
+            ->will($this->returnValue('https://api.elefunds.de'));
+
+        $configuration->expects($this->once())
+            ->method('getClientId')
+            ->will($this->returnValue(1234));
+
+        $configuration->expects($this->once())
+            ->method('getHashedKey')
+            ->will($this->returnValue('3382a100edcb335c6af4efc1d5fb37b4ec264553'));
+
+        $rest = $this->getMock('Lfnds\Communication\RestInterface');
+
+        $rest->expects($this->once())
+            ->method('put')
+            ->with($this->equalTo('https://api.elefunds.de/donations/AB1234/?clientId=1234&hashedKey=3382a100edcb335c6af4efc1d5fb37b4ec264553'))
+            ->will($this->returnValue(json_encode(array('message' => 'Works like a charm!'))));
+
+        $configuration->expects($this->once())
+            ->method('getRestImplementation')
+            ->will($this->returnValue($rest));
+
+
+        $this->facade->setConfiguration($configuration);
+        $donation = $this->facade->createDonation()->setForeignId('AB1234');
+        $result = $this->facade->completeDonation($donation);
         $this->assertSame('Works like a charm!', $result);
     }
 
@@ -320,6 +397,45 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 
         $this->facade->setConfiguration($configuration);
         $result = $this->facade->cancelDonations(array(1, 2, 3, 4));
+        $this->assertSame($result, 'Works like a charm!');
+    }
+
+    /**
+     * cancelDonationsAcceptsDonationsInstance
+     *
+     * @test
+     */
+    public function cancelDonationsAcceptsDonationsInstance() {
+
+        $configuration = $this->getMock('Lfnds\Configuration\ConfigurationInterface');
+
+        $configuration->expects($this->once())
+                      ->method('getApiUrl')
+                      ->will($this->returnValue('https://api.elefunds.de'));
+
+        $configuration->expects($this->once())
+                      ->method('getClientId')
+                      ->will($this->returnValue(1234));
+
+        $configuration->expects($this->once())
+                      ->method('getHashedKey')
+                      ->will($this->returnValue('3382a100edcb335c6af4efc1d5fb37b4ec264553'));
+
+        $rest = $this->getMock('Lfnds\Communication\RestInterface');
+
+        $rest->expects($this->once())
+                ->method('delete')
+                ->with($this->equalTo('https://api.elefunds.de/donations/AB1234/?clientId=1234&hashedKey=3382a100edcb335c6af4efc1d5fb37b4ec264553'))
+                ->will($this->returnValue(json_encode(array('message' => 'Works like a charm!'))));
+
+        $configuration->expects($this->once())
+            ->method('getRestImplementation')
+            ->will($this->returnValue($rest));
+
+        $this->facade->setConfiguration($configuration);
+
+        $donation = $this->facade->createDonation()->setForeignId('AB1234');
+        $result = $this->facade->cancelDonation($donation);
         $this->assertSame($result, 'Works like a charm!');
     }
 
