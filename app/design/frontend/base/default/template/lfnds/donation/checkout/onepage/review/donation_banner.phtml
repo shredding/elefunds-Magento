@@ -17,6 +17,47 @@
         }
     });
 
+    //<![CDATA[
+    if (typeof Review !== 'undefined') {
+
+        /*
+         * One page checkout specific JS
+         */
+
+        var ElefundsForm = Class.create();
+        ElefundsForm.prototype = {
+            initialize: function(form) {
+                this.form = form;
+            }
+        };
+
+        elefundsForm = new ElefundsForm($('donation-form'));
+
+        Review.prototype.save = function() {
+            if (checkout.loadWaiting!=false) return;
+            checkout.setLoadWaiting('review');
+            var params = Form.serialize(payment.form);
+            if (this.agreementsForm) {
+                params += '&'+Form.serialize(this.agreementsForm);
+            }
+            if (elefundsForm.form) {
+                params += '&'+Form.serialize(elefundsForm.form);
+            }
+
+            params.save = true;
+            var request = new Ajax.Request(
+                    this.saveUrl,
+                    {
+                        method:'post',
+                        parameters:params,
+                        onComplete: this.onComplete,
+                        onSuccess: this.onSave,
+                        onFailure: checkout.ajaxFailure.bind(checkout)
+                    }
+            );
+        };
+    }
+    //]]>
 </script>
 
 <?php endif; ?>
