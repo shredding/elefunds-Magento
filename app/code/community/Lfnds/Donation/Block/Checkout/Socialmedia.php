@@ -59,16 +59,13 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
      */
     protected $helper;
 
+    protected $json;
+
     public function __construct() {
         $this->helper = Mage::helper('lfnds_donation');
     }
 
-    /**
-     * Renders the social media template or returns an empty string if we do have nothing to show.
-     *
-     * @return string
-     */
-    public function renderSocialMedia() {
+    public function canRenderSocialMedia() {
 
         /** @var Facade $facade  */
         $facade = $this->helper->getConfiguredFacade(TRUE);
@@ -80,19 +77,28 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
         if ($orderId) {
             $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
             if (!$order->getId()) {
-                $order = NULL;
+                return FALSE;
             }
         }
 
         /** @var Lfnds_Donation_Model_Donation $donationItem */
         $donationItem->loadByAttribute('foreign_id', $order->getIncrementId());
 
-        $template = '';
         if ($donationItem->getId()) {
             $facade->getConfiguration()->getView()->assign('foreignId', $donationItem->getForeignId());
-            $template = $facade->renderTemplate();
+            $assigns = $facade->getConfiguration()->getView()->getAssignments();
+            $this->json = json_encode($assigns);
+            return TRUE;
         }
+        return FALSE;
+    }
 
-        return $template;
+    /**
+     * Renders the social media template or returns an empty string if we do have nothing to show.
+     *
+     * @return string
+     */
+    public function getSocialMediaConfiguration() {
+        return $this->json;
     }
 }
