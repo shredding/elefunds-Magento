@@ -137,7 +137,7 @@ class Lfnds_Donation_Model_Observer
                 $requestHelper->getRoundUp(),
                 $order->getTotalDue() * 100,
                 $requestHelper->getReceiverIds(),
-                $this->helper->getAvailableReceiverIds(),
+                $requestHelper->getAvailableReceiverIds(),
                 $user,
                 $order->getBillingAddress()->getCountryId(),
                 $requestHelper->getSuggestedRoundUp(),
