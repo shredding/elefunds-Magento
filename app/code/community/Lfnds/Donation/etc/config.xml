@@ -202,7 +202,7 @@
             <general>
                 <active>0</active>
                 <theme>light</theme>
-                <color>#E1540F</color>
+                <color>#00efa2</color>
             </general>
             <advanced>
                 <include_jquery>1</include_jquery>

@@ -320,7 +320,7 @@ class Facade implements FacadeInterface {
 
         $tagStrings = '';
         foreach ($this->getTemplateCssFiles() as $cssFile) {
-            $tagStrings .= sprintf('<link rel="stylesheet" type="text/css" href="%s">', $cssFile);
+            $tagStrings .= sprintf('<link rel="stylesheet" type="text/css" href="%s" />', $cssFile);
         }
         return $tagStrings;
       }

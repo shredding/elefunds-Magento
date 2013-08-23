@@ -123,7 +123,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
 
                 if (preg_match('~^#(?:[0-9a-fA-F]{3}){1,2}$~', $color) !== 1) {
                     // If color is not a valid hexcode, we fallback to default.
-                    $color = '#E1540F';
+                    $color = '#00efa2';
                 }
                 $facade->getConfiguration()->getView()->assignMultiple(
                     array(

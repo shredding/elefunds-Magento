@@ -7,7 +7,7 @@
         <reference name="head">
             <block type="core/text" name="elefunds.checkout.head">
                 <action method="setText">
-                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css">]]></text>
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
                 </action>
             </block>
         </reference>
@@ -26,7 +26,7 @@
         <reference name="head">
             <block type="core/text" name="elefunds.success.head">
                 <action method="setText">
-                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css">]]></text>
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
                 </action>
             </block>
         </reference>
@@ -40,7 +40,7 @@
         <reference name="head">
             <block type="core/text" name="elefunds.onestep.head">
                 <action method="setText">
-                    <text><![CDATA[<script src="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.js"></script><link href="http://453285107972b1515f7b-dc543d893d0e619bc2f45178473838c3.r71.cf1.rackcdn.com/elefunds.css">]]></text>
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
                 </action>
             </block>
         </reference>
