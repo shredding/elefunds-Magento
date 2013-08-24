@@ -98,7 +98,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
      *
      * @return string
      */
-    public function getSocialMediaConfiguration() {
+    public function getJson() {
         return $this->json;
     }
 }
