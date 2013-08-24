@@ -2,7 +2,7 @@
     <div id="elefunds-share"></div>
     <script type="text/javascript">
         //<![CDATA[
-        window.elefundsOptions = <?php echo json_encode($this->getSocialMediaConfiguration()); ?>;
+        window.elefundsOptions = <?php echo $this->getSocialMediaConfiguration(); ?>;
         //]]>
     </script>
 <?php endif;
