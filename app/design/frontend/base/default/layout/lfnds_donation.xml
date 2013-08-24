@@ -13,16 +13,6 @@
         </reference>
     </checkout_onepage_index>
 
-    <checkout_cart_index>
-        <reference name="head">
-            <block type="core/text" name="elefunds.checkout.head">
-                <action method="setText">
-                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
-                </action>
-            </block>
-        </reference>
-    </checkout_cart_index>
-
     <checkout_onepage_review>
         <reference name="checkout.onepage.review.info.items.before">
             <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner_before" as="elefunds.banner_before" template="lfnds/donation/checkout/onepage/review/donation_banner_before.phtml" />
@@ -33,6 +23,13 @@
     </checkout_onepage_review>
 
     <checkout_onepage_success>
+        <reference name="head">
+            <block type="core/text" name="elefunds.checkout.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
+                </action>
+            </block>
+        </reference>
         <reference name="content">
             <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" after="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
         </reference>
