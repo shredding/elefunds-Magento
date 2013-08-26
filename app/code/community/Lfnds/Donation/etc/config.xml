@@ -20,12 +20,6 @@
                     </donation>
                 </entities>
             </donation_mysql4>
-            <!--<sales>-->
-                <!--<rewrite>-->
-                    <!--<order_pdf_abstract>Mymodule_Printtemplates_Model_Order_Pdf_Abstract</order_pdf_abstract>-->
-
-                <!--</rewrite>-->
-            <!--</sales>-->
         </models>
         <blocks>
             <lfnds_donation>
