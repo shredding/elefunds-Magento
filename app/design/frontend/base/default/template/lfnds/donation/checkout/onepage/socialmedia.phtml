@@ -1,13 +1,8 @@
-<?php if ($this->existDonation()): ?>
-    <div id="elefunds-sucess-div" style="display:none">
-        <?php echo $this->renderSocialMedia(); ?>
-    </div>
-
+<?php if ($this->canRenderSocialMedia()): ?>
+    <div id="elefunds-share"></div>
     <script type="text/javascript">
-        var subtitle = $$(".sub-title");
-        var elefunddiv = $('elefunds-sucess-div');
-
-        subtitle[0].insert({'after': elefunddiv});
-        elefunddiv.show();
+        //<![CDATA[
+        window.elefundsOptions = <?php echo $this->getJson(); ?>;
+        //]]>
     </script>
 <?php endif; ?>

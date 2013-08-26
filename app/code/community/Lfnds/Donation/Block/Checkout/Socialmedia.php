@@ -34,6 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+use Lfnds\Facade;
 
 /**
  * General helper function to access and configure the SDK in magento
@@ -58,54 +59,38 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
      */
     protected $helper;
 
+    protected $json;
+
     public function __construct() {
         $this->helper = Mage::helper('lfnds_donation');
     }
 
-    /**
-     * Adds the elefunds page head to the layout.
-     */
-    protected function _prepareLayout() {
-        $headBlock = $this->getLayout()->createBlock('lfnds_donation/page_head', 'elefunds.head');
-        $this->getLayout()->getBlock('head')->setChild('elefunds.head', $headBlock);
+    public function canRenderSocialMedia() {
 
-        parent::_prepareLayout();
-    }
+        /** @var Facade $facade  */
+        $facade = $this->helper->getConfiguredFacade(TRUE);
 
-    /**
-     * Checks whether a donation exists in the actual order.
-     *
-     * @return bool
-     */
-    public function existDonation() {
-        $virtualProduct = $this->helper->getVirtualProduct();
-        if (!$virtualProduct) {
-            Mage::log('Unable to retrieve virtual product for elefunds.');
-        } else {
-            if ($this->getOrder() !== NULL  && $this->getOrder()->getItemsCollection()->getItemByColumnValue('product_id', $virtualProduct->getId())) {
-                return TRUE;
+        $donationItem = Mage::getModel('lfnds_donation/donation');
+
+        $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+        $order = NULL;
+        if ($orderId) {
+            $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+            if (!$order->getId()) {
+                return FALSE;
             }
+        }
+
+        /** @var Lfnds_Donation_Model_Donation $donationItem */
+        $donationItem->loadByAttribute('foreign_id', $order->getIncrementId());
+
+        if ($donationItem->getId()) {
+            $facade->getConfiguration()->getView()->assign('foreignId', $donationItem->getForeignId());
+            $assigns = $facade->getConfiguration()->getView()->getAssignments();
+            $this->json = json_encode($assigns);
+            return TRUE;
         }
         return FALSE;
-    }
-
-    /**
-     * Retrieves the current order.
-     *
-     * @return Mage_Sales_Model_Order
-     */
-    public function getOrder() {
-        if (!$this->order) {
-            $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-            if ($orderId) {
-                $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-                $this->order = $order;
-                if (!$order->getId()) {
-                    $this->order = NULL;
-                }
-            }
-        }
-        return $this->order;
     }
 
     /**
@@ -113,33 +98,7 @@ class Lfnds_Donation_Block_Checkout_Socialmedia extends Mage_Core_Block_Template
      *
      * @return string
      */
-    public function renderSocialMedia() {
-        $order = $this->getOrder();
-
-        /** @var Elefunds_Facade $facade  */
-        $facade = $this->helper->getConfiguredFacade(TRUE);
-
-        $donationItem = Mage::getModel('lfnds_donation/donation');
-        /** @var Lfnds_Donation_Model_Donation $donationItem */
-        $donationItem->loadByAttribute('foreign_id', $order->getIncrementId());
-
-        if ($donationItem->getId()) {
-            $receivers = $this->helper->getReceivers();
-
-            $receiverIds = $donationItem->getReceiverIds();
-            $receiversArray = array();
-            foreach ($receivers as $receiver) {
-                if (in_array($receiver->getId(TRUE), $receiverIds)) {
-                    $receiversArray[$receiver->getId(TRUE)] = $receiver->getName();
-                }
-            }
-
-            $facade->getConfiguration()->getView()->assign('foreignId', $donationItem->getForeignId());
-            $facade->getConfiguration()->getView()->assign('receivers', $receiversArray);
-
-            return $facade->renderTemplate('CheckoutSuccess');
-        }
-
-        return '';
+    public function getJson() {
+        return $this->json;
     }
 }

@@ -157,7 +157,7 @@ if (!$installer->tableExists('lfnds_donation_donation')) {
         ), 'Donation ID')
         ->addColumn('foreign_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
             'nullable' => FALSE,
-        ), 'Store ID')
+        ), 'ForeignId ID')
         ->addColumn('amount', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL, array(
             'nullable' => TRUE,
         ), 'Amount')

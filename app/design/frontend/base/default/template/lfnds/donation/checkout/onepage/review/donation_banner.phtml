@@ -1,41 +1,51 @@
-<?php 
-    $html = $this->getApiTemplate();
-    if (!empty($html)):
-        $html = '<div id="elefunds-form">' . $html . '</div>';
-        echo $html;
-?>    
-    <script type="text/javascript">
+<?php if ($this->canShowBanner()): ?>
+
+<div id="elefunds" style="border-width: 0 1px; border-style: solid; border-color: #d9dde3;"></div>
+<div id="donation-form"></div>
+
+<script type="text/javascript">
+    window.elefundsOptions = <?php echo $this->getJson(); ?>;
+    console.log(window.elefundsOptions);
+    require([
+        'jquery',
+        'elefunds-app'
+    ], function ($, ElefundsApplication) {
+        'use strict';
+
+        if ($('#elefunds').length || $('#elefunds-share').length) {
+            ElefundsApplication.initialize();
+        }
+    });
+
     //<![CDATA[
+    if (typeof Review !== 'undefined') {
 
-        // Review is only defined in one page checkout
-        if (typeof Review !== 'undefined') {
+        /*
+         * One page checkout specific JS
+         */
 
-            /*
-             * One page checkout specific JS
-             */
+        var ElefundsForm = Class.create();
+        ElefundsForm.prototype = {
+            initialize: function(form) {
+                this.form = form;
+            }
+        };
 
-            var ElefundsForm = Class.create();
-            ElefundsForm.prototype = {
-                initialize: function(form) {
-                    this.form = form;
-                }
+        elefundsForm = new ElefundsForm($('donation-form'));
+
+        Review.prototype.save = function() {
+            if (checkout.loadWaiting!=false) return;
+            checkout.setLoadWaiting('review');
+            var params = Form.serialize(payment.form);
+            if (this.agreementsForm) {
+                params += '&'+Form.serialize(this.agreementsForm);
+            }
+            if (elefundsForm.form) {
+                params += '&'+Form.serialize(elefundsForm.form);
             }
 
-            eleForm = new ElefundsForm($('elefunds-form'));
-
-            Review.prototype.save = function(){
-                if (checkout.loadWaiting!=false) return;
-                checkout.setLoadWaiting('review');
-                var params = Form.serialize(payment.form);
-                if (this.agreementsForm) {
-                    params += '&'+Form.serialize(this.agreementsForm);
-                }
-                if (eleForm.form) {
-                    params += '&'+Form.serialize(eleForm.form);
-                }
-
-                params.save = true;
-                var request = new Ajax.Request(
+            params.save = true;
+            var request = new Ajax.Request(
                     this.saveUrl,
                     {
                         method:'post',
@@ -44,20 +54,10 @@
                         onSuccess: this.onSave,
                         onFailure: checkout.ajaxFailure.bind(checkout)
                     }
-                );
-            };
-        } else {
-
-            /*
-             * One step checkout specific JS
-             */
-            var elefunds = elefunds || {};
-            elefunds.excludedPaymentMethods = [ <?php implode(',', $this->getExcludedPaymentMethods()) ?>  ];
-
-        }
+            );
+        };
+    }
     //]]>
-    </script>
-<?php 
-    endif;
-?>
+</script>
 
+<?php endif; ?>

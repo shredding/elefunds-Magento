@@ -36,6 +36,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+use Lfnds\Template\Shop\Helper\RequestHelper;
+
 /**
  * Watches for events that are interacting with the elefunds module.
  *
@@ -68,10 +70,8 @@ class Lfnds_Donation_Model_Observer
      */
     public function onPreDispatchSaveOrder(Varien_Event_Observer $observer) {
 
-        $params = Mage::app()->getRequest()->getParams();
-
-        /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
-        $requestHelper = $this->helper->getRequestHelper($params);
+        /** @var RequestHelper $requestHelper  */
+        $requestHelper = $this->helper->getRequestHelper();
         if ($requestHelper->isActiveAndValid()) {
 
             /** @var Mage_Checkout_Model_Session $checkoutSession  */
@@ -90,7 +90,7 @@ class Lfnds_Donation_Model_Observer
                 return;
             }
 
-            $roundUpAsFloat = $requestHelper->getRoundUpAsFloat();
+            $roundUpAsFloat = $requestHelper->getRoundUpAsFloatedString();
             $elefundsProduct->setPrice($roundUpAsFloat);
             $elefundsProduct->setBasePrice($roundUpAsFloat);
             $quote->addProduct($elefundsProduct);
@@ -107,10 +107,8 @@ class Lfnds_Donation_Model_Observer
      */
     public function onSaveOrderAfter(Varien_Event_Observer $observer) {
 
-        $params = Mage::app()->getRequest()->getParams();
-
-        /** @var Elefunds_Template_Shop_Helper_RequestHelper $requestHelper  */
-        $requestHelper = $this->helper->getRequestHelper($params);
+        /** @var RequestHelper $requestHelper  */
+        $requestHelper = $this->helper->getRequestHelper();
 
         if($requestHelper->isActiveAndValid()) {
 
@@ -139,7 +137,7 @@ class Lfnds_Donation_Model_Observer
                 $requestHelper->getRoundUp(),
                 $order->getTotalDue() * 100,
                 $requestHelper->getReceiverIds(),
-                $this->helper->getAvailableReceiverIds(),
+                $requestHelper->getAvailableReceiverIds(),
                 $user,
                 $order->getBillingAddress()->getCountryId(),
                 $requestHelper->getSuggestedRoundUp(),
@@ -278,7 +276,7 @@ class Lfnds_Donation_Model_Observer
         $elefundsItem = NULL;
         /** @var Mage_Sales_Model_Order_Item $item  */
         foreach ($order->getAllItems() as $item) {
-            if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+            if (strtolower($item->getSku()) === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
                 $elefundsItem = $item;
                 break;
             }
@@ -301,7 +299,7 @@ class Lfnds_Donation_Model_Observer
 
             /** @var Mage_Sales_Model_Quote_Item $item  */
             foreach ($allItems as $item) {
-                if ($item->getSku() !== Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+                if (strtolower($item->getSku()) !== Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
                     $quote->addItem($item);
                 }
             }
@@ -317,6 +315,7 @@ class Lfnds_Donation_Model_Observer
         /**  @var Lfnds_Donation_Block_Checkout_Banner $block */
         $block = $observer->getEvent()->getObject();
 
+        $paymentCode = NULL;
         try {
             $paymentCode = Mage::getSingleton('checkout/session')->getQuote()
                 ->getPayment()
@@ -348,4 +347,5 @@ class Lfnds_Donation_Model_Observer
             $quoteItem->setDiscountCalculationPrice(0);
         }
     }
+    
 }
