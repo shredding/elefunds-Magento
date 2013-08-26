@@ -50,8 +50,8 @@ class Lfnds_Donation_Block_Sales_Order_Email extends Mage_Core_Block_Template {
 
     protected function _toHtml() {
         $item = $this->getLayout()->getBlock('additional.product.info')->getItem();
-        
-        if (strtolower($item->getSku()) === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
+
+        if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
             return parent::_toHtml();
         }
         return '';
