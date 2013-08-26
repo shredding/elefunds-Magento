@@ -59,20 +59,17 @@
 
     <sales_email_order_invoice_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>        </reference>
     </sales_email_order_invoice_items>
 
     <sales_email_order_shipment_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>        </reference>
     </sales_email_order_shipment_items>
 
     <sales_email_order_creditmemo_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>        </reference>
     </sales_email_order_creditmemo_items>
     <!-- ^^^ Elefunds billing changes ^^^ -->
 </layout>
