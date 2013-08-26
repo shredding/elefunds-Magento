@@ -56,12 +56,11 @@
             <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
         </reference>
     </sales_order_invoice>
-
-    <sales_email_order_items>
+    <sales_order_printinvoice>
         <reference name="additional.product.info">
             <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
         </reference>
-    </sales_email_order_items>
+    </sales_order_printinvoice>
 
     <sales_email_order_invoice_items>
         <reference name="additional.product.info">
