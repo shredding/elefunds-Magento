@@ -51,7 +51,7 @@
     <!-- ^^^ One step checkout implementation ^^^ -->
 
     <!-- +++ Elefunds billing changes +++ -->
-    <sales_order_invoice translate="label">
+    <sales_order_invoice>
         <reference name="additional.product.info">
             <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
         </reference>
