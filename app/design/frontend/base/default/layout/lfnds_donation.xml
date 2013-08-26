@@ -51,23 +51,18 @@
     <!-- ^^^ One step checkout implementation ^^^ -->
 
     <!-- +++ Elefunds billing changes +++ -->
+
     <sales_order_invoice>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
         </reference>
     </sales_order_invoice>
 
-    <sales_order_printinvoice>
+    <sales_email_order_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
         </reference>
-    </sales_order_printinvoice>
-
-    <sales_order_print>
-        <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
-    </sales_order_print>
+    </sales_email_order_items>
 
     <sales_email_order_invoice_items>
         <reference name="additional.product.info">
