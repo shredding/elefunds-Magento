@@ -31,7 +31,7 @@
             </block>
         </reference>
         <reference name="content">
-            <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" after="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
+            <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" before="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
         </reference>
     </checkout_onepage_success>
 
