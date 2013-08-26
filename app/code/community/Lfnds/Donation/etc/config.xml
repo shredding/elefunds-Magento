@@ -206,7 +206,7 @@
             </general>
             <advanced>
                 <include_jquery>1</include_jquery>
-                <banner_position>bottom</banner_position>
+                <banner_position>top</banner_position>
                 <!-- +++ Disabled for 2.0.0 +++ -->
                 <!--<uses_onestepcheckout>0</uses_onestepcheckout>-->
                 <!-- ^^^ Disabled for 2.0.0 ^^^ -->
