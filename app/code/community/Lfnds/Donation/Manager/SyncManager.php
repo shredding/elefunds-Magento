@@ -35,6 +35,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+use Lfnds\Exception\ElefundsCommunicationException;
+use Lfnds\Facade;
+
 /**
  * Syncs between database and API.
  *
@@ -50,71 +53,17 @@ class Lfnds_Donation_Manager_SyncManager
 {
 
     /**
-     * @var Elefunds_Facade
+     * @var Facade
      */
     protected $facade;
 
     /**
      * Initialisation of the sync process.
      *
-     * @param Elefunds_Facade $facade
+     * @param Facade $facade
      */
-    public function __construct(Elefunds_Facade $facade) {
+    public function __construct(Facade $facade) {
         $this->facade = $facade;
-    }
-
-    /**
-     * Retrieves fresh sets of receivers.
-     *
-     * The sync is done for the german and english language. For convenience,
-     * the receivers of the current magento locale are returned.
-     *
-     * @return array with receivers of the facade's original countrycode
-     */
-    public function syncReceivers() {
-
-        /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiverCollection  */
-        $receiverCollection = Mage::getModel('lfnds_donation/receiver')->getCollection();
-
-        // We want this to be available from anywhere, so we do not set state!
-        $originalCountryCode = $this->facade->getConfiguration()->getCountrycode();
-
-        $returnedReceivers = array();
-        $germanReceivers = array();
-        $englishReceivers = array();
-
-        try {
-            $this->facade->getConfiguration()->setCountrycode('de');
-            $germanReceivers = $this->facade->getReceivers();
-
-            $this->facade->getConfiguration()->setCountrycode('en');
-            $englishReceivers = $this->facade->getReceivers();
-
-        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
-            // Pass, we still use the old receivers.
-        }
-
-        if (count($germanReceivers) > 0) {
-            $receiverCollection->removeByLanguage('de')
-                               ->mapArrayOfSDKReceiversToEntitiesAndSave($germanReceivers, 'de');
-        }
-
-        if (count($englishReceivers) > 0) {
-            $receiverCollection->removeByLanguage('en')
-                               ->mapArrayOfSDKReceiversToEntitiesAndSave($englishReceivers, 'en');
-        }
-
-        if ($originalCountryCode === 'de') {
-            $returnedReceivers = $germanReceivers;
-        }
-
-        if ($originalCountryCode === 'en') {
-            $returnedReceivers = $englishReceivers;
-        }
-
-        $this->facade->getConfiguration()->setCountrycode($originalCountryCode);
-
-        return $returnedReceivers;
     }
 
     /**
@@ -160,7 +109,7 @@ class Lfnds_Donation_Manager_SyncManager
         try {
             $this->facade->addDonations($this->mapArrayOfEntitiesToSDKObject($donationsToBeAdded));
             $donationCollection->setStates($donationsToBeAdded, Lfnds_Donation_Model_Donation::PENDING);
-        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
+        } catch (ElefundsCommunicationException $exception) {
             $donationCollection->setStates($donationsToBeAdded, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING);
         }
 
@@ -168,7 +117,7 @@ class Lfnds_Donation_Manager_SyncManager
         try {
             $this->facade->cancelDonations(array_keys($donationsToBeCancelled));
             $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::CANCELLED);
-        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
+        } catch (ElefundsCommunicationException $exception) {
             $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION);
         }
 
@@ -176,7 +125,7 @@ class Lfnds_Donation_Manager_SyncManager
          try {
             $this->facade->completeDonations(array_keys($donationsToBeCompleted));
              $donationCollection->setStates($donationsToBeCompleted, Lfnds_Donation_Model_Donation::COMPLETED);
-        } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
+        } catch (ElefundsCommunicationException $exception) {
              $donationCollection->setStates($donationsToBeCompleted, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION);
         }
 
@@ -193,7 +142,7 @@ class Lfnds_Donation_Manager_SyncManager
 
         $sdkDonations = array();
 
-        /** @var Donation $donationModel */
+        /** @var Lfnds_Donation_Model_Donation $donationModel */
         foreach ($donationModels as $donationModel) {
 
                 $donation = $this->facade->createDonation()

@@ -50,9 +50,15 @@ class Lfnds_Donation_Block_Sales_Order_Email extends Mage_Core_Block_Template {
 
     protected function _toHtml() {
         $item = $this->getLayout()->getBlock('additional.product.info')->getItem();
-        
+
         if ($item->getSku() === Lfnds_Donation_Model_Donation::ELEFUNDS_VIRTUAL_PRODUCT_SKU) {
-            return parent::_toHtml();
+            $locale = Mage::app()->getLocale()->getLocaleCode();
+            // Magento does calculate the available csv's wrong for email templating
+            // Therefore the fix.
+            if (strpos($locale, 'de') === 0) {
+                return '<br /><br />Die Spende wird vereinnahmt für die elefunds Stiftung gUG und zu 100% an die ausgewählten Organisationen weitergeleitet. Der Kaufbeleg ersetzt keine Spendenbescheinigung im Sinne des Steuerrechts.';
+            }
+            return '<br /><br />' . $this->__('Your donation is processed by the elefunds Foundation gUG which forwards 100% to your chosen charities.');
         }
         return '';
     }

@@ -71,54 +71,32 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
     }
 
     /**
-     * Returns the API Template.
-     *
-     * If we cannot display the Template, we return an empty string.
+     * Returns the API JSON.
      *
      * Used and shown in /design/frontend/base/default/template/lfnds/donation/checkout/onepage/review/donation_banner.phtml
      *
      * @return string The rendered HTML Snippet
      */
-    public function getApiTemplate() {
+    public function getJson() {
+
+        $facade = $this->helper->getConfiguredFacade();
 
         if (!$this->helper->isOneStepCheckoutInstalled()) {
             // The event does not work with one step checkout.
             // That's because the payment methods are not configured prior to the module.
             Mage::dispatchEvent('elefunds_checkout_review_before_enable', array('object' => $this));
         } else {
-            $this->helper->getConfiguredFacade()->getConfiguration()->getView()->assign('toolTipPosition', 'right');
+            $facade->getConfiguration()->getView()->assign('orientation', 'vertical');
         }
-        $template = '';
 
-        if ($this->helper->isActive()) {
 
-            try {
-                $facade = $this->helper->getConfiguredFacade();
+        $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
+        $facade->getConfiguration()
+                   ->getView()
+                         ->assign('sumExcludingDonation', round($total * 100));
 
-                $banner_width = Mage::getStoreConfig('lfnds_donation/advanced/banner_width');
-                $total = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-                $localeCode = Mage::app()->getLocale()->getLocaleCode();
-                $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
-                
-                $receivers = $this->helper->getReceivers();
-
-                if (count($receivers) >= 3) {
-
-                    $facade->getConfiguration()
-                           ->getView()
-                              ->assign('shopWidth', $banner_width)
-                              ->assign('currencyDelimiter', $symbols['decimal'])
-                              ->assign('total', round($total * 100))
-                              ->assign('receivers', $receivers);
-
-                    $template = $facade->renderTemplate();
-
-                }
-            } catch (Elefunds_Exception_ElefundsCommunicationException $exception) {
-                Mage::logException($exception);
-            }
-        }
-        return $template;
+        $assigns = $facade->getConfiguration()->getView()->getAssignments();
+        return json_encode($assigns);
     }
 
     public function getExcludedPaymentMethods() {
@@ -137,6 +115,5 @@ class Lfnds_Donation_Block_Checkout_Banner extends Mage_Core_Block_Template {
     public function deactivateBanner() {
         $this->helper->deactivate();
     }
-    
-    
+
 }

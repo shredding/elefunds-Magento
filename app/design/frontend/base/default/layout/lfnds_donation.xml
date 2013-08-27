@@ -5,9 +5,11 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
-            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_additional.css</name></action>
-            <block type="lfnds_donation/page_head" name="elefunds.head"/>
-            <action method="addItem"><type>skin_js</type><name>js/lfnds_donation/additional/elefunds_magento_onepage_additional.js</name></action>
+            <block type="core/text" name="elefunds.checkout.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
+                </action>
+            </block>
         </reference>
     </checkout_onepage_index>
 
@@ -21,17 +23,26 @@
     </checkout_onepage_review>
 
     <checkout_onepage_success>
-        <!-- head was added by code, so it will be loaded only if a donation was done! -->
+        <reference name="head">
+            <block type="core/text" name="elefunds.checkout.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
+                </action>
+            </block>
+        </reference>
         <reference name="content">
-            <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" after="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
+            <block type="lfnds_donation/checkout_socialmedia" name="checkout.onepage.sucess.socialmedia" before="checkout.success" as="elefunds.socialmedia" template="lfnds/donation/checkout/onepage/socialmedia.phtml" />
         </reference>
     </checkout_onepage_success>
 
     <!-- +++ One step checkout implementation +++ -->
     <onestepcheckout_index_index>
         <reference name="head">
-            <action method="addItem"><type>skin_css</type><name>css/lfnds_donation/additional/elefunds_magento_onestep_additional.css</name></action>
-            <block type="lfnds_donation/page_head" name="elefunds.head"/>
+            <block type="core/text" name="elefunds.onestep.head">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.min.js" type="text/javascript"></script><link href="https://43ce0697b91280cbef31-14c96824618f1f6e4d87350d0f98c98a.ssl.cf1.rackcdn.com/static/elefunds.css" rel="stylesheet" type="text/css" />]]></text>
+                </action>
+            </block>
         </reference>
         <reference name="content">
             <block type="lfnds_donation/checkout_banner" name="checkout.onepage.elefunds.banner" as="elefunds.banner" after="onestepcheckout.billing.address" template="lfnds/donation/checkout/onepage/review/donation_banner.phtml" />
@@ -48,20 +59,17 @@
 
     <sales_email_order_invoice_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>        </reference>
     </sales_email_order_invoice_items>
 
     <sales_email_order_shipment_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>        </reference>
     </sales_email_order_shipment_items>
 
     <sales_email_order_creditmemo_items>
         <reference name="additional.product.info">
-            <block type="core/template" name="donation.description" template="lfnds/donation/mail/description.phtml"/>
-        </reference>
+            <block type="lfnds_donation/sales_order_email" name="donation.description" template="lfnds/donation/mail/description.phtml"/>        </reference>
     </sales_email_order_creditmemo_items>
     <!-- ^^^ Elefunds billing changes ^^^ -->
 </layout>

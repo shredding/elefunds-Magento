@@ -34,6 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+use Lfnds\Template\Shop\CheckoutConfiguration;
 
 /**
  * Retrieves available themes.
@@ -54,10 +55,10 @@ class Lfnds_Donation_Model_System_Config_Source_Theme
     {
         /** @var Lfnds_Donation_Helper_Data $helper */
         $helper = Mage::helper('lfnds_donation');
-        $facade = $helper->getConfiguredFacade(TRUE);
+        $facade = $helper->getConfiguredFacade();
         if (!$this->_options) {
 
-            /** @var Elefunds_Template_Shop_ShopConfiguration $configuration  */
+            /** @var CheckoutConfiguration $configuration  */
             $configuration = $facade->getConfiguration();
             $themes = $configuration->getAvailableThemes();
 

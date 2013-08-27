@@ -35,6 +35,10 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+use Lfnds\Facade;
+use Lfnds\Template\Shop\Helper\RequestHelper;
+use Lfnds\Template\Shop\CheckoutConfiguration;
+use Lfnds\Template\Shop\CheckoutSuccessConfiguration;
 
 /**
  * General helper function to access and configure the SDK in magento
@@ -60,11 +64,6 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     protected $facade = array();
 
     /**
-     * @var Elefunds_Template_Shop_Helper_RequestHelper
-     */
-    protected $requestHelper;
-
-    /**
      * @var array
      */
     protected $receivers;
@@ -88,47 +87,68 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * Configures the facade based on the plugin settings and the current locale.
      *
      * @param bool $checkoutSuccess
-     * @param bool $autoFetchReceivers
-     * @return Elefunds_Facade
+     * @return Facade
      */
-    public function getConfiguredFacade($checkoutSuccess = FALSE, $autoFetchReceivers = TRUE) {
+    public function getConfiguredFacade($checkoutSuccess = FALSE) {
         $configurationType = $checkoutSuccess ? 'CheckoutSuccess' : 'Checkout';
 
         if (!isset($this->facade[$configurationType])) {
 
-            $configPath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Template'
-                        . DS . 'Shop' . DS . $configurationType . 'Configuration.php';
-            $facadePath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Facade.php';
-
-            $className = 'Elefunds_Template_Shop_'.$configurationType.'Configuration';
-
-            require_once($facadePath);
-            require_once($configPath);
-
-            /** @var Elefunds_Configuration_ConfigurationInterface $configuration  */
-            $configuration = new $className();
-
             $magentoConfigBasePath = 'lfnds_donation/general';
-            $clientId = Mage::getStoreConfig($magentoConfigBasePath . '/client_id');
-            $apiKey = Mage::getStoreConfig($magentoConfigBasePath . '/api_key');
-            $countryCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
 
-            $configuration->setClientId($clientId)
-                          ->setApiKey($apiKey)
-                          ->setCountrycode($countryCode);
+            if ($checkoutSuccess) {
+                require_once(Mage::getBaseDir('lib') . '/Lfnds/Template/Shop/CheckoutSuccessConfiguration.php');
+                $configuration = new CheckoutSuccessConfiguration();
+            } else {
+                require_once(Mage::getBaseDir('lib') . '/Lfnds/Template/Shop/CheckoutConfiguration.php');
+                $clientId = Mage::getStoreConfig($magentoConfigBasePath . '/client_id');
+                $apiKey = Mage::getStoreConfig($magentoConfigBasePath . '/api_key');
+                $countryCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
 
-            $theme = Mage::getStoreConfig($magentoConfigBasePath . '/theme');
-            $color = Mage::getStoreConfig($magentoConfigBasePath . '/color');
+                $configuration = new CheckoutConfiguration();
+                $configuration->setClientId($clientId)
+                               ->setApiKey($apiKey)
+                               ->setCountrycode($countryCode);
+            }
 
+            require_once(Mage::getBaseDir('lib') . '/Lfnds/Facade.php');
+            $facade = new Facade($configuration);
 
-            $facade = new Elefunds_Facade($configuration);
-            $facade->getConfiguration()->getView()->assign(
-                'skin',
-                array(
-                    'theme' => $theme,
-                    'color' => $color
-                )
-            );
+            if ($configurationType === 'Checkout') {
+                $theme = Mage::getStoreConfig($magentoConfigBasePath . '/theme');
+                $color = Mage::getStoreConfig($magentoConfigBasePath . '/color');
+
+                $localeCode = Mage::app()->getLocale()->getLocaleCode();
+                $symbols = Zend_Locale_Data::getList($localeCode, 'symbols');
+
+                if (preg_match('~^#(?:[0-9a-fA-F]{3}){1,2}$~', $color) !== 1) {
+                    // If color is not a valid hexcode, we fallback to default.
+                    $color = '#00efa2';
+                }
+                $facade->getConfiguration()->getView()->assignMultiple(
+                    array(
+                        'skin' => array(
+                            'theme' =>  $theme,
+                            'color' =>  $color
+                        ),
+                        'currencyDelimiter' => $symbols['decimal'],
+                        'formSelector'      => '#donation-form',
+                        'totalSelector'     => '#checkout-review-table tfoot tr.last .price',
+                        'rowContainer'      => '#checkout-review-table tfoot tr.first + tr',
+                        'rowLabel'          => 'td:first-child',
+                        'rowValue'          => 'td.last'
+                    )
+                );
+
+                $facade->getConfiguration()->getView()->assign(
+                    'skin',
+                    array(
+                        'theme' => $theme,
+                        'color' => $color
+                    )
+                );
+
+            }
 
             $this->facade[$configurationType] = $facade;
         }
@@ -139,82 +159,13 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
     /**
      * A helper to verify the request for elefunds donations.
      *
-     * @param array $request
-     * @return Elefunds_Template_Shop_Helper_RequestHelper
+     * @return RequestHelper
      */
-    public function getRequestHelper(array $request = array()) {
-        if ($this->requestHelper === NULL) {
-            $helperPath = Mage::getBaseDir('lib') . DS . 'Elefunds' . DS . 'Template'
-                . DS . 'Shop' . DS . 'Helper' . DS . 'RequestHelper.php';
+    public function getRequestHelper() {
+            $helperPath = Mage::getBaseDir('lib') . '/Lfnds/Template/Shop/Helper/RequestHelper.php';
             require_once $helperPath;
-            $this->requestHelper = new Elefunds_Template_Shop_Helper_RequestHelper();
-        }
-        $this->requestHelper->setRequest($request);
-        return $this->requestHelper;
-    }
 
-
-    /**
-     * Returns a valid set of receivers.
-     *
-     * @return array
-     */
-    public function getReceivers() {
-
-        if ($this->receivers === NULL) {
-            $time = new DateTime();
-
-            /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiversCollection  */
-            $receiversCollection = Mage::getModel('lfnds_donation/receiver')->getCollection();
-
-
-            $receiversCollection->addFieldToFilter(
-                'valid', array(
-                           'from'  =>  $time->format("Y-m-d H:i:s")
-                 )
-            )
-            ->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
-
-            try {
-                if ($receiversCollection->getSize() < 3) {
-                    $this->receivers = $this->getSyncManager()->syncReceivers();
-
-                    if (count($this->receivers) < 3) {
-                        // Okay, this line of code will hopefully never execute! We do ALWAYS provide three receivers.
-                        $this->receivers = array();
-                    }
-                } else {
-                    $this->receivers = $receiversCollection;
-                }
-            } catch (Exception $exception) {
-                Mage::logException($exception);
-                Mage::log('Elefunds database tables not available or module improperly configured.');
-
-                $this->receivers = array();
-            }
-
-
-        }
-
-        return $this->receivers;
-    }
-
-    /**
-     * Returns the available receiver ids
-     *
-     * @return array
-     */
-    public function getAvailableReceiverIds() {
-        $ids = array();
-        /** @var Lfnds_Donation_Model_Mysql4_Receiver_Collection $receiversCollection  */
-        $receiversCollection = Mage::getModel('lfnds_donation/receiver')->getCollection();
-        $receiversCollection->addFieldToFilter('countrycode', substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
-
-        /** Lfnds_Donation_Model_Receiver $receiver */
-        foreach ($receiversCollection as $receiver) {
-            $ids[] = $receiver->getReceiverId();
-        }
-        return $ids;
+            return new RequestHelper();
     }
 
     /**
@@ -249,10 +200,14 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return bool
      */
     public function isOneStepCheckoutInstalled() {
+        return FALSE;
+
+        /**  +++ Disabled for 2.0.0 +++ *
         if ($this->usesOneStepCheckout === NULL) {
             $this->usesOneStepCheckout = Mage::getStoreConfig('lfnds_donation/advanced/uses_onestepcheckout');
         }
         return $this->usesOneStepCheckout;
+         *  ^^^ Disabled for 2.0.0 ^^^ */
     }
 
     /**
