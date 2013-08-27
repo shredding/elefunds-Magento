@@ -1,4 +1,4 @@
-magento v2.0.0
+magento v2.0.1
 ==============
 
 The elefunds donation module.
