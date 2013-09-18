@@ -134,7 +134,7 @@ class Lfnds_Donation_Helper_Data extends Mage_Core_Helper_Abstract {
                         'currencyDelimiter' => $symbols['decimal'],
                         'formSelector'      => '#donation-form',
                         'totalSelector'     => '#checkout-review-table tfoot tr.last .price',
-                        'rowContainer'      => '#checkout-review-table tfoot tr.first + tr',
+                        'rowContainer'      => '#checkout-review-table tfoot tr.first',
                         'rowLabel'          => 'td:first-child',
                         'rowValue'          => 'td.last'
                     )
