@@ -170,7 +170,7 @@ class CurlRequest implements RestInterface {
          if (!isset($this->curlOptions[CURLOPT_USERAGENT])) {
             $this->curlOptions[CURLOPT_USERAGENT] = 'elefunds-php';
          }
-         $this->curlOptions[CURLOPT_CAINFO] = __DIR__ . '/certificate/GandiProSSLCA.pem';
+         $this->curlOptions[CURLOPT_CAINFO] = __DIR__ . '/certificate/GandiStandardSSLCA.pem';
 
          curl_setopt_array($this->curl, $this->curlOptions);
 

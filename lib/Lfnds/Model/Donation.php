@@ -117,7 +117,8 @@ class Donation implements DonationInterface {
      *      'streetAddress'  =>      'Schönhauser Allee 124',
      *      'zip'            =>      10437,
      *      'city'           =>      'Berlin',
-     *      'countryCode'    =>      'de'
+     *      'countryCode'    =>      'de',                      // Optional
+     *      'company'        =>      'elefunds                  // Optional
      *  );
      * </code>
      *
@@ -356,12 +357,13 @@ class Donation implements DonationInterface {
      * @param string $streetAddress
      * @param int|string $zip (if string, than digit only)
      * @param string $city
+     * @param string $company An optional company name
      * @param string $countryCode two digit country code; if not given, the code from your settings will be used
      *
      * @return Donation
      * @throws InvalidArgumentException
      */
-    public function setDonator($email, $firstName, $lastName, $streetAddress, $zip, $city, $countryCode = NULL) {
+    public function setDonator($email, $firstName, $lastName, $streetAddress, $zip, $city, $countryCode = NULL, $company = '') {
         $validMail = filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE;
         $validZip = is_int($zip) || ctype_digit($zip);
         if ($validMail && $validZip && is_string($firstName) && is_string($lastName) && is_string($streetAddress) && is_string($city)) {
@@ -378,6 +380,12 @@ class Donation implements DonationInterface {
 
             if ($countryCode !== NULL && is_string($countryCode) && strlen($countryCode) === 2) {
                 $this->donator['countryCode'] = $countryCode;
+            }
+
+            if (is_string($company)) {
+                $this->donator['company'] = $company;
+            } else {
+                $this->donator['company'] = '';
             }
 
         } else {

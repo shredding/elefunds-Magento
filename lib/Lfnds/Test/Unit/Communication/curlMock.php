@@ -54,7 +54,7 @@ function curl_setopt_array($curl, $options) {
     if (in_array(FALSE, [
         $options[CURLOPT_RETURNTRANSFER] === TRUE,
         $options[CURLOPT_USERAGENT] === 'elefunds-php',
-        strpos($options[CURLOPT_CAINFO], '/certificate/GandiProSSLCA.pem') !== FALSE
+        strpos($options[CURLOPT_CAINFO], '/certificate/GandiStandardSSLCA.pem') !== FALSE
     ])) {
         throw new \InvalidArgumentException();
     }

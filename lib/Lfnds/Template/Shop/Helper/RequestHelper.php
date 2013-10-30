@@ -187,10 +187,14 @@ class RequestHelper {
      */
     protected function isConvertableToPositiveInt($requestKey) {
 
+        if (!isset($this->request[$requestKey])) {
+            return FALSE;
+        }
+
         if (is_int($this->request[$requestKey])) {
             $isInt = TRUE;
         } else {
-            $isInt = isset($this->request[$requestKey]) && ctype_digit($this->request[$requestKey]);
+            $isInt = ctype_digit($this->request[$requestKey]);
         }
 
         return $isInt && (int)$this->request[$requestKey] > 0;
