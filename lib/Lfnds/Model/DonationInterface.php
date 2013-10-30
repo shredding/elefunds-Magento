@@ -199,11 +199,11 @@ interface DonationInterface  {
      * @param int|string $zip (if string, than digit only)
      * @param string $city
      * @param string $countryCode two digit country code; if not given, the code from your settings will be used
+     * @param string $company An optional company name
      *
      * @return Donation
-     * @throws InvalidArgumentException
      */
-    public function setDonator($email, $firstName, $lastName, $streetAddress, $zip, $city, $countryCode = NULL);
+    public function setDonator($email, $firstName, $lastName, $streetAddress, $zip, $city, $countryCode = NULL, $company = '');
 
     /**
      * Returns the array with donator information.

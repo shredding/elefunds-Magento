@@ -40,6 +40,7 @@
 namespace Lfnds\Test\Unit;
 
 use DateTime;
+use Lfnds\Configuration\DefaultConfiguration;
 use Lfnds\Exception\ElefundsException;
 use PHPUnit_Framework_TestCase;
 use Lfnds\Facade;
@@ -702,7 +703,77 @@ class FacadeTest extends PHPUnit_Framework_TestCase {
 
         $this->facade->setConfiguration($configuration);
         $this->facade->getTemplateJavascriptFiles();
-
     }
+
+    /**
+     * getReceiptDisclaimerThrowsErrorIfCountryCodeIsNotSet
+     *
+     * @test
+     * @expectedException \Lfnds\Exception\ElefundsException
+     */
+    public function getReceiptDisclaimerThrowsErrorIfCountryCodeIsNotSet() {
+        $this->facade->setConfiguration($this->getMock('Lfnds\Configuration\ConfigurationInterface'));
+        $this->facade->getReceiptDisclaimer();
+    }
+
+    /**
+     * getReceiptDisclaimerThrowsErrorIfDisclaimerDoesNotExistForGivenCountryCode
+     *
+     * @test
+     * @expectedException \Lfnds\Exception\ElefundsException
+     */
+    public function getReceiptDisclaimerThrowsErrorIfDisclaimerDoesNotExistForGivenCountryCode() {
+        $this->facade->setConfiguration(new DefaultConfiguration());
+        $this->facade->getConfiguration()->setCountrycode('zz');
+        $this->facade->getReceiptDisclaimer();
+    }
+
+    /**
+     * getReceiptDisclaimerReturnsTextForTheGivenCountryCode
+     * @test
+     */
+    public function getReceiptDisclaimerReturnsTextForTheGivenCountryCode() {
+        $this->facade->setConfiguration(new DefaultConfiguration());
+        $this->facade->getConfiguration()->setCountrycode('de');
+        $content = $this->facade->getReceiptDisclaimer();
+        $original = 'Der Spendenbetrag wird im Namen der elefunds Stiftung gUG vereinnahmt und zu 100% weitergeleitet. Dieser Kaufbeleg ersetzt keine Spendenbescheinigung im Sinne des Steuerrechts.';
+        $this->assertSame($original, $content);
+    }
+
+    /**
+     * @test
+     * @expectedException \Lfnds\Exception\ElefundsException
+     */
+    public function getTermsOfServiceThrowsErrorIfCountryCodeIsNotSet() {
+        $this->facade->setConfiguration($this->getMock('Lfnds\Configuration\ConfigurationInterface'));
+        $this->facade->getTermsOfService();
+    }
+
+    /**
+     * getTermsOfServiceThrowsErrorIfDisclaimerDoesNotExistForGivenCountryCode
+     *
+     * @test
+     * @expectedException \Lfnds\Exception\ElefundsException
+     */
+    public function getTermsOfServiceThrowsErrorIfDisclaimerDoesNotExistForGivenCountryCode() {
+        $this->facade->setConfiguration(new DefaultConfiguration());
+        $this->facade->getConfiguration()->setCountrycode('zz');
+        $this->facade->getTermsOfService();
+    }
+
+    /**
+     * getTermsOfServiceReturnsTextForTheGivenCountryCode
+     *
+     * @test
+     */
+    public function getTermsOfServiceReturnsTextForTheGivenCountryCode() {
+        $this->facade->setConfiguration(new DefaultConfiguration());
+        $this->facade->getConfiguration()->setCountrycode('de');
+        $content = $this->facade->getTermsOfService();
+        $original = str_replace('\\n', '<br />', 'Im Bezahlprozess befindet sich das von der elefunds GmbH entwickelte elefunds Spenden-Plug-In, das Ihnen die Möglichkeit gibt, abseits vom Zahlbetrag einen frei wählbaren Betrag als Spende aufzurunden. Die Aufrundung kann nach Wahl an die zur Verfügung stehenden Organisationen gespendet werden, wobei der Betrag bei Mehrfachauswahl gleichmäßig unter den spendenempfangenden Organisationen aufgeteilt wird. Bei Fragen rund um das Thema Spenden in unserem Shop können Sie sich gerne jederzeit direkt mit der elefunds GmbH in Verbindung setzen:\n\nelefunds GmbH\nSchönhauser Allee 124\n10437 Berlin\nTelefon: +49 30 48 49 24 38\nFax: +49 30 48 49 24 24\nkontakt@elefunds.de\nwww.elefunds.de\n\nMit der Aktivierung des elefunds Plug-Ins erklären Sie sich einverstanden, dass der gewählte Spendenbetrag zu Ihrem Kaufpreis hinzugefügt wird und als eigene Position auf der Rechnung erscheint. Die Spende beinhaltet keine MwSt.. Die Spende wird für Rechnung der elefunds Stiftung gUG vereinnahmt, die den Betrag zu 100% an die ausgewählten Organisationen weiterleitet. Der vorliegende Kaufbeleg ersetzt keine Spendenbescheinigung im Sinne des Steuerrechts.');
+        $this->assertSame($original, $content);
+    }
+
+
 
 }

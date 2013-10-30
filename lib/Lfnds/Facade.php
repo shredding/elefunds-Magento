@@ -369,6 +369,49 @@ class Facade implements FacadeInterface {
         return $tagStrings;
     }
 
+    public function getReceiptDisclaimer() {
+        $countryCode = $this->configuration->getCountrycode();
+        if (!isset($countryCode)) {
+            throw new ElefundsCommunicationException(
+                'Country code is not set.',
+                1347966302
+            );
+        }
+
+        $path = __DIR__ . '/Legal/ReceiptDisclaimer_' . $countryCode . '.txt';
+        if (is_readable($path)) {
+            $content = file_get_contents($path);
+        } else {
+            throw new ElefundsException(
+                'Terms of service do not exist for the given country code.',
+                1347966304
+            );
+        }
+
+        return str_replace('\\n', '<br />', $content);
+    }
+
+    public function getTermsOfService() {
+        $countryCode = $this->configuration->getCountrycode();
+        if (!isset($countryCode)) {
+            throw new ElefundsCommunicationException(
+                'Country code is not set.',
+                1347966303
+            );
+        }
+
+        $path = __DIR__ . '/Legal/TermsOfService_' . $countryCode . '.txt';
+        if (is_readable($path)) {
+            $content = file_get_contents($path);
+        } else {
+            throw new ElefundsException(
+                'Terms of service do not exist for the given country code.',
+                1347966305
+            );
+        }
+
+        return str_replace('\\n', '<br />', $content);
+    }
 
     /**
      * Maps a DonationInterface to a JSON ready array.

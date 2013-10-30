@@ -358,7 +358,7 @@ class DonationTest extends PHPUnit_Framework_TestCase {
      * @test
      */
     public function setDonatorAcceptsAValidUser() {
-        $this->donation->setDonator('hello@elefunds.de', 'Christian', 'Peters', 'Schönhauser Allee 124', 10243, 'Berlin', 'de');
+        $this->donation->setDonator('hello@elefunds.de', 'Christian', 'Peters', 'Schönhauser Allee 124', 10243, 'Berlin', 'de', 'elefunds');
 
         $donator = $this->donation->getDonatorInformation();
 
@@ -397,6 +397,18 @@ class DonationTest extends PHPUnit_Framework_TestCase {
 
         $donator = $this->donation->getDonatorInformation();
         $this->assertSame(FALSE, isset($donator['countryCode']));
+    }
+
+    public function setDonatorExpectsCompanyNameAsString() {
+        $this->donation->setDonator('hello@elefunds.de', 'Christian', 'Peters', 'Schönhauser Allee 124', 10243, 'Berlin', NULL, 'elefunds');
+
+        $donator = $this->donation->getDonatorInformation();
+        $this->assertSame('elefunds', $donator['company']);
+
+        $this->donation->setDonator('hello@elefunds.de', 'Christian', 'Peters', 'Schönhauser Allee 124', 10243, 'Berlin', NULL, 123);
+        $donator = $this->donation->getDonatorInformation();
+        $this->assertSame('elefunds', $donator['company']);
+
     }
 
     /**

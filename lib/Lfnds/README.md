@@ -1,4 +1,4 @@
-elefunds PHP Client Library 1.2.1
+elefunds PHP Client Library 1.2.2
 =================================
 
 Welcome to the elefunds PHP Client Library.
