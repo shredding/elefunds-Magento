@@ -246,7 +246,11 @@ class Lfnds_Donation_Model_Observer
                     $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION;
                 }
                 if (in_array($newState, $statesToBeMappedToCompletionState)) {
-                    $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION;
+                    if ($donation->getState() === Lfnds_Donation_Model_Donation::NEW_ORDER) {
+                        $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_DIRECT_COMPLETION;
+                    } else {
+                        $stateToBySyncedToTheApi = Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION;
+                    }
                 }
 
                     if ($stateToBySyncedToTheApi > Lfnds_Donation_Model_Donation::NEW_ORDER) {

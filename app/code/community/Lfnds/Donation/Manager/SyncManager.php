@@ -79,13 +79,15 @@ class Lfnds_Donation_Manager_SyncManager
             array(
                 Lfnds_Donation_Model_Donation::SCHEDULED_FOR_ADDING,
                 Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION,
-                Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION
+                Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION,
+                Lfnds_Donation_Model_Donation::SCHEDULED_FOR_DIRECT_COMPLETION
             )
         );
 
         $donationsToBeCancelled = array();
         $donationsToBeCompleted = array();
         $donationsToBeAdded = array();
+        $donationsToBeCompletedDirectly = array();
 
         /** @var Lfnds_Donation_Model_Donation $donationModel */
         foreach ($donationCollection as $donationModel) {
@@ -101,6 +103,10 @@ class Lfnds_Donation_Manager_SyncManager
 
                 case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_COMPLETION:
                     $donationsToBeCompleted[$donationModel->getForeignId()] = $donationModel;
+                    break;
+
+                case Lfnds_Donation_Model_Donation::SCHEDULED_FOR_DIRECT_COMPLETION:
+                    $donationsToBeCompletedDirectly[$donationModel->getForeignId()] = $donationModel;
                     break;
             }
         }
@@ -119,6 +125,13 @@ class Lfnds_Donation_Manager_SyncManager
             $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::CANCELLED);
         } catch (ElefundsCommunicationException $exception) {
             $donationCollection->setStates($donationsToBeCancelled, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_CANCELLATION);
+        }
+
+        try {
+            $this->facade->addDonations($this->mapArrayOfEntitiesToSDKObject($donationsToBeCompletedDirectly));
+            $donationsToBeCompleted = array_merge($donationsToBeCompleted, $donationsToBeCompletedDirectly);
+        } catch (ElefundsCommunicationException $exception) {
+            $donationCollection->setStates($donationsToBeCompletedDirectly, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_DIRECT_COMPLETION);
         }
 
         // Complete donation
