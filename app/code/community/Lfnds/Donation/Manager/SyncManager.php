@@ -129,7 +129,7 @@ class Lfnds_Donation_Manager_SyncManager
 
         try {
             $this->facade->addDonations($this->mapArrayOfEntitiesToSDKObject($donationsToBeCompletedDirectly));
-            $donationsToBeCompleted = array_merge($donationsToBeCompleted, $donationsToBeCompletedDirectly);
+            $donationsToBeCompleted = $donationsToBeCompleted + $donationsToBeCompletedDirectly;
         } catch (ElefundsCommunicationException $exception) {
             $donationCollection->setStates($donationsToBeCompletedDirectly, Lfnds_Donation_Model_Donation::SCHEDULED_FOR_DIRECT_COMPLETION);
         }
