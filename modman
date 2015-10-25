@@ -1,0 +1,8 @@
+app/code/community/Lfnds/Donation/ app/code/community/Lfnds/Donation/
+app/design/frontend/base/default/layout/lfnds_donation.xml app/design/frontend/base/default/layout/lfnds_donation.xml
+app/design/frontend/base/default/template/lfnds/donation/ app/design/frontend/base/default/template/lfnds/donation/
+app/etc/modules/Lfnds_Donation.xml app/etc/modules/Lfnds_Donation.xml
+app/locale/de_DE/Lfnds_Donation.csv app/locale/de_DE/Lfnds_Donation.csv
+lib/Lfnds/ lib/Lfnds/
+skin/frontend/base/default/images/lfnds_donation/ skin/frontend/base/default/images/lfnds_donation/
+
